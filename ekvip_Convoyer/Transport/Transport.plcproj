@@ -53,6 +53,9 @@
     <Compile Include="001DUTs\ITF\ITF_Owner.TcIO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="001DUTs\STRUCT\ST_MaschineHMI.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="001DUTs\STRUCT\ST_Route.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -101,6 +104,13 @@
     <Compile Include="002 POUs\Lib\Digit I_O\Output\FB_Output.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="1000 Maschine xxx\01 DUTs\GVLs\GVL_Customer.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="1000 Maschine xxx\01 DUTs\STRUCT\ST_HmiCustomer.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="1000 Maschine xxx\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -109,10 +119,6 @@
     </Compile>
     <Compile Include="GlobalTextList.TcGTLO">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GVLs\GVL_Customer.TcGVL">
-      <SubType>Code</SubType>
-      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
@@ -134,9 +140,6 @@
     <Folder Include="001DUTs\GVL_Base" />
     <Folder Include="001DUTs\STRUCT" />
     <Folder Include="002 POUs\00 Generic" />
-    <Folder Include="002 POUs\002 Component" />
-    <Folder Include="002 POUs\003 Devices" />
-    <Folder Include="002 POUs\004 Unit" />
     <Folder Include="002 POUs\Lib" />
     <Folder Include="002 POUs\Lib\01 Device" />
     <Folder Include="002 POUs\Lib\01 Device\00 Template" />
@@ -145,8 +148,10 @@
     <Folder Include="002 POUs\Lib\Digit I_O\Input" />
     <Folder Include="002 POUs\Lib\Digit I_O" />
     <Folder Include="002 POUs\Lib\Digit I_O\Output" />
+    <Folder Include="1000 Maschine xxx\01 DUTs" />
+    <Folder Include="1000 Maschine xxx\01 DUTs\GVLs" />
+    <Folder Include="1000 Maschine xxx\01 DUTs\STRUCT" />
     <Folder Include="1000 Maschine xxx\_Customer" />
-    <Folder Include="GVLs" />
     <Folder Include="002 POUs" />
     <Folder Include="1000 Maschine xxx" />
     <Folder Include="VISUs" />

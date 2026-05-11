@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_MaschineHMI" Id="{7d3f80e4-4cac-4a3d-8296-53efea9e88c0}">
+    <Declaration><![CDATA[TYPE ST_MaschineHMI :
+STRUCT
+	// Commands from HMI
+	bCmdHome     					: BOOL;
+	bCmdAuto     					: BOOL;
+	bCmdService  					: BOOL;
+	bCmdStop     					: BOOL;
+	bCmdReset    					: BOOL;
+	bCmdAbort    					: BOOL;
+	
+	// Status to HMI
+	bEnabled     					: BOOL;
+	bReady       					: BOOL;
+	bHomed       					: BOOL;
+	bBusy        					: BOOL;
+	bDone        					: BOOL;
+	bError       					: BOOL;
+	             					
+	eMode        					: E_Mode;
+	eCmdState    					: E_CmdState;
+	uiSequenceID       		: UINT;
+	             					
+	sName        					: STRING;
+	uiID         					: UINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

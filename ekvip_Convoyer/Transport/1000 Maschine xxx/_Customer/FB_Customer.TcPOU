@@ -33,10 +33,13 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
+      <ST><![CDATA[// Must !!
 SUPER^();
 
+//HMI
+mVisu();
 
+//Device instance
 fbLUTDevice3();
 fbLUTDevice6();
 fbLUTDevice9();
@@ -60,6 +63,90 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mVisu" Id="{c7e96c84-e105-4fbe-a239-cee78a6aad81}">
+      <Declaration><![CDATA[METHOD mVisu : BOOL
+VAR_INPUT
+	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Machine status -->HMI
+//==================================================
+
+stHMI.bReady 								:= Ready;
+stHMI.bBusy  								:= SequenceBusy;
+stHMI.bDone  								:= SequenceDone;
+stHMI.bError 								:= Error;
+stHMI.bHomed 								:= Homed;
+
+stHMI.eMode 								:= Mode;
+
+stHMI.uiSequenceID 					:= SequenceID;
+
+// HMI commands
+//==================================================
+
+//------------------------------
+// HOME
+IF stHMI.bCmdHome 
+	THEN
+  	stHMI.eCmdState 				:= mHome(TRUE);
+    stHMI.bCmdHome 					:= FALSE;
+END_IF
+
+//------------------------------
+// AUTO
+IF stHMI.bCmdAuto 
+	THEN
+  	stHMI.eCmdState 				:= mAutomatic(TRUE);
+    stHMI.bCmdAuto 					:= FALSE;
+END_IF
+
+//------------------------------
+// SERVICE
+IF stHMI.bCmdService THEN
+
+    stHMI.eCmdState 				:= mService(
+        I_bExecute 					:= TRUE
+    );
+
+    stHMI.bCmdService 			:= FALSE;
+END_IF
+
+//------------------------------
+// STOP
+IF stHMI.bCmdStop 
+	THEN
+    stHMI.eCmdState 				:= mStop(TRUE);
+    stHMI.bCmdStop 					:= FALSE;
+END_IF
+
+//------------------------------
+// ABORT
+
+IF stHMI.bCmdAbort 
+	THEN
+    stHMI.eCmdState := mAbort(TRUE);
+    stHMI.bCmdAbort := FALSE;
+END_IF
+
+//------------------------------
+// RESET
+IF stHMI.bCmdReset 
+	THEN
+  	mReset();
+    stHMI.bCmdReset := FALSE;
+END_IF
+//=========================================================
+mVisu := TRUE;
+
+
+
+
+]]></ST>
       </Implementation>
     </Method>
   </POU>

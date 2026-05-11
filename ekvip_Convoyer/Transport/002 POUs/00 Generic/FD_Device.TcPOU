@@ -13,9 +13,10 @@ VAR_OUTPUT
 END_VAR
 VAR
 	itfDeviceRegister									: ITF_Owner;
-	aitfChilds												: ARRAY [1..GVL_Core.C_MaxChild] OF ITF_Device;
-	aChildsCount											: UINT := 0;
+	aitfChilds												: ARRAY [1..GVL_Core.C_MaxChild] OF ITF_Device;     // Registered child devices
+	uiChildsCount											: UINT := 0;                                       	// Number of registered child devices
 	
+	eMode															: E_Mode;
 	uiSequenceID          						: UINT;
 	uiNextStep      									: UINT;
 	                									
@@ -59,6 +60,7 @@ IF bSequenceBusy THEN mSequence(TRUE); END_IF;
     <Folder Name="01 Properties" Id="{2ade4f6f-4d16-4ebd-be39-d23d9d34597f}" />
     <Folder Name="02 Methodes" Id="{34903398-ece8-40e6-8ccd-c04371e5f652}">
       <Folder Name="_SetChild" Id="{1eae8e4b-4066-46b8-876f-e8b83ce863d5}" />
+      <Folder Name="OpMode" Id="{d1c9d0a0-c08d-4381-9e61-4553d39a7da0}" />
     </Folder>
     <Method Name="FB_Init" Id="{7fd52798-a9d4-47c6-81da-6550d3521908}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
@@ -78,9 +80,20 @@ END_VAR]]></Declaration>
         <ST><![CDATA[
 IF I_itfOwner <>0
 	THEN
-		itfDeviceRegister := I_itfOwner;
+		itfDeviceRegister 	:= I_itfOwner;
 		itfDeviceRegister.mRegisterChild(THIS^);
-END_IF]]></ST>
+END_IF
+
+// Default sequence state
+SequenceID 							:= C_SeqStep_Idle;
+
+bSequenceBusy 					:= FALSE;
+bSequenceDone 					:= FALSE;
+              					
+bReady 									:= FALSE;
+bHomed									:= FALSE;
+bAbort 									:= FALSE;
+bHold 									:= FALSE;]]></ST>
       </Implementation>
     </Method>
     <Property Name="Homed" Id="{f8978509-4b98-4bbf-bb6e-7234335367a3}" FolderPath="01 Properties\">
@@ -126,7 +139,7 @@ mStop(TRUE);
 mAbort := E_CmdState.Busy;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mAutomatic" Id="{1893a5c2-c84c-454f-8d17-e1b9361eb323}" FolderPath="02 Methodes\">
+    <Method Name="mAutomatic" Id="{1893a5c2-c84c-454f-8d17-e1b9361eb323}" FolderPath="02 Methodes\OpMode\">
       <Declaration><![CDATA[METHOD mAutomatic: E_CmdState
 VAR_INPUT
 	I_bExecute : BOOL;
@@ -154,7 +167,7 @@ IF bError
     RETURN;
 END_IF
 
-//eMode := E_CmdState.AUTO;
+Mode := E_Mode.Auto;
 
 // Start sequence execution.
 bSequenceBusy 	:= TRUE;
@@ -203,38 +216,73 @@ bSequenceBusy := FALSE;
 mHold := E_CmdState.Hold;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHome" Id="{d161db35-b843-4f4b-9979-193f62066daf}" FolderPath="02 Methodes\">
+    <Method Name="mHome" Id="{d161db35-b843-4f4b-9979-193f62066daf}" FolderPath="02 Methodes\OpMode\">
       <Declaration><![CDATA[METHOD mHome : E_CmdState
 VAR_INPUT
 	I_bExecute : BOOL;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF NOT I_bExecute THEN
-    mHome 		:= E_CmdState.Idle;
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+    mHome := E_CmdState.Idle;
     RETURN;
 END_IF
 
-IF bError THEN
-    mHome 		:= E_CmdState.Error;
+// Device disabled.
+IF NOT Enable 
+	THEN
+    mHome := E_CmdState.NotReady;
     RETURN;
 END_IF
 
-IF NOT bEnable THEN
-    mHome 		:= E_CmdState.NotReady;
+// Device in error.
+IF Error 
+	THEN
+    mHome := E_CmdState.Error;
+    RETURN;
+END_IF
+// Device already running another sequence.
+IF SequenceBusy 
+	THEN
+    mHome := E_CmdState.Busy;
     RETURN;
 END_IF
 
-//eMode 					:= E_CmdState.HOMING;
+// Start local homing sequence.
+Mode := E_Mode.Homing;
 
-bSequenceBusy 	:= TRUE;
-bSequenceDone 	:= FALSE;
+SequenceBusy := TRUE;
+SequenceDone := FALSE;
 
-SequenceID      := C_SeqStep_Start;
+Homed := FALSE;
+Ready := FALSE;
 
-mHome 					:= E_CmdState.Busy;]]></ST>
+SequenceID := C_SeqStep_Start;
+
+mHome := E_CmdState.Busy;]]></ST>
       </Implementation>
     </Method>
+    <Property Name="Mode" Id="{e3629892-5ebc-4865-8c65-e29d8930dd33}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Mode : E_Mode]]></Declaration>
+      <Get Name="Get" Id="{5bea1d50-c46c-45c6-97f9-e0b4c5cb818c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Mode := eMode;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{39899aae-4e47-4f77-9b37-e0404462fc6b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[eMode := Mode;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Method Name="mRegisterChild" Id="{a500345d-fc2f-4016-bc40-685c8cf16433}" FolderPath="02 Methodes\_SetChild\">
       <Declaration><![CDATA[METHOD mRegisterChild : BOOL
 VAR_INPUT
@@ -246,12 +294,13 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
+
 IF __QUERYINTERFACE (I_itfChild, L_Itf_ChildDevice)
 	THEN 
-		IF aChildsCount < GVL_Core.C_MaxChild
+		IF uiChildsCount < GVL_Core.C_MaxChild
 			THEN 
-				aChildsCount 								:= aChildsCount +1;	
-				aitfChilds[aChildsCount] 		:= L_Itf_ChildDevice;
+				uiChildsCount 								:= uiChildsCount +1;	
+				aitfChilds[uiChildsCount] 		:= L_Itf_ChildDevice;
 		END_IF
 END_IF]]></ST>
       </Implementation>
@@ -330,7 +379,7 @@ bSequenceDone := FALSE;
 mSequence := E_CmdState.Busy;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mService" Id="{59a6f5d6-c772-4191-9bcd-24619a63d134}" FolderPath="02 Methodes\">
+    <Method Name="mService" Id="{59a6f5d6-c772-4191-9bcd-24619a63d134}" FolderPath="02 Methodes\OpMode\">
       <Declaration><![CDATA[METHOD mService : E_CmdState
 VAR_INPUT
 	I_bExecute : BOOL;
@@ -343,7 +392,7 @@ END_VAR
     RETURN;
 END_IF
 
-//eMode := SERVICE;
+Mode := E_Mode.Service;
 bSequenceBusy := FALSE;
 bSequenceDone := FALSE;
 
@@ -361,7 +410,7 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-FOR L_uiIndex := 1 TO aChildsCount DO
+FOR L_uiIndex := 1 TO uiChildsCount DO
 	CASE I_eSetChilds OF
 		E_SetChild.None					: ;
 		E_SetChild.Enable				:	aitfChilds[L_uiIndex].Enable:= Enable; 
@@ -384,19 +433,20 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF NOT I_bExecute THEN
-    mStop 			:= E_CmdState.Idle;
+        <ST><![CDATA[IF NOT I_bExecute 
+	THEN
+  	mStop 			:= E_CmdState.Idle;
     RETURN;
 END_IF
 
+Mode := E_Mode.Error;
+
 bBusy 					:= FALSE;
 bDone 					:= FALSE;
-
 bSequenceBusy 	:= FALSE;
 bSequenceDone 	:= FALSE;
 
 SequenceID     	:= C_SeqStep_Idle;
-
 mStop 					:= E_CmdState.Succeeded;]]></ST>
       </Implementation>
     </Method>

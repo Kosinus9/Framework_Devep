@@ -7,30 +7,39 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	 // Registered child devices
-	aitfChilds : ARRAY[1..50] OF ITF_Device;
-	
-	// Number of registered child devices
-	uiChildsCount : UINT;
-	
 	// Global child status
-	bAllChildsReady : BOOL;
-	bAllChildsHomed : BOOL;
-	bAllChildsDone  : BOOL;
-	bAnyChildBusy   : BOOL;
-	bAnyChildError  : BOOL;
-	
+	bAllChildsReady 					: BOOL;
+	bAllChildsHomed 					: BOOL;
+	bAllChildsDone  					: BOOL;
+	bAnyChildBusy   					: BOOL;
+	bAnyChildError  					: BOOL;
 	// Internal command state
-	eLastChildCmdState : E_CmdState;
+	eLastChildCmdState 				: E_CmdState;
+	
+	// Hmi Variable
+	stHMI 										: ST_MaschineHMI;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[SUPER^();
-]]></ST>
+      <ST><![CDATA[
+SUPER^();
+
+mVisu();
+// Update global child status every PLC cycle
+mUpdateChildsState();
+
+IF SequenceBusy THEN
+    mSequence(TRUE);
+END_IF]]></ST>
     </Implementation>
     <Folder Name="01 Properties" Id="{6a87ee5d-b4db-4b64-8036-f307a328febf}" />
-    <Folder Name="02 Methodes" Id="{5561014d-7db8-4950-aa75-2604d264aa2f}" />
-    <Method Name="FB_Init" Id="{4d06739b-5dd6-4759-85b3-148920b74dbe}" FolderPath="02 Methodes\">
+    <Folder Name="02 Methodes" Id="{5561014d-7db8-4950-aa75-2604d264aa2f}">
+      <Folder Name="010 _SetChild" Id="{e5bea0b9-25fa-45a2-9e8c-d054885de145}" />
+      <Folder Name="020 OpMode" Id="{85940346-4c69-4b4c-b5e9-25a708434663}" />
+      <Folder Name="040 Fx" Id="{42cfef7c-3ff8-4651-b791-27ca4000f4e5}" />
+      <Folder Name="099 HMI" Id="{07d2b20f-db9e-47fa-8a44-e2847c19c7af}" />
+    </Folder>
+    <Method Name="FB_Init" Id="{4d06739b-5dd6-4759-85b3-148920b74dbe}" FolderPath="02 Methodes\040 Fx\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
 //die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
@@ -48,13 +57,368 @@ END_VAR]]></Declaration>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCheckAllChildsReady" Id="{39b8dd00-c2ac-4bef-91c5-3bcadfa4b938}" FolderPath="02 Methodes\">
+    <Method Name="mAutomatic" Id="{34b44ad0-f67d-44fe-a6ef-a7575f674d83}" FolderPath="02 Methodes\020 OpMode\">
+      <Declaration><![CDATA[METHOD mAutomatic : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Call mAutomatic in Base
+SUPER^.mAutomatic(I_bExecute);
+
+// Machine can only go AUTO if all child devices are homed
+mUpdateChildsState();
+
+IF NOT bAllChildsHomed 
+	THEN
+    mAutomatic := E_CmdState.NotReady;
+    RETURN;
+END_IF
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCheckAllChildsReady" Id="{39b8dd00-c2ac-4bef-91c5-3bcadfa4b938}" FolderPath="02 Methodes\010 _SetChild\">
       <Declaration><![CDATA[METHOD mCheckAllChildsReady : Bool
 VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mHome" Id="{95927eb3-0055-4f5c-b3ae-60a81380b498}">
+      <Declaration><![CDATA[METHOD mHome : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+mHome := SUPER^.mHome(I_bExecute);
+
+// If generic checks failed -> exit
+IF mHome <> E_CmdState.Busy THEN RETURN; END_IF
+
+// Machine-specific preparation
+mUpdateChildsState();
+
+// verify children available before homing
+IF bAnyChildError 
+	THEN
+    mHome := E_CmdState.Error;
+    RETURN;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mReset" Id="{9f526523-b7e3-46df-b678-7a9d37521ebc}" FolderPath="02 Methodes\040 Fx\">
+      <Declaration><![CDATA[METHOD mReset : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Reset machine base status
+SUPER^.mReset();
+
+// Reset all child devices
+mResetChild();
+
+bAnyChildError := FALSE;
+bAnyChildBusy  := FALSE;
+
+Mode := E_Mode.Idle;
+SequenceID := C_SeqStep_Idle;
+mReset := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mResetChild" Id="{a3b91ffa-73bb-466c-a5d7-43ac968571a3}" FolderPath="02 Methodes\010 _SetChild\">
+      <Declaration><![CDATA[METHOD mResetChild : BOOL
+VAR_INPUT
+END_VAR
+VAR
+	uiIndeX						: UINT;
+	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Reset all registered child devices
+FOR uiIndeX := 1 TO uiChildsCount DO
+    aitfChilds[uiIndeX].mReset();
+END_FOR
+
+mResetChild	 				:= TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mSequence" Id="{d50b92a4-7563-419d-8a14-262b8f70b0f9}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mSequence : E_CmdState
+VAR_INPUT
+	I_bExecute				: BOOL;
+END_VAR
+
+VAR
+    eCmd 						: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Generic pre-check from parent
+mSequence := SUPER^.mSequence(I_bExecute := I_bExecute);
+
+IF mSequence <> E_CmdState.Busy THEN
+    RETURN;
+END_IF
+
+// Update child status before sequence logic
+mUpdateChildsState();
+
+IF bAnyChildError THEN
+    SequenceID := C_SeqStep_Error;
+END_IF
+
+CASE SequenceID OF
+    C_SeqStep_Start:
+        CASE Mode OF
+        	E_Mode.Homing:
+        	    eCmd 	:= mSetChildMode(E_Mode.Homing);
+        	E_Mode.Auto:
+        	    eCmd 	:= mSetChildMode(E_Mode.Auto);
+        	E_Mode.Service:
+        	    eCmd 	:= mSetChildMode(E_Mode.Service);
+        END_CASE
+    	SequenceID := 10;
+      mSequence := E_CmdState.Busy;
+
+    10:
+        // Wait until all child devices finish their requested command
+        mUpdateChildsState();
+
+        IF bAnyChildError THEN
+            SequenceID := C_SeqStep_Error;
+
+        ELSIF NOT bAnyChildBusy THEN
+            SequenceID := C_SeqStep_Done;
+        END_IF
+        mSequence := E_CmdState.Busy;
+				
+    C_SeqStep_Done:
+    	bSequenceBusy := FALSE;
+    	bSequenceDone := TRUE;
+    	
+    	IF Mode = E_Mode.Homing 
+				THEN
+    	    bHomed := TRUE;
+    	END_IF
+    	
+    	bReady := TRUE;
+    	SequenceID := C_SeqStep_Idle;
+    	
+    	mSequence := E_CmdState.Succeeded;
+    	
+    C_SeqStep_Error:
+    	bError := TRUE;
+    	bSequenceBusy := FALSE;
+    	bSequenceDone := FALSE;
+    	
+    	mSequence := E_CmdState.Error;
+    	
+    ELSE
+        SequenceID := C_SeqStep_Error;
+        mSequence := E_CmdState.Error;
+
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mSetChildMode" Id="{b359a2b7-9f9a-4774-a7bb-b44d823f4f2a}" FolderPath="02 Methodes\010 _SetChild\">
+      <Declaration><![CDATA[METHOD PROTECTED mSetChildMode  : E_CmdState
+VAR_INPUT
+	I_eMode 		: E_Mode;
+END_VAR
+
+VAR
+	uiIndex 		: UINT;
+  eCmd 				: E_CmdState;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+mSetChildMode := E_CmdState.Succeeded;
+
+// Send requested mode command to all child devices
+FOR uiIndex := 1 TO uiChildsCount DO
+	CASE I_eMode OF
+  	E_Mode.Homing:
+  		eCmd 			    := aitfChilds[uiIndex].mHome(TRUE);
+  	E_Mode.Auto:
+  		eCmd 			    := aitfChilds[uiIndex].mAutomatic(TRUE);
+  	E_Mode.Service:
+  		eCmd 			    := aitfChilds[uiIndex].mService(TRUE);			
+		E_Mode.Idle:
+  		eCmd 			    := aitfChilds[uiIndex].mStop(TRUE);
+  	E_Mode.Error:
+  		eCmd 			    := aitfChilds[uiIndex].mAbort(TRUE);
+  END_CASE
+
+    // If one child is busy, global command is still busy
+	IF eCmd = E_CmdState.Busy 
+		THEN
+	    mSetChildMode  := E_CmdState.Busy;
+	END_IF
+	 
+	// If one child has error, global command is error
+	IF (eCmd = E_CmdState.Error) OR (eCmd = E_CmdState.NotReady) 
+  	THEN
+	    mSetChildMode  := eCmd;
+	    RETURN;
+	END_IF
+END_FOR
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mStop" Id="{7eecaabd-8804-4508-8714-47321ca48c04}" FolderPath="02 Methodes\040 Fx\">
+      <Declaration><![CDATA[METHOD mStop : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Stop machine base status
+SUPER^.mStop(I_bExecute);
+
+// Stop all child devices
+ //StopChilds();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mStopChilds" Id="{d8d10ce1-d462-401a-b1f9-a70c4c67ef67}" FolderPath="02 Methodes\010 _SetChild\">
+      <Declaration><![CDATA[METHOD PROTECTED mStopChilds  : E_CmdState
+VAR_INPUT
+END_VAR
+
+VAR
+    uiIndex 				: UINT;
+    eCmd 						: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+mStopChilds := E_CmdState.Succeeded;
+
+// Stop all child devices
+FOR uiIndex := 1 TO uiChildsCount DO
+	eCmd := aitfChilds[uiIndex].mStop(TRUE);
+	
+	IF eCmd = E_CmdState.Busy 
+		THEN
+	    mStopChilds := E_CmdState.Busy;
+	END_IF
+	
+	IF eCmd = E_CmdState.Error 
+		THEN
+	    mStopChilds := E_CmdState.Error;
+	    RETURN;
+    END_IF
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mUpdateChildsState" Id="{54b84bff-c321-4ea9-8af5-5f96b3fa3112}" FolderPath="02 Methodes\010 _SetChild\">
+      <Declaration><![CDATA[METHOD PROTECTED mUpdateChildsState  : BOOL
+VAR_INPUT
+END_VAR
+VAR
+	L_uiIndex									: UINT;
+	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Evaluate all registered child devices
+FOR L_uiIndex := 1 TO uiChildsCount DO
+
+    IF aitfChilds[L_uiIndex].Error THEN
+        bAnyChildError := TRUE;
+    END_IF
+
+    IF aitfChilds[L_uiIndex].SequenceBusy THEN
+        bAnyChildBusy := TRUE;
+    END_IF
+
+    IF NOT aitfChilds[L_uiIndex].Ready THEN
+        bAllChildsReady := FALSE;
+    END_IF
+
+    IF NOT aitfChilds[L_uiIndex].Homed THEN
+        bAllChildsHomed := FALSE;
+    END_IF
+
+    IF NOT aitfChilds[L_uiIndex].SequenceDone THEN
+        bAllChildsDone := FALSE;
+    END_IF
+
+END_FOR
+
+mUpdateChildsState := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mVisu" Id="{755d8c18-c470-42a3-9fc7-897d4f23f899}" FolderPath="02 Methodes\099 HMI\">
+      <Declaration><![CDATA[METHOD mVisu : BOOL
+VAR_INPUT
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Status to HMI
+	stHMI.sName     					:= Name;
+	stHMI.uiID      					:= ID;
+	stHMI.bReady    					:= Ready;
+	stHMI.bHomed    					:= Homed;
+	stHMI.bBusy     					:= SequenceBusy;
+	stHMI.bDone     					:= SequenceDone;
+	stHMI.bError    					:= Error;
+	stHMI.eMode     					:= Mode;
+	stHMI.uiSequenceID    		:= SequenceID;
+	
+	// Commands from HMI
+	IF stHMI.bCmdReset 
+		THEN
+	    mReset();
+	    stHMI.bCmdReset := FALSE;
+	END_IF
+	
+	IF stHMI.bCmdHome 
+		THEN
+	    stHMI.eCmdState := mHome(TRUE);
+	    stHMI.bCmdHome := FALSE;
+	END_IF
+	
+	IF stHMI.bCmdAuto 
+		THEN
+	    stHMI.eCmdState := mAutomatic(TRUE);
+	    stHMI.bCmdAuto := FALSE;
+	END_IF
+	
+	IF stHMI.bCmdService 
+  	THEN
+	    stHMI.eCmdState := mService(TRUE);
+	    stHMI.bCmdService := FALSE;
+	END_IF
+	
+	IF stHMI.bCmdStop 
+		THEN
+    stHMI.eCmdState := mStop(TRUE);
+    stHMI.bCmdStop := FALSE;
+END_IF
+
+IF stHMI.bCmdAbort 
+	THEN
+    stHMI.eCmdState := mAbort(TRUE);
+    stHMI.bCmdAbort := FALSE;
+END_IF
+
+mVisu := TRUE;
+]]></ST>
       </Implementation>
     </Method>
   </POU>

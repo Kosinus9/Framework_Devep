@@ -63,15 +63,6 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Property Name="Mode" Id="{5accb5f0-81f5-45d7-b958-eb90f5afbece}" FolderPath="01 Properties\">
-      <Declaration><![CDATA[PROPERTY Mode : E_Mode]]></Declaration>
-      <Get Name="Get" Id="{0c222f17-0837-4381-bb65-14d0a322ae9f}">
-        <Declaration><![CDATA[]]></Declaration>
-      </Get>
-      <Set Name="Set" Id="{43f356f0-6b3b-4dda-a533-baf5831c1ce8}">
-        <Declaration><![CDATA[]]></Declaration>
-      </Set>
-    </Property>
     <Method Name="mReset" Id="{67d5ec4b-e405-4638-aa78-3fc040c49139}" FolderPath="02 Methods\">
       <Declaration><![CDATA[METHOD mReset : BOOL
 VAR_INPUT

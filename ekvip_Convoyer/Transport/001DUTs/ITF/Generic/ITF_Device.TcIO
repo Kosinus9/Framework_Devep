@@ -47,6 +47,15 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
+    <Property Name="Mode" Id="{b4148d7b-1cf4-4690-8b11-f60ccf8fdb97}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Mode : E_Mode]]></Declaration>
+      <Get Name="Get" Id="{1764c7ca-5320-4c72-952b-b11de84e4a86}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{84b839d5-3e71-4766-9ef6-014419011dfe}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
     <Method Name="mRelease" Id="{39840917-54ed-488a-8e37-97e1ca73b28a}" FolderPath="02 Methode\">
       <Declaration><![CDATA[METHOD mRelease : E_CmdState
 VAR_INPUT

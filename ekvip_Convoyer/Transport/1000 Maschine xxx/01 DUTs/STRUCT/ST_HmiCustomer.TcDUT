@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_HmiCustomer" Id="{747bac18-517f-4061-832d-9dd63c0bb0ff}">
+    <Declaration><![CDATA[TYPE ST_HmiCustomer :
+STRUCT
+	// Commands To PLC
+	bCmdHome     					: BOOL;
+	bCmdAuto     					: BOOL;
+	bCmdService  					: BOOL;
+	bCmdStop     					: BOOL;
+	bCmdReset    					: BOOL;
+	bCmdAbort    					: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -19,7 +19,9 @@ SUPER^();
 IF NOT Enable THEN RETURN; END_IF]]></ST>
     </Implementation>
     <Folder Name="01 Properties" Id="{01153c84-2cbf-4774-9afe-06465af82a17}" />
-    <Folder Name="02 Methodes" Id="{1154e57b-5607-4e8c-9894-d39905ffa9c5}" />
+    <Folder Name="02 Methodes" Id="{1154e57b-5607-4e8c-9894-d39905ffa9c5}">
+      <Folder Name="NewFolder1" Id="{737ecdee-bdd3-4011-be43-9c8053143eb0}" />
+    </Folder>
     <Method Name="FB_Init" Id="{4e8aa732-d3ac-4d90-bbea-84986dfc142d}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
