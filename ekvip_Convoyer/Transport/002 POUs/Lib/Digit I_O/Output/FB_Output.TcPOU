@@ -5,10 +5,11 @@
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
+	bAT_HardwareLink	AT %Q*	:	BOOL; // hardware link
 END_VAR
 VAR
 	
-	AT_HardwareLink	AT %Q*	:	BOOL; // hardware link
+	
 END_VAR
 ]]></Declaration>
     <Implementation>

@@ -10,9 +10,32 @@
 		</System>
 		<Plc>
 			<Project GUID="{81AFEAAA-A050-46FA-81EC-27E633CBC1C0}" Name="Transport" PrjFilePath="Transport\Transport.plcproj" TmcFilePath="Transport\Transport.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{C735B0F7-DF29-5F5A-3E84-5ED8159B5F74}" TmcPath="Transport\Transport.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{3BB112AE-978A-8E89-C89F-BC5ED7045973}" TmcPath="Transport\Transport.tmc">
 					<Name>Transport Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Vars VarGrpType="1">
+						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbLUTLightBarrier.bAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbLUTLightBarrier.bAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbLUTLightBarrier.bAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbLUTLightBarrier.bAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+					</Vars>
 					<Contexts>
 						<Context>
 							<Id>0</Id>

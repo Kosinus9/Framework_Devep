@@ -15,15 +15,34 @@ VAR_GLOBAL CONSTANT
 	C_Name_fbLutDevice12               : STRING := 'fbLutDevice12';
 	
 	
+	//======================================================= Name Simple Device 
+	C_Name_LTUPneuClyZ			           : STRING := 'PneuCylZAxisLTU';
+	C_Name_LUTStopper									 : STRING := 'StopperLTU';
+	
+	//======================================================= Name Componemt
+	C_Name_LUTLightBarrier 						 : STRING := 'LUTLightBarrier';
+	C_Name_LUTSimpleMotor 						 : STRING := 'LUTSimpleMotor';
 	
 	
 	//======================================================= ID Device 
+	//
 	C_ID_fbLutDevice3                  : UINT :=  10;
 	C_ID_fbLutDevice6                  : UINT :=  11;
 	C_ID_fbLutDevice9                  : UINT :=  12;
 	C_ID_fbLutDevice12                 : UINT :=  13;
 	
 	
+	//======================================================= Name Simple Device 
+	//100--150
+	C_ID_LTUPneuClyZ	                 : UINT :=  100;
+	C_ID_LUTStopper										 : UINT :=  101;
+	C_ID_LUTSimpleMotor								 : UINT :=  101;
+	
+	
+	
+	//======================================================= Name Componemt
+	//
+	C_ID_LUTLightBarrier							 : UINT :=  151;
 	
 	
 	

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
-  <POU Name="FB_LUTDevice" Id="{1d37f6f4-ced3-4fc7-b8fb-537fe5b0ee0b}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_LUTDevice EXTENDS FD_Device IMPLEMENTS ITF_Convoyer
+  <POU Name="FB_LUTDevice_1" Id="{5feb55c0-427c-48c9-ba35-af743a91e620}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LUTDevice_1 EXTENDS FD_Device IMPLEMENTS ITF_Convoyer
 VAR_INPUT
 END_VAR
 
@@ -9,24 +9,10 @@ VAR_OUTPUT
 END_VAR
 
 VAR
-	//===================== Instance
-	fbPneuCyl3Pos_AxisZ								: FB_PneuCyl_3Pos     (GVL_Customer.C_Name_LTUPneuClyZ,
-																													GVL_Customer.C_ID_LTUPneuClyZ
-																										  		); 
-																													
-	fbStopperLut											: FB_PneuCyl_1Pos     (GVL_Customer.C_Name_LUTStopper,
-																													GVL_Customer.C_ID_LUTStopper
-																										  		);																												
-																													
-	fbLUTLightBarrier									: FB_Input					  (GVL_Customer.C_Name_LUTLightBarrier,
-																													GVL_Customer.C_ID_LUTLightBarrier
-																										  		);																																										
-	
-	fbLUTSimpleMotor									: FB_MotorSimple      (GVL_Customer.C_Name_LUTSimpleMotor,
-																													GVL_Customer.C_ID_LUTSimpleMotor
-																										  		);
-
-																										
+	//=====================
+	fbPneuCyl_AxisZ										: FB_PneuCyl_3Pos(
+		
+																										 ); 
 END_VAR
 
 VAR CONSTANT
@@ -47,15 +33,13 @@ END_VAR
 SUPER^();  
 
 //====================================
-IF NOT Enable THEN RETURN; END_IF
-
-//fbLUTLightBarrier.AT_bHardwareLink]]></ST>
+IF NOT Enable THEN RETURN; END_IF]]></ST>
     </Implementation>
-    <Folder Name="01 Properties" Id="{01153c84-2cbf-4774-9afe-06465af82a17}" />
-    <Folder Name="02 Methodes" Id="{1154e57b-5607-4e8c-9894-d39905ffa9c5}">
-      <Folder Name="100 CmdExecute" Id="{737ecdee-bdd3-4011-be43-9c8053143eb0}" />
+    <Folder Name="01 Properties" Id="{2aabb068-656d-41fd-a806-cf76b4cb3441}" />
+    <Folder Name="02 Methodes" Id="{1506cc05-5219-4049-9dc0-2e7a95a3ee83}">
+      <Folder Name="100 CmdExecute" Id="{7e328eca-1401-459e-a275-f97eb30a6441}" />
     </Folder>
-    <Method Name="FB_Init" Id="{4e8aa732-d3ac-4d90-bbea-84986dfc142d}" FolderPath="02 Methodes\">
+    <Method Name="FB_Init" Id="{1f043a9f-9106-4491-8db0-3f1836aec147}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
 //die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
@@ -73,7 +57,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[  ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mAutomatic" Id="{1a363c95-a5ab-493c-a24f-fc972dc90c4d}" FolderPath="02 Methodes\">
+    <Method Name="mAutomatic" Id="{1835ff83-941d-4063-a840-8408932dddd1}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mAutomatic : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -83,8 +67,8 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_Auto" Id="{90a7dbfb-cbde-4eb5-878d-9d7c2e891557}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_Auto : E_CmdState
+    <Method Name="mCmdExec_Auto" Id="{5701aa1e-f0ac-48f8-996d-a5d08e5d82fc}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_Auto : UINT
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -104,27 +88,27 @@ CASE SequenceID OF
 	
 		SequenceID       :=  C_SeqStep_Done;;
 	
-//	C_SeqStep_OnBasePos_Start:
+	C_SeqStep_OnBasePos_Start:
+	;
 	
-	
-//	C_SeqStep_OnBasePos_Start:
-	
+	C_SeqStep_OnBasePos_Start:
+	;
 	
   C_SeqStep_Error: 
     //************* all FB reset
 
 		//************* 
-    mCmdExec_Auto := mDone(); 
+    mSequence := mDone(); 
   //**********************Done 
   	
  	C_SeqStep_Done:
-  	mCmdExec_Auto := mDone();
+  	mSequence := mDone();
 
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_Homing" Id="{ec212c1f-d213-4550-add5-c0351f9927e9}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_Homing : E_CmdState
+    <Method Name="mCmdExec_Homing" Id="{d08c680c-f637-4787-ade1-99e01f84de11}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_Homing : UINT
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -145,25 +129,25 @@ CASE SequenceID OF
     //************* all FB reset
 
 		//************* 
-    mCmdExec_Homing := mDone(); 
+    mSequence := mDone(); 
   //**********************Done 
- 
+  	
  	C_SeqStep_Done:
-  	mCmdExec_Homing := mDone();
+  	mSequence := mDone();
 
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_Service" Id="{b17d27f6-62e0-420a-b1d7-d447cfe9cb9d}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_Service : E_CmdState
+    <Method Name="mCmdExec_Service" Id="{d21b21ff-2e17-466c-8843-dbd9bfd40883}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_Service : UINT
 VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[;]]></ST>
+        <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHold" Id="{9c6da647-9b3a-4008-822a-f46989735258}" FolderPath="02 Methodes\">
+    <Method Name="mHold" Id="{137e727c-298e-40d1-b133-78a53a4da30c}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mHold : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -173,43 +157,17 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHome" Id="{49ad83dc-2a17-49c4-8611-ff23b94da67e}" FolderPath="02 Methodes\">
+    <Method Name="mHome" Id="{241edc62-8f63-4ac6-a585-5a616b65502a}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mHome : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-SUPER^.mHome(I_bExecute);
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mMoveBottom" Id="{8febe5ee-97da-4ab2-9486-5866194a4d14}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mMoveBottom : E_CmdState
-VAR_INPUT
-END_VAR
-
-VAR
-	L_eState 					: E_CmdState;
-END_VAR]]></Declaration>
-      <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mMoveTop" Id="{4ff0852f-f39d-4fd3-895f-9db63096116e}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mMoveTop : E_CmdState
-VAR_INPUT
-END_VAR
-
-VAR
-	L_eState 					: E_CmdState;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mRelease" Id="{371d93b7-c4a5-4cdb-81ce-2ec14cd8d7cb}" FolderPath="02 Methodes\">
+    <Method Name="mRelease" Id="{1c0b6c40-6835-4a42-92c2-94882e6246d3}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mRelease : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -219,7 +177,7 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mSequence" Id="{34a06eeb-9098-4b67-9089-0adc32ada112}" FolderPath="02 Methodes\">
+    <Method Name="mSequence" Id="{6b2421d1-3f7c-46f5-b14b-e3bd2e81423d}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mSequence : E_CmdState
 VAR_INPUT
 	I_bExecute				: BOOL;
@@ -243,18 +201,18 @@ END_IF
 
 CASE Mode OF
 	E_Mode.Homing:
-		mSequence := mCmdExec_Homing();
+		mCmdExec_Homing();
 		
 	E_Mode.Auto:
-		mSequence := mCmdExec_Auto();
+		mCmdExec_Auto();
 		
-	E_Mode.Service:
-		mSequence := mCmdExec_Service();
+	E_Mode.Homing:
+		mCmdExec_Service();
 		
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mService" Id="{6e836c74-9634-4f57-9fa1-a7cf3b465050}" FolderPath="02 Methodes\">
+    <Method Name="mService" Id="{769cc3db-2bac-4bc7-9880-022e0482c827}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mService : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -264,7 +222,7 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mStop" Id="{d84c7b32-8c21-42a5-9b35-6c7a9a260b8f}" FolderPath="02 Methodes\">
+    <Method Name="mStop" Id="{edaab38f-4b09-41f6-8b05-2696db87e6da}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mStop : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;

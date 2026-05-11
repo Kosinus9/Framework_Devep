@@ -125,7 +125,7 @@ VAR_INPUT
 	
 	I_Name                : STRING;         //  Name
 	I_ID                  : UINT;           // ID
-  I_itfOwner					  : ITF_Owner;      // owner 
+//  I_itfOwner					  : ITF_Owner;      // owner 
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[

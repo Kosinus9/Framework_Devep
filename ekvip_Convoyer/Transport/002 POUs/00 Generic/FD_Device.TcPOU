@@ -34,12 +34,12 @@ END_Var
 VAR CONSTANT
  //***********************************************************  CONSTANT  C_SeqStep
  C_SeqStep_Idle                   	: UINT :=   0;                    
- C_SeqStep_Start                  	: UINT :=   1;                    
- C_SeqStep_Done                 		: UINT :=   2;  									              
- C_SeqStep_Error                		: UINT :=   3;  									
- C_SeqStep_Abort                		: UINT :=   4;  									 
- C_SeqStep_Undefined            		: UINT :=   5;  							
-		
+ C_SeqStep_Start                  	: UINT :=   1;                      									              
+ C_SeqStep_Error                		: UINT :=   2;  									
+ C_SeqStep_Abort                		: UINT :=   3;  									 
+ C_SeqStep_Undefined            		: UINT :=   4;  							
+ C_SeqStep_Done                 		: UINT :=   5;
+	
 END_VAR
 
 ]]></Declaration>
