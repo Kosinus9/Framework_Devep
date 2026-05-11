@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FM_Maschine" Id="{83e5710c-69e8-4593-a566-ae4a485f5caa}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT FM_Maschine EXTENDS FD_Device 
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	 // Registered child devices
+	aitfChilds : ARRAY[1..50] OF ITF_Device;
+	
+	// Number of registered child devices
+	uiChildsCount : UINT;
+	
+	// Global child status
+	bAllChildsReady : BOOL;
+	bAllChildsHomed : BOOL;
+	bAllChildsDone  : BOOL;
+	bAnyChildBusy   : BOOL;
+	bAnyChildError  : BOOL;
+	
+	// Internal command state
+	eLastChildCmdState : E_CmdState;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[SUPER^();
+]]></ST>
+    </Implementation>
+    <Folder Name="01 Properties" Id="{6a87ee5d-b4db-4b64-8036-f307a328febf}" />
+    <Folder Name="02 Methodes" Id="{5561014d-7db8-4950-aa75-2604d264aa2f}" />
+    <Method Name="FB_Init" Id="{4d06739b-5dd6-4759-85b3-148920b74dbe}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
+//Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
+//die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
+//zusätzlichen Code bereitstellen. Sie können den Rückgabewert auswerten.
+METHOD FB_Init: BOOL
+VAR_INPUT    
+	bInitRetains					: BOOL; 					// TRUE: Die Retain-Variablen werden initialisiert (Reset warm / Reset kalt)    
+	bInCopyCode						: BOOL;  					// TRUE: Die Instanz wird danach in den Kopiercode kopiert (Online-Change)
+	
+	I_Name                : STRING;         //  Name
+	I_ID                  : UINT;           // ID
+  I_itfOwner					  : ITF_Owner;      // owner 
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCheckAllChildsReady" Id="{39b8dd00-c2ac-4bef-91c5-3bcadfa4b938}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mCheckAllChildsReady : Bool
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

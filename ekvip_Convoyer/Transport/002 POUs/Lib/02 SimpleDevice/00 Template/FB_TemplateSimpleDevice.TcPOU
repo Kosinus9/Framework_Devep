@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_TemplateSimpleDevice" Id="{42f4f954-a23c-4534-a4a1-5c581f1295d3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TemplateSimpleDevice EXTENDS FB_Base
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="01 Properties" Id="{fdf4616f-ac96-41a0-9463-60f0af68be40}" />
+    <Folder Name="02 Methodes" Id="{c79d2a39-5faa-4f3e-bd34-705513f2dce8}" />
+    <Property Name="Busy" Id="{4f65abb5-a08f-495e-82f9-c4467281d3c3}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[{error 'Eigenschaftenimplementierung hinzufügen oder Eigenschaft löschen, um die Basisimplementierung zu verwenden'}
+PROPERTY Busy : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{779edc41-89fe-41ab-87e1-364d3c640f59}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{41ce7f3c-0b17-40c2-bfec-6b8b0741c9cd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Done" Id="{1398a1f7-6640-4603-bfe0-feae9ceea336}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[{error 'Eigenschaftenimplementierung hinzufügen oder Eigenschaft löschen, um die Basisimplementierung zu verwenden'}
+PROPERTY Done : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{127638d6-b545-448d-926b-6fd230fbe0e1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{7bea2df7-3fd6-4e98-841f-2da4cd1661eb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Enable" Id="{5e2253e5-cc13-4341-a308-6d204c6e0780}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[{error 'Eigenschaftenimplementierung hinzufügen oder Eigenschaft löschen, um die Basisimplementierung zu verwenden'}
+PROPERTY Enable : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{3d753837-c319-4946-be24-b443944cf945}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{0ed71bd3-eb17-416b-8cdd-ad598817a5f9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Error" Id="{13a6f721-46da-4fd8-a517-95a0d6c0de78}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[{error 'Eigenschaftenimplementierung hinzufügen oder Eigenschaft löschen, um die Basisimplementierung zu verwenden'}
+PROPERTY Error : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{bd7ee1c4-87c3-4e19-8383-8901e59c9295}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{3f3bf9f3-a6ee-49ac-bdbd-41d9b3da0ba4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="FB_Init" Id="{d6e295d7-025a-456c-9ea7-de11ad1dfba8}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
+//Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
+//die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
+//zusätzlichen Code bereitstellen. Sie können den Rückgabewert auswerten.
+METHOD FB_Init: BOOL
+VAR_INPUT    
+	bInitRetains					: BOOL; 					// TRUE: Die Retain-Variablen werden initialisiert (Reset warm / Reset kalt)    
+	bInCopyCode						: BOOL;  					// TRUE: Die Instanz wird danach in den Kopiercode kopiert (Online-Change)
+	
+	I_Name                : STRING;         //  Name
+	I_ID                  : UINT;            // ID
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ID" Id="{0b64e54e-a842-4db8-bbf8-14e0bbae0e1b}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[{error 'Eigenschaftenimplementierung hinzufügen oder Eigenschaft löschen, um die Basisimplementierung zu verwenden'}
+PROPERTY ID : UINT
+]]></Declaration>
+      <Get Name="Get" Id="{969dd246-d05b-434c-96fa-0e3199b1a38a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{1fda8767-19b8-42cf-b3a7-de4199dfd6bf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="mEnable" Id="{d7d9e926-4c9b-40b4-b433-dda347db8c77}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[{error 'Methodenimplementierung hinzufügen oder Methode löschen, um die Basisimplementierung zu verwenden'}
+METHOD mEnable : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mInit" Id="{90cabc99-4cb2-4bf2-a92e-ac410c955be9}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[{error 'Methodenimplementierung hinzufügen oder Methode löschen, um die Basisimplementierung zu verwenden'}
+METHOD mInit : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Mode" Id="{5131eb0e-191d-4997-8f40-c5bfde3213a1}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[{error 'Eigenschaftenimplementierung hinzufügen oder Eigenschaft löschen, um die Basisimplementierung zu verwenden'}
+PROPERTY Mode : E_Mode
+]]></Declaration>
+      <Get Name="Get" Id="{46b50ed2-00e6-4a68-9e2f-d35b684d2693}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{dc2bb66e-b265-41f2-910b-8b33f222caa0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="mReset" Id="{faf6c85a-64c3-4623-98d7-7615bd54c4ac}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[{error 'Methodenimplementierung hinzufügen oder Methode löschen, um die Basisimplementierung zu verwenden'}
+METHOD mReset : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Name" Id="{8f5b9d5e-53de-4f81-8c5c-5d3f1edf4229}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[{error 'Eigenschaftenimplementierung hinzufügen oder Eigenschaft löschen, um die Basisimplementierung zu verwenden'}
+PROPERTY Name : STRING
+]]></Declaration>
+      <Get Name="Get" Id="{884919cd-7d97-44ef-adf2-8c7a24de7fa7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{af6e8fed-a8fe-4c43-9996-605acbf6ffc1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

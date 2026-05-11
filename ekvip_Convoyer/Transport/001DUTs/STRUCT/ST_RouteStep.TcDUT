@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_RouteStep" Id="{2587c44b-e80d-473e-ad68-390c4284f82e}">
+    <Declaration><![CDATA[(*
+A step represents:
+	An action
+	On a given transport
+	Optionally with an LTU position
+*)
+TYPE ST_RouteStep :
+	STRUCT
+		eStepType      : E_RouteStepType;   // an action
+    eConvoyer      : E_Convoyer;				// on a concoyer
+    eLTUPosition   : E_LTUPosition;			// an LTU position
+	END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

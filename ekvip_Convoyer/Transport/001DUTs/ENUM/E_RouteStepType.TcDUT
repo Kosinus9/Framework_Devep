@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_RouteStepType" Id="{d8a1715a-9e67-4123-a3bb-29e46cc02333}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+(*
+	This ENUM describes the system's elementary actions.
+*)
+TYPE E_RouteStepType :
+(
+ 	Route_NONE := 0,
+
+  Route_SetLTUPosition,
+  Route_StartConveyor,
+  Route_StopConveyor,
+  
+  Route_StartLTUMotor,
+  Route_StopLTUMotor,
+  
+  Route_WaitLTUOccupied,
+  Route_WaitLTUFree,
+  Route_WaitLTUPosition,
+  
+  Route_OpenStopper,
+  Route_CloseStopper
+)UINT;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

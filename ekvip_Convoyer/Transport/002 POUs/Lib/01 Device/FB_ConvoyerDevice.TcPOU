@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_ConvoyerDevice" Id="{8a7a2d6c-6d0d-4632-92a0-df08704cfa50}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ConvoyerDevice EXTENDS FD_Device IMPLEMENTS ITF_Convoyer
+VAR_INPUT
+END_VAR
+
+VAR_OUTPUT
+END_VAR
+
+VAR
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+//******* Important and necessary
+SUPER^();  
+IF NOT Enable THEN RETURN; END_IF]]></ST>
+    </Implementation>
+    <Folder Name="01 Properties" Id="{3ac0bf22-1cd2-4c8f-a885-e8d7ba82bc17}" />
+    <Folder Name="02 Methodes" Id="{de814afd-34fd-4733-995a-ef981b51b68b}" />
+    <Method Name="FB_Init" Id="{fc9f68f8-974a-4ed9-849e-734f7caa2a1f}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
+//Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
+//die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
+//zusätzlichen Code bereitstellen. Sie können den Rückgabewert auswerten.
+METHOD FB_Init: BOOL
+VAR_INPUT    
+	bInitRetains					: BOOL; 					// TRUE: Die Retain-Variablen werden initialisiert (Reset warm / Reset kalt)    
+	bInCopyCode						: BOOL;  					// TRUE: Die Instanz wird danach in den Kopiercode kopiert (Online-Change)
+	
+	I_Name                : STRING;         //  Name
+	I_ID                  : UINT;           // ID
+  I_itfOwner					  : ITF_Owner;      // owner 
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FB_ConvoyerDevice  FB_RouteDevice]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mAutomatic" Id="{7915969b-fc1c-4ce3-98a7-8448f5be83bb}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mAutomatic : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mHold" Id="{a4999511-c359-4e0c-a614-70a99d5af5ff}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mHold : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mHome" Id="{e0e43d6d-cf54-498a-bb95-7ab658a9af2a}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mHome : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mRelease" Id="{7d27eed1-46f2-404a-9e2b-707eb5b99c93}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mRelease : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mSequence" Id="{6945d5dc-87f7-407f-989d-4c117a5e8e6f}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mSequence : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[mSequence := SUPER^.mSequence(I_bExecute);	
+
+//
+
+CASE SequenceID OF
+
+  //******************************************************* Idle 
+  C_SeqStep_Idle: 
+  	SequenceID       :=  C_SeqStep_Start;
+  
+  //****************************************************** Start
+  C_SeqStep_Start:
+   
+  	SequenceID       :=  C_SeqStep_Done;
+	
+  C_SeqStep_Error: 
+    //************* all FB reset
+
+		//************* 
+    mSequence := mDone(); 
+  //**********************Done 
+  	
+ 	C_SeqStep_Done:
+  	mSequence := mDone();
+
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mService" Id="{8db6c12d-5010-467d-ba5e-06cabe7a23f4}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mService : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mStop" Id="{3206478f-4cff-48ba-bdd2-b2e2d887b41a}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mStop : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

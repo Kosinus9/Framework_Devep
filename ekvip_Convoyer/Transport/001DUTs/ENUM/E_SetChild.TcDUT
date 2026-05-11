@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_SetChild" Id="{607ba1ea-4116-456c-9dac-832ad90beadb}">
+    <Declaration><![CDATA[
+{attribute 'qualified_only'}
+TYPE E_SetChild :
+(
+	None					:= 0,
+	Enable				:= 1,
+	Reset  				:= 3,
+	Abort 				:= 4,
+	ClearError  	:= 5,
+	EStop			  	:= 6,
+	Auto  			  := 7,
+	Servic				:= 8,
+	Home 					:= 9,
+	Release		  	:= 10
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="MAIN" Id="{215f9d70-5d29-4782-ab78-067c28b6ceee}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbCustomer										: FB_Customer( GVL_Customer.C_Name_Machine,
+																							 GVL_Customer.C_ID_Machine,
+																						   NULL,
+																							);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+fbCustomer();]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

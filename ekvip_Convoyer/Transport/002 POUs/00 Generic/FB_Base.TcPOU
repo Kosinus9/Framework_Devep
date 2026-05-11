@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_Base" Id="{b834a18a-92ee-42a2-95e8-764f580bbbef}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+
+*)
+
+FUNCTION_BLOCK ABSTRACT FB_Base IMPLEMENTS ITF_Base
+
+VAR
+	sName          										: STRING;
+	uiId           										: UINT;
+	               										
+	bEnable        										: BOOL := TRUE;
+	bInit          										: BOOL;
+	bBusy          										: BOOL;
+	bDone          										: BOOL;
+	bError         										: BOOL;
+	sErrorMessage  										: STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF NOT Init
+  THEN Init := mInit();
+END_IF
+
+mVisu();
+
+Enable := Enable;
+IF NOT Enable 
+	THEN 
+		bBusy := FALSE;
+		bDone := FALSE;
+		RETURN; 
+END_IF
+
+mEnable();
+]]></ST>
+    </Implementation>
+    <Folder Name="01 Properties" Id="{5790059e-d17a-4094-b83c-c51da0ad590a}" />
+    <Folder Name="02 Methods" Id="{1ddf855c-855f-4cab-bb1d-0e8290d5e41b}" />
+    <Property Name="Busy" Id="{4e93ede4-2583-440e-82cd-3ebd5d3c6673}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Busy : bool]]></Declaration>
+      <Get Name="Get" Id="{74b8fd5a-a530-4365-a3d0-d5dfd4caa0ad}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ad99bb6a-4889-4b2c-8d22-aae871c1edf0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Done" Id="{c22f2f95-c83f-44ab-a967-0d2b231922e3}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Done : bool]]></Declaration>
+      <Get Name="Get" Id="{8ff8889d-7e46-4a97-a005-2964dcb813f0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{4d09c58a-3a1e-4a6d-ad9e-9fb9f1c219db}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Enable" Id="{7593451e-2a4e-48d5-8158-cde01b66116d}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Enable : BOOL]]></Declaration>
+      <Get Name="Get" Id="{ce3b6e85-e8f0-463a-a96b-c0fa51d59374}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Enable := bEnable;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ed6a85ae-52ae-467d-a5da-492e73604bd4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bEnable := Enable;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Error" Id="{4924a280-0be1-4edb-9696-4146f3ffac1c}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Error : bool]]></Declaration>
+      <Get Name="Get" Id="{6a5cde9d-1866-45f7-8066-0fb80f0c8369}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{23fa0463-603c-474d-bef4-9b3816af71aa}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="FB_Init" Id="{149da957-1655-4e71-bdf4-dda83c59d4da}" FolderPath="02 Methods\">
+      <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
+//Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
+//die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
+//zusätzlichen Code bereitstellen. Sie können den Rückgabewert auswerten.
+METHOD FB_Init: BOOL
+VAR_INPUT    
+	bInitRetains					: BOOL; 					// TRUE: Die Retain-Variablen werden initialisiert (Reset warm / Reset kalt)    
+	bInCopyCode						: BOOL;  					// TRUE: Die Instanz wird danach in den Kopiercode kopiert (Online-Change)
+	
+	I_Name                : STRING;         //  Name
+	I_ID                  : UINT;           // ID
+  I_itfOwner					  : ITF_Owner;      // owner 
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+Name          := I_Name;
+ID            := I_ID;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ID" Id="{e5dc53a9-c3da-4ce2-85f4-2d2964df44e1}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY ID : UINT]]></Declaration>
+      <Get Name="Get" Id="{ae6a7782-c6a2-40a9-a812-57110336a9a9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ID := uiID;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{cba7ebe4-90d6-494b-acfb-2deb84bb1d02}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[uiID := ID;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Init" Id="{1fe9019d-f4c9-4a94-a3f1-811245f6dd83}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Init : BOOL]]></Declaration>
+      <Get Name="Get" Id="{0a4395c4-7ded-4389-83b0-9e8401455921}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Init := bInit;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{e39de7f1-5a87-46b8-8af6-28dc0f0740f0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bInit := Init;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="mEnable" Id="{5ac26998-73d7-403c-92b8-3bfaf4bc5e70}" FolderPath="02 Methods\">
+      <Declaration><![CDATA[METHOD mEnable : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF NOT bEnable THEN
+    mEnable := FALSE;
+    RETURN;
+END_IF
+
+IF bError THEN
+    mEnable := FALSE;
+    RETURN;
+END_IF
+
+mEnable := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mInit" Id="{85ac23e9-5592-4108-b8d8-74958e7f3617}" FolderPath="02 Methods\">
+      <Declaration><![CDATA[METHOD mInit : BOOL
+VAR_INPUT
+
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+bBusy 					:= FALSE;
+bDone 					:= FALSE;
+bError 					:= FALSE;
+sErrorMessage 	:= '';
+
+mInit 					:= TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Mode" Id="{55caf8fc-8e08-4e2f-865c-c74e23c4824c}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Mode : E_Mode]]></Declaration>
+      <Get Name="Get" Id="{af137b35-0cc6-44fb-999e-d6bbcb4e0c1c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{d3bdb1fa-4aed-41d1-9846-d22c3aba7ee7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="mReset" Id="{aeb080ea-8eb0-4963-90f8-ddb74f05dd39}" FolderPath="02 Methods\">
+      <Declaration><![CDATA[METHOD mReset : BOOL
+VAR_INPUT
+
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+bError 					:= FALSE;
+bBusy 					:= FALSE;
+bDone 					:= FALSE;
+sErrorMessage 	:= '';
+
+mReset 					:= TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mVisu" Id="{1111107a-3623-4d0d-a6e5-8e620036109e}" FolderPath="02 Methods\">
+      <Declaration><![CDATA[METHOD mVisu
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Name" Id="{f9504863-6599-48cb-8f38-c5a44834f50f}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Name : string]]></Declaration>
+      <Get Name="Get" Id="{af3df418-e680-40d5-8e46-9655428744e8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Name := sName;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{782ec1bd-9532-4aec-a974-ccfca001f4fa}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[sName := Name;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

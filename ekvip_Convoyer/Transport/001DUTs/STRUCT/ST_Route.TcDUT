@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_Route" Id="{faebf7a5-e932-4ff9-b748-1464542ad4d2}">
+    <Declaration><![CDATA[(*
+This structure contains:
+	Source
+	Destination
+	Number of steps
+	Complete routing sequence
+*)
+TYPE ST_Route :
+	STRUCT
+  	eSource        : E_Convoyer;
+    eDestination   : E_Convoyer;
+    iuStepCount    : UINT;
+    astSteps       : ARRAY[1..20] OF ST_RouteStep;
+	END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

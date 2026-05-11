@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FileVersion>1.0.0.0</FileVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{81afeaaa-a050-46fa-81ec-27e633cbc1c0}</ProjectGuid>
+    <SubObjectsSortedByName>True</SubObjectsSortedByName>
+    <DownloadApplicationInfo>true</DownloadApplicationInfo>
+    <WriteProductVersion>true</WriteProductVersion>
+    <GenerateTpy>false</GenerateTpy>
+    <Name>Transport</Name>
+    <ProgramVersion>3.1.4026.21</ProgramVersion>
+    <Application>{d264e218-ae4d-443e-ae64-d3f9d0ad81ac}</Application>
+    <TypeSystem>{a5832834-8c74-4e21-807c-ed10136a83e9}</TypeSystem>
+    <Implicit_Task_Info>{d3f42924-43a6-45fa-9b85-b5652922fe36}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{80afeac3-a16d-4eac-8366-099d2b6838be}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{b7a3d763-349e-4542-99ce-ae6d293ab1a1}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{0cce0124-b54c-4f21-8aa9-e9befacf3950}</LibraryReferences>
+    <CompilerDefines>VISU_USEPROPERTYINFO</CompilerDefines>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="001DUTs\ENUM\E_CmdState.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\ENUM\E_Mode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\ENUM\E_Convoyer.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\ENUM\E_LTUPosition.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\ENUM\E_RouteStepType.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\ENUM\E_SetChild.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\GVL_Base\GVL_Core.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="001DUTs\ITF\Device\ITF_Convoyer.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\ITF\Generic\ITF_Base.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\ITF\Generic\ITF_Device.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\ITF\ITF_Owner.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\STRUCT\ST_Route.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\STRUCT\ST_RouteStep.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\00 Generic\FD_Device.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\00 Generic\FB_Base.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\00 Generic\FM_Maschine.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\01 Device\00 Template\FB_Template.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\01 Device\FB_LUTDevice.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\01 Device\FB_ConvoyerDevice.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\01 Device\FB_RouteDevice.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\02 SimpleDevice\00 Template\FB_TemplateSimpleDevice.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_ReadHead.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_PneuCyl_1Pos.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_MotorSimple.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_PneuCyl_3Pos.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\Digit I_O\Input\FB_Input.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\Digit I_O\Output\FB_Output.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="1000 Maschine xxx\MAIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="1000 Maschine xxx\_Customer\FB_Customer.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GlobalTextList.TcGTLO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\GVL_Customer.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Visualisierungsmanager.TcVMO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VISUs\Visualization.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualisierungsmanager.TcVMO</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="001DUTs" />
+    <Folder Include="001DUTs\ENUM" />
+    <Folder Include="001DUTs\ITF" />
+    <Folder Include="001DUTs\ITF\Generic" />
+    <Folder Include="001DUTs\ITF\Device" />
+    <Folder Include="001DUTs\GVL_Base" />
+    <Folder Include="001DUTs\STRUCT" />
+    <Folder Include="002 POUs\00 Generic" />
+    <Folder Include="002 POUs\002 Component" />
+    <Folder Include="002 POUs\003 Devices" />
+    <Folder Include="002 POUs\004 Unit" />
+    <Folder Include="002 POUs\Lib" />
+    <Folder Include="002 POUs\Lib\01 Device" />
+    <Folder Include="002 POUs\Lib\01 Device\00 Template" />
+    <Folder Include="002 POUs\Lib\02 SimpleDevice" />
+    <Folder Include="002 POUs\Lib\02 SimpleDevice\00 Template" />
+    <Folder Include="002 POUs\Lib\Digit I_O\Input" />
+    <Folder Include="002 POUs\Lib\Digit I_O" />
+    <Folder Include="002 POUs\Lib\Digit I_O\Output" />
+    <Folder Include="1000 Maschine xxx\_Customer" />
+    <Folder Include="GVLs" />
+    <Folder Include="002 POUs" />
+    <Folder Include="1000 Maschine xxx" />
+    <Folder Include="VISUs" />
+    <Folder Include="POUs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PlaceholderReference Include="System_VisuElemMeter">
+      <DefaultResolution>VisuElemMeter, 4.7.0.0 (System)</DefaultResolution>
+      <Namespace>VisuElemMeter</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuElems">
+      <DefaultResolution>VisuElems, 4.8.0.0 (System)</DefaultResolution>
+      <Namespace>VisuElems</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuElemsSpecialControls">
+      <DefaultResolution>VisuElemsSpecialControls, 4.7.0.0 (System)</DefaultResolution>
+      <Namespace>VisuElemsSpecialControls</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuElemsWinControls">
+      <DefaultResolution>VisuElemsWinControls, 4.8.0.0 (System)</DefaultResolution>
+      <Namespace>VisuElemsWinControls</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuElemTextEditor">
+      <DefaultResolution>VisuElemTextEditor, 4.8.0.0 (System)</DefaultResolution>
+      <Namespace>VisuElemTextEditor</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuInputs">
+      <DefaultResolution>VisuInputs, 4.7.0.0 (System)</DefaultResolution>
+      <Namespace>VisuInputs</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuNativeControl">
+      <DefaultResolution>VisuNativeControl, 4.8.0.0 (System)</DefaultResolution>
+      <Namespace>VisuNativeControl</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_Standard">
+      <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_Standard</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_System">
+      <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_System</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_Module">
+      <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Module</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+    </PlaceholderReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Transport.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
+  <ProjectExtensions>
+    <PlcProjectOptions>
+      <XmlArchive>
+  <Data>
+    <o xml:space="preserve" t="OptionKey">
+      <v n="Name">"&lt;ProjectRoot&gt;"</v>
+      <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+        <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
+        <o>
+          <v n="Name">"{192FAD59-8248-4824-A8DE-9177C94C195A}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{246001F4-279D-43AC-B241-948EB31120E1}</v>
+        <o>
+          <v n="Name">"{246001F4-279D-43AC-B241-948EB31120E1}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="Boolean">
+            <v>GeneralPropertySupport</v>
+            <v>True</v>
+            <v>UnicodeStrings</v>
+            <v>False</v>
+          </d>
+        </o>
+        <v>{29BD8D0C-3586-4548-BB48-497B9A01693F}</v>
+        <o>
+          <v n="Name">"{29BD8D0C-3586-4548-BB48-497B9A01693F}"</v>
+          <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+            <v>NamingConventions</v>
+            <o>
+              <v n="Name">"NamingConventions"</v>
+              <d n="SubKeys" t="Hashtable" />
+              <d n="Values" t="Hashtable" />
+            </o>
+            <v>Rules</v>
+            <o>
+              <v n="Name">"Rules"</v>
+              <d n="SubKeys" t="Hashtable" />
+              <d n="Values" t="Hashtable" />
+            </o>
+          </d>
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{40450F57-0AA3-4216-96F3-5444ECB29763}</v>
+        <o>
+          <v n="Name">"{40450F57-0AA3-4216-96F3-5444ECB29763}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{8A0FB252-96EB-4DCC-A5B4-B4804D05E2D6}</v>
+        <o>
+          <v n="Name">"{8A0FB252-96EB-4DCC-A5B4-B4804D05E2D6}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="Boolean">
+            <v>WriteLineIDs</v>
+            <v>False</v>
+          </d>
+        </o>
+        <v>{8F99A816-E488-41E4-9FA3-846536012284}</v>
+        <o>
+          <v n="Name">"{8F99A816-E488-41E4-9FA3-846536012284}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="String">
+            <v>DisabledWarningIds</v>
+            <v>410,5410</v>
+          </d>
+        </o>
+        <v>{eeeeeeee-3909-4298-8022-501ac3238667}</v>
+        <o>
+          <v n="Name">"{eeeeeeee-3909-4298-8022-501ac3238667}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{F66C7017-BDD8-4114-926C-81D6D687E35F}</v>
+        <o>
+          <v n="Name">"{F66C7017-BDD8-4114-926C-81D6D687E35F}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="Boolean">
+            <v>CalcActiveTransOnly</v>
+            <v>True</v>
+          </d>
+        </o>
+      </d>
+      <d n="Values" t="Hashtable" />
+    </o>
+  </Data>
+  <TypeList>
+    <Type n="Boolean">System.Boolean</Type>
+    <Type n="Hashtable">System.Collections.Hashtable</Type>
+    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+    <Type n="String">System.String</Type>
+  </TypeList>
+</XmlArchive>
+    </PlcProjectOptions>
+  </ProjectExtensions>
+</Project>

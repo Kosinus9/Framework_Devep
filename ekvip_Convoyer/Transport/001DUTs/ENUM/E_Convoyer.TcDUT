@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_Convoyer" Id="{222a8b03-27d3-4c31-a4f1-6674bb93446e}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+(*
+
+*)
+TYPE E_Convoyer :
+(
+	Convoyer_NONE := 0,
+  Convoyer_3		:=3,
+  Convoyer_6		:=6,
+  Convoyer_9		:=9,
+  Convoyer_12		:=12
+)UINT;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <Itf Name="ITF_Base" Id="{b8e790ab-88dc-4e8a-9453-8571cfddc0b1}">
+    <Declaration><![CDATA[INTERFACE ITF_Base EXTENDS __System.IQueryInterface 
+]]></Declaration>
+    <Folder Name="01 Properties" Id="{8cfcbf18-ccab-4e11-ae93-302bdc03a096}" />
+    <Folder Name="02 Methods" Id="{58c78d7a-3189-4f61-aee0-b0b338a6654b}" />
+    <Property Name="Busy" Id="{62e63f49-6de4-44af-a604-ded26ddf34bf}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Busy : BOOL]]></Declaration>
+      <Get Name="Get" Id="{ecb8a7db-351a-42ef-bd50-2252ae379312}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{93c5edf2-d26e-4ede-9bbc-78ab60a49e35}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Done" Id="{1e4ab53a-0e9a-4d0a-880c-d4463066d983}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Done : BOOL]]></Declaration>
+      <Get Name="Get" Id="{af4c7049-93e0-48e1-9787-cbce5805ec32}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{a14b88ea-5801-4d28-ac10-a622d186d748}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Enable" Id="{bb2da22e-3b0c-4af7-9e42-2da54270641b}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Enable : BOOL]]></Declaration>
+      <Get Name="Get" Id="{40783ae2-04a7-4f80-886f-f86fad1b429e}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{ef395cd3-7810-4e31-9422-3f8c7c29ed01}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Error" Id="{2d516bce-bea1-46c9-96ef-f78315234eeb}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Error : BOOL]]></Declaration>
+      <Get Name="Get" Id="{19f38900-7939-4895-81ba-19286b8c39d5}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{552c0418-cc76-4620-90b9-6fe891ecd85f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="ID" Id="{ad0a4043-e42e-4d20-9ce4-fe30fc8f1fbe}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY ID : UINT]]></Declaration>
+      <Get Name="Get" Id="{1b90543e-090d-4a5d-9a8f-674d12843708}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{e8faa49c-6c91-44de-8b58-155f8d8ec86d}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="mEnable" Id="{6edf3d3e-219e-4c99-923f-3d20af9a8e15}" FolderPath="02 Methods\">
+      <Declaration><![CDATA[METHOD mEnable : bool
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mInit" Id="{bbdaf058-85bc-4ba2-92aa-d7abde21db21}" FolderPath="02 Methods\">
+      <Declaration><![CDATA[METHOD mInit : bool
+VAR_INPUT
+
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="Mode" Id="{5accb5f0-81f5-45d7-b958-eb90f5afbece}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Mode : E_Mode]]></Declaration>
+      <Get Name="Get" Id="{0c222f17-0837-4381-bb65-14d0a322ae9f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{43f356f0-6b3b-4dda-a533-baf5831c1ce8}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="mReset" Id="{67d5ec4b-e405-4638-aa78-3fc040c49139}" FolderPath="02 Methods\">
+      <Declaration><![CDATA[METHOD mReset : BOOL
+VAR_INPUT
+	
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="Name" Id="{aa1dd5da-a811-48f9-a864-c931e827774b}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Name : STRING]]></Declaration>
+      <Get Name="Get" Id="{da106882-2ab2-46b0-b56c-fdb4b6dc941a}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{4b510163-e23b-473c-bbff-d41ec26d3f09}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

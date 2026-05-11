@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_CmdState" Id="{701ca85e-680a-4ce6-a02b-2d613cae90ad}">
+    <Declaration><![CDATA[
+{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+
+(*
+
+*)
+TYPE E_CmdState :
+(
+	//====================  
+	//											
+	Idle							:=  0,
+	Succeeded 				:=  1,
+	Error	    				:=  2,
+	Timeout						:=  3,
+	Aborted	    			:=  4,
+	Deleted						:=  5,
+	Reseted						:=  6,
+	NotReady					:=  7,
+	Failed						:=  8,
+	Hold							:=  9,
+	
+	//==================== 
+	Busy							:= 15
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

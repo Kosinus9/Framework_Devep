@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <GVL Name="GVL_Core" Id="{be6bf78c-472c-4f1e-b6f0-ad5ae68dc103}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL CONSTANT
+	
+C_MaxChild													: UDINT		:=  60;				// maximum number of childs for each device
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

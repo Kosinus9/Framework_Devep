@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <GVL Name="GVL_Customer" Id="{2b90c080-958e-4160-85d0-b7417670b91d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL CONSTANT
+	//======================================================= GENARAL 
+	
+	
+	
+	
+	//======================================================= Name Device 
+	C_Name_fbLutDevice3                : STRING := 'fbLutDevice3';
+	C_Name_fbLutDevice6                : STRING := 'fbLutDevice6';
+	C_Name_fbLutDevice9                : STRING := 'fbLutDevice9';
+	C_Name_fbLutDevice12               : STRING := 'fbLutDevice12';
+	
+	
+	
+	
+	//======================================================= ID Device 
+	C_ID_fbLutDevice3                  : UINT :=  10;
+	C_ID_fbLutDevice6                  : UINT :=  11;
+	C_ID_fbLutDevice9                  : UINT :=  12;
+	C_ID_fbLutDevice12                 : UINT :=  13;
+	
+	
+	
+	
+	
+	//======================================================= Customer
+
+	C_Name_Machine                    	: STRING := 'ekvip_Convoyer'; 
+
+
+	C_ID_Machine                        : UINT :=  200;
+
+
+ 
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_LTUPosition" Id="{f9a1a908-a66a-4758-b15a-538b6fadf77e}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+
+(*
+	Used to define:
+	Current LTU position
+	Target position (position cible)
+	Routing steps
+*)
+
+TYPE E_LTUPosition :
+(
+ 	LTU_Unknown := 0,
+  LTU_Bottom,
+  LTU_Middle,
+  LTU_Top
+)UINT;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

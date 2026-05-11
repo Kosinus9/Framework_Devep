@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <Itf Name="ITF_Owner" Id="{57798e43-9698-460d-af0f-62655e6d14f1}">
+    <Declaration><![CDATA[INTERFACE ITF_Owner EXTENDS __System.IQueryInterface 
+]]></Declaration>
+    <Method Name="mRegisterChild" Id="{969728c6-b6f4-40f4-952c-325d4948b3a9}">
+      <Declaration><![CDATA[METHOD mRegisterChild : BOOL
+VAR_INPUT
+	I_itfChild  : ITF_Device;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_Customer" Id="{310a2a13-9b1d-47d0-b233-7d764015e13b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Customer EXTENDS FM_Maschine
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	
+	fbLUTDevice3			: FB_LUTDevice(GVL_Customer.C_Name_fbLutDevice3,  // Name
+																	 GVL_Customer.C_ID_fbLutDevice3,		// ID
+																	 THIS^,															// ITF_Owner
+																	);
+																	
+	fbLUTDevice6			: FB_LUTDevice(GVL_Customer.C_Name_fbLutDevice6,  // Name
+																	 GVL_Customer.C_ID_fbLutDevice6,		// ID
+																	 THIS^,															// ITF_Owner
+																	);
+
+	fbLUTDevice9			: FB_LUTDevice(GVL_Customer.C_Name_fbLutDevice9,  // Name
+																	 GVL_Customer.C_ID_fbLutDevice9,		// ID
+																	 THIS^,															// ITF_Owner
+																	);
+																	
+	fbLUTDevice12			: FB_LUTDevice(GVL_Customer.C_Name_fbLutDevice12,  // Name
+																	 GVL_Customer.C_ID_fbLutDevice12,		// ID
+																	 THIS^,															// ITF_Owner
+																	);
+
+															
+																	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+SUPER^();
+
+
+fbLUTDevice3();
+fbLUTDevice6();
+fbLUTDevice9();
+fbLUTDevice12();
+
+]]></ST>
+    </Implementation>
+    <Method Name="FB_Init" Id="{2aea181e-dfc9-41f1-8776-467219945a8a}">
+      <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
+//Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
+//die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
+//zusätzlichen Code bereitstellen. Sie können den Rückgabewert auswerten.
+METHOD FB_Init: BOOL
+VAR_INPUT    
+	bInitRetains					: BOOL; 					// TRUE: Die Retain-Variablen werden initialisiert (Reset warm / Reset kalt)    
+	bInCopyCode						: BOOL;  					// TRUE: Die Instanz wird danach in den Kopiercode kopiert (Online-Change)
+	
+	I_Name                : STRING;         //  Name
+	I_ID                  : UINT;           // ID
+  I_itfOwner					  : ITF_Owner;      // owner 
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

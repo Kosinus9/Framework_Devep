@@ -1,0 +1,480 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FD_Device" Id="{571b9eee-9c23-4a84-ac31-37e95ea393f3}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+Purpose:     Base for Devices 
+             FD_Device includes standard properties and standard methodes
+*)
+
+FUNCTION_BLOCK ABSTRACT FD_Device EXTENDS FB_Base IMPLEMENTS ITF_Device, ITF_Owner
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	itfDeviceRegister									: ITF_Owner;
+	aitfChilds												: ARRAY [1..GVL_Core.C_MaxChild] OF ITF_Device;
+	aChildsCount											: UINT := 0;
+	
+	uiSequenceID          						: UINT;
+	uiNextStep      									: UINT;
+	                									
+	bHomed          									: BOOL;
+	bReady          									: BOOL;
+	                									
+	bSequenceBusy   									: BOOL;
+	bSequenceDone   									: BOOL;
+	                									
+	bHold           									: BOOL;
+	bAbort          									: BOOL;
+
+END_Var
+
+VAR CONSTANT
+ //***********************************************************  CONSTANT  C_SeqStep
+ C_SeqStep_Idle                   	: UINT :=   0;                    
+ C_SeqStep_Start                  	: UINT :=   1;                    
+ C_SeqStep_Done                 		: UINT :=   2;  									              
+ C_SeqStep_Error                		: UINT :=   3;  									
+ C_SeqStep_Abort                		: UINT :=   4;  									 
+ C_SeqStep_Undefined            		: UINT :=   5;  							
+		
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+SUPER^();
+IF NOT Enable THEN RETURN; END_IF;
+
+IF bError
+	THEN
+  	mStop(TRUE);
+    RETURN;
+END_IF;
+
+IF bSequenceBusy THEN mSequence(TRUE); END_IF;
+]]></ST>
+    </Implementation>
+    <Folder Name="01 Properties" Id="{2ade4f6f-4d16-4ebd-be39-d23d9d34597f}" />
+    <Folder Name="02 Methodes" Id="{34903398-ece8-40e6-8ccd-c04371e5f652}">
+      <Folder Name="_SetChild" Id="{1eae8e4b-4066-46b8-876f-e8b83ce863d5}" />
+    </Folder>
+    <Method Name="FB_Init" Id="{7fd52798-a9d4-47c6-81da-6550d3521908}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
+//Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
+//die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
+//zusätzlichen Code bereitstellen. Sie können den Rückgabewert auswerten.
+METHOD FB_Init: BOOL
+VAR_INPUT    
+	bInitRetains					: BOOL; 					// TRUE: Die Retain-Variablen werden initialisiert (Reset warm / Reset kalt)    
+	bInCopyCode						: BOOL;  					// TRUE: Die Instanz wird danach in den Kopiercode kopiert (Online-Change)
+	
+	I_Name                : STRING;         //  Name
+	I_ID                  : UINT;           // ID
+  I_itfOwner					  : ITF_Owner;      // owner 
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF I_itfOwner <>0
+	THEN
+		itfDeviceRegister := I_itfOwner;
+		itfDeviceRegister.mRegisterChild(THIS^);
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Homed" Id="{f8978509-4b98-4bbf-bb6e-7234335367a3}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Homed : BOOL]]></Declaration>
+      <Get Name="Get" Id="{e0ded4dc-1f5b-4e59-9a3a-0f03e39f212d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Homed := bHomed;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{635d479a-5bb6-4b03-8771-b1189ad6129d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bHomed := Homed;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="mAbort" Id="{37a9e74e-74b2-46c6-b456-57916c5147b4}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mAbort : E_CmdState
+VAR_INPUT
+	I_bExecute : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT I_bExecute 
+	THEN
+    mAbort     := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+bAbort         := TRUE;
+bSequenceBusy  := FALSE;
+bSequenceDone  := FALSE;
+
+SequenceID     := C_SeqStep_Idle;
+
+mStop(TRUE);
+
+mAbort := E_CmdState.Busy;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mAutomatic" Id="{1893a5c2-c84c-454f-8d17-e1b9361eb323}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mAutomatic: E_CmdState
+VAR_INPUT
+	I_bExecute : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute THEN
+    mAutomatic := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Device disabled / not initialized / not homming
+IF NOT Enable OR NOT bHomed
+	THEN
+    mAutomatic := E_CmdState.NotReady;
+    RETURN;
+END_IF
+
+// Device is in error state.
+IF bError 
+	THEN
+		SequenceID := C_SeqStep_Error;
+    mAutomatic := E_CmdState.Error;
+    RETURN;
+END_IF
+
+//eMode := E_CmdState.AUTO;
+
+// Start sequence execution.
+bSequenceBusy 	:= TRUE;
+bSequenceDone 	:= FALSE;
+SequenceID     	:= C_SeqStep_Start;
+mAutomatic 			:= E_CmdState.Busy;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mDone" Id="{de0d20d5-1293-42e2-9278-5a9f25f8ea1d}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mDone : E_CmdState
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[(*
+
+
+*)
+IF bError
+  THEN 
+		mDone :=  E_CmdState.Failed;	
+  ELSE 
+		mDone :=  E_CmdState.Succeeded;
+END_IF
+
+bSequenceBusy := FALSE;
+bSequenceDone := TRUE;
+SequenceID := C_SeqStep_Idle;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mHold" Id="{f28f09b1-dbdb-4357-9970-1dd737918a37}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mHold : E_CmdState
+VAR_INPUT
+	I_bExecute : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF NOT I_bExecute 
+	THEN
+    mHold := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+bHold := TRUE;
+bSequenceBusy := FALSE;
+mHold := E_CmdState.Hold;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mHome" Id="{d161db35-b843-4f4b-9979-193f62066daf}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mHome : E_CmdState
+VAR_INPUT
+	I_bExecute : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT I_bExecute THEN
+    mHome 		:= E_CmdState.Idle;
+    RETURN;
+END_IF
+
+IF bError THEN
+    mHome 		:= E_CmdState.Error;
+    RETURN;
+END_IF
+
+IF NOT bEnable THEN
+    mHome 		:= E_CmdState.NotReady;
+    RETURN;
+END_IF
+
+//eMode 					:= E_CmdState.HOMING;
+
+bSequenceBusy 	:= TRUE;
+bSequenceDone 	:= FALSE;
+
+SequenceID      := C_SeqStep_Start;
+
+mHome 					:= E_CmdState.Busy;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mRegisterChild" Id="{a500345d-fc2f-4016-bc40-685c8cf16433}" FolderPath="02 Methodes\_SetChild\">
+      <Declaration><![CDATA[METHOD mRegisterChild : BOOL
+VAR_INPUT
+	I_itfChild        : ITF_Device;
+END_VAR
+
+VAR 
+	L_Itf_ChildDevice : ITF_Device := 0;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF __QUERYINTERFACE (I_itfChild, L_Itf_ChildDevice)
+	THEN 
+		IF aChildsCount < GVL_Core.C_MaxChild
+			THEN 
+				aChildsCount 								:= aChildsCount +1;	
+				aitfChilds[aChildsCount] 		:= L_Itf_ChildDevice;
+		END_IF
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mRelease" Id="{e5842ae1-3411-4eb3-97f0-f3398dbccc11}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mRelease : E_CmdState
+VAR_INPUT
+	I_bExecute : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF NOT I_bExecute 
+	THEN
+    mRelease 	:= E_CmdState.Idle;
+    RETURN;
+END_IF
+
+bHold    			:= FALSE;
+bAbort   			:= FALSE;
+         			
+mRelease 			:= E_CmdState.Busy;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mReset" Id="{65c3f427-09f3-4c2e-9a66-023cec950cf8}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mReset : BOOL
+VAR_INPUT
+
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+SUPER^.mReset();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mSequence" Id="{ceec0fba-774c-4026-a416-40592d0b39fe}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mSequence : E_CmdState
+VAR_INPUT
+	I_bExecute : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF NOT I_bExecute 
+	THEN
+    mSequence := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+IF bError 
+	THEN
+		SequenceID := C_SeqStep_Error;
+    mSequence  := E_CmdState.Error;
+    RETURN;
+END_IF
+
+// Allows for a clean stop of a sequence.
+IF bAbort 
+	THEN
+    SequenceID := C_SeqStep_Abort;
+    mSequence := E_CmdState.Aborted;
+    RETURN;
+END_IF
+
+//Hold allows for pausing without losing the SequenceID.
+IF bHold 
+	THEN
+    mSequence := E_CmdState.Busy;
+    RETURN;
+END_IF
+
+bSequenceBusy := TRUE;
+bSequenceDone := FALSE;
+
+mSequence := E_CmdState.Busy;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mService" Id="{59a6f5d6-c772-4191-9bcd-24619a63d134}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mService : E_CmdState
+VAR_INPUT
+	I_bExecute : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT I_bExecute 
+	THEN
+    mService := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+//eMode := SERVICE;
+bSequenceBusy := FALSE;
+bSequenceDone := FALSE;
+
+mService := E_CmdState.Busy;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mSetChildOpMode" Id="{dc18dc8c-5754-40d9-9782-aaae2d87f285}" FolderPath="02 Methodes\_SetChild\">
+      <Declaration><![CDATA[METHOD mSetChildOpMode : BOOL
+VAR_INPUT
+	I_eSetChilds  : E_SetChild;
+END_VAR
+VAR
+	L_uiIndex			: UINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+FOR L_uiIndex := 1 TO aChildsCount DO
+	CASE I_eSetChilds OF
+		E_SetChild.None					: ;
+		E_SetChild.Enable				:	aitfChilds[L_uiIndex].Enable:= Enable; 
+		E_SetChild.Reset 				: aitfChilds[L_uiIndex].mReset();	
+		E_SetChild.Abort				:	aitfChilds[L_uiIndex].mAbort(TRUE);
+//		E_SetChild.ClearError		:	aitfChilds[L_uiIndex].mError(TRUE);
+		E_SetChild.EStop				:	aitfChilds[L_uiIndex].mStop(TRUE);
+		E_SetChild.Auto					: aitfChilds[L_uiIndex].mAutomatic(TRUE);
+		E_SetChild.Servic				: aitfChilds[L_uiIndex].mService(TRUE);
+		E_SetChild.Home					: aitfChilds[L_uiIndex].mHome(TRUE);
+		E_SetChild.Release			: aitfChilds[L_uiIndex].mRelease(TRUE);
+	END_CASE
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mStop" Id="{7e87bb71-0efa-4d7e-ad01-108cb981aa4c}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mStop : E_CmdState
+VAR_INPUT
+	I_bExecute : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT I_bExecute THEN
+    mStop 			:= E_CmdState.Idle;
+    RETURN;
+END_IF
+
+bBusy 					:= FALSE;
+bDone 					:= FALSE;
+
+bSequenceBusy 	:= FALSE;
+bSequenceDone 	:= FALSE;
+
+SequenceID     	:= C_SeqStep_Idle;
+
+mStop 					:= E_CmdState.Succeeded;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Ready" Id="{218dca75-2ad9-4843-895f-98e750b75e82}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Ready : BOOL]]></Declaration>
+      <Get Name="Get" Id="{c16d7636-076a-4981-b7a2-fdd91a84d8df}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Ready := bReady;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ee2a586a-beb7-40b6-8826-ad20aa51af67}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bReady := Ready;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="SequenceBusy" Id="{acf8dd9e-e59e-43d4-8448-a8432c8b8763}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY SequenceBusy : BOOL]]></Declaration>
+      <Get Name="Get" Id="{82ab2c7e-99d0-4060-b5b0-1004872311c4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SequenceBusy := bSequenceBusy;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{538c2dd9-9c8d-471a-a0b5-e70154b9658b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bSequenceBusy := SequenceBusy;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="SequenceDone" Id="{6f56f0f8-8c2c-4ff8-8647-b1bcdd96766c}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY SequenceDone : BOOL]]></Declaration>
+      <Get Name="Get" Id="{5a241586-5193-4d99-a720-c4e3f2407b59}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SequenceDone := bSequenceDone ;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{ec87f0f2-2027-4b1e-8eec-2cba17ce8e0b}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bSequenceDone := SequenceDone ;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="SequenceID" Id="{aeb45a97-1e41-41aa-8b62-964327e6da6d}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY SequenceID : UINT]]></Declaration>
+      <Get Name="Get" Id="{bb3578c9-6043-4cb7-9716-3ab8113875e4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[SequenceID := uiSequenceID;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9c7119be-f35a-49ff-9269-c1873d8cd6b4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[uiSequenceID := SequenceID;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>
