@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
-  <POU Name="FB_MotorSimple" Id="{f28d4450-f9e9-4af2-bbaf-1853171416fe}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_MotorSimple EXTENDS FB_Base
+  <POU Name="FB_SimpleMotor" Id="{f28d4450-f9e9-4af2-bbaf-1853171416fe}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SimpleMotor EXTENDS FB_Base
 VAR_INPUT
 END_VAR
 VAR_OUTPUT

@@ -80,7 +80,7 @@
     <Compile Include="002 POUs\Lib\01 Device\FB_ConvoyerDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\FB_RouteDevice.TcPOU">
+    <Compile Include="002 POUs\Lib\01 Device\FB_RouteplanerDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="002 POUs\Lib\02 SimpleDevice\00 Template\FB_TemplateSimpleDevice.TcPOU">
@@ -92,7 +92,7 @@
     <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_PneuCyl_Stopper.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_MotorSimple.TcPOU">
+    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_SimpleMotor.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_PneuCyl_3Pos.TcPOU">

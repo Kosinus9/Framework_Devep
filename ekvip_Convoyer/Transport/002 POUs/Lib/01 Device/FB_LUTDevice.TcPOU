@@ -22,7 +22,7 @@ VAR
 																															GVL_Customer.C_ID_LUTLightBarrier
 																										  				);																																										
 	
-	fbLUTSimpleMotor									: FB_MotorSimple      		(GVL_Customer.C_Name_LUTSimpleMotor,
+	fbLUTSimpleMotor									: FB_SimpleMotor      		(GVL_Customer.C_Name_LUTSimpleMotor,
 																															GVL_Customer.C_ID_LUTSimpleMotor
 																										  				);
 

@@ -35,7 +35,9 @@ VAR_GLOBAL CONSTANT
 	C_Name_DCMotorOut									 : STRING := 'DCMotorOut';
 	
 	C_Name_StopperOut									 : STRING := 'DCMotorOut';
-	C_Name_StopperState								 : STRING := 'DCMotorOut';
+	C_Name_StopperOccupied						 : STRING := 'DCMotorOut';
+	
+	C_Name_ReadHead 									 : STRING := 'ReadHead';
 	
 	//======================================================= ID Device 
 	//
@@ -64,9 +66,11 @@ VAR_GLOBAL CONSTANT
 	C_ID_PneuCylTopIn   							 : UINT :=  155;
 	C_ID_PneuCylMiddleIn  						 : UINT :=  156;
 	
-	C_ID_DCMotorOut										: UINT :=  157;
-	C_ID_StopperOut										: UINT :=  158;
-	C_ID_StopperState									: UINT :=  159;
+	C_ID_DCMotorOut										 : UINT :=  157;
+	C_ID_StopperOut										 : UINT :=  158;
+	C_ID_StopperOccupied							 : UINT :=  159;
+	
+	C_ID_ReadHead       							 : UINT :=  160;
 	
 	
 	//======================================================= Customer

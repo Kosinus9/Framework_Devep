@@ -16,15 +16,15 @@ VAR
 																												 GVL_Customer.C_ID_StopperOut
 																											  );
 	
-	fbStopperState										: FB_Input					(GVL_Customer.C_Name_StopperState,
-																												 GVL_Customer.C_ID_StopperState
+	fbStopperOccupied									: FB_Input					(GVL_Customer.C_Name_StopperOccupied,
+																												 GVL_Customer.C_ID_StopperOccupied
 																											  );
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[SUPER^();
 // Check Carrie available
-bCarriePresent := fbStopperState.bBoolValue;
+bCarriePresent := fbStopperOccupied.bBoolValue;
 ]]></ST>
     </Implementation>
     <Folder Name="01 Properties" Id="{c888f04d-257a-4261-96a3-2bc2ced9cf8a}" />

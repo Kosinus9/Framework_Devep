@@ -2,9 +2,29 @@
 <Refactors>
   <Renames>
     <RenamedType>
-      <Type guid="5feb55c0-427c-48c9-ba35-af743a91e620">FB_LUTDEVICE_1</Type>
-      <From>FB_LUTDevice_1</From>
-      <To>FB_Template</To>
+      <Type guid="f28d4450-f9e9-4af2-bbaf-1853171416fe">FB_MOTORSIMPLE</Type>
+      <From>FB_MotorSimple</From>
+      <To>FB_SimpleMotor</To>
+    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="a7b52489-8306-4768-bce5-7bb6030c1e74">FB_PneuCyl_Stopper</Type>
+      <From>fbStopperState</From>
+      <To>fbStopperOccupied</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="2b90c080-958e-4160-85d0-b7417670b91d">GVL_Customer</Type>
+      <From>C_Name_StopperState</From>
+      <To>C_Name_StopperOccupied</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="2b90c080-958e-4160-85d0-b7417670b91d">GVL_Customer</Type>
+      <From>C_ID_StopperState</From>
+      <To>C_ID_StopperOccupied</To>
+    </RenamedSymbol>
+    <RenamedType>
+      <Type guid="aeb366e6-4206-44ad-8808-ef3a64cb4c98">FB_TEMPLATESIMPLEDEVICE_1</Type>
+      <From>FB_TemplateSimpleDevice_1</From>
+      <To>FB_Reader</To>
     </RenamedType>
   </Renames>
 </Refactors>
