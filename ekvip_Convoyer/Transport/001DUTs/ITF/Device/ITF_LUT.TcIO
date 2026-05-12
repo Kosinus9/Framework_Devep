@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <Itf Name="ITF_LUT" Id="{6c0d6849-e396-4313-9db5-4e08f7814412}">
+    <Declaration><![CDATA[INTERFACE ITF_LUT EXTENDS ITF_Device
+]]></Declaration>
+  </Itf>
+</TcPlcObject>

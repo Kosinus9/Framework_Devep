@@ -44,6 +44,9 @@
     <Compile Include="001DUTs\ITF\Device\ITF_Convoyer.TcIO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="001DUTs\ITF\Device\ITF_LUT.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="001DUTs\ITF\Generic\ITF_Base.TcIO">
       <SubType>Code</SubType>
     </Compile>
