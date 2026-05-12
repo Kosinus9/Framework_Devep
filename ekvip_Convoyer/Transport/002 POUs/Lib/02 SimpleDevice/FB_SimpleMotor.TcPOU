@@ -19,8 +19,11 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[SUPER^();
-]]></ST>
+      <ST><![CDATA[//================== Must!!
+SUPER^();  
+IF NOT Enable THEN RETURN; END_IF;
+
+On:=On;]]></ST>
     </Implementation>
     <Folder Name="01 Properties" Id="{bd17f19f-4bc5-4ff6-ba2e-b001df3129e1}" />
     <Folder Name="02 Methodes" Id="{ff9e3ec7-8f18-43cf-96ff-a8b9f5e98df5}" />
@@ -42,47 +45,41 @@ END_VAR]]></Declaration>
 ]]></ST>
       </Implementation>
     </Method>
-    <Property Name="Off" Id="{a2be22a7-8a7e-4a9f-bad2-602afa186f6d}" FolderPath="01 Properties\">
-      <Declaration><![CDATA[PROPERTY Off : BOOL]]></Declaration>
-      <Get Name="Get" Id="{35667219-e390-48c4-b283-7cce627dedb8}">
-        <Declaration><![CDATA[VAR
+    <Method Name="mStartMotor" Id="{9570005d-a5ef-4e98-8b98-52e573180bf8}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mStartMotor : E_CmdState
+VAR_INPUT
+	I_bExecute			 : BOOL;
 END_VAR
 ]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[Off := bOff;]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{3b226414-6709-4e39-8862-e55fff7b7ca8}">
-        <Declaration><![CDATA[VAR
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+    mStartMotor  := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Motor Start
+fbDCMotorOut.bBoolValue := TRUE; ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mStopMotor" Id="{de72ac71-411d-4b93-90c2-1e6fe97c9fa4}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mStopMotor : E_CmdState
+VAR_INPUT
+	I_bExecute			: BOOL;
 END_VAR
 ]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[
-fbDCMotorOut.bBoolValue := FALSE; // Motor off
-bOff := Off;]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
-    <Property Name="On" Id="{fe5cb28e-b086-4b4e-82ee-ce1cec464ebb}" FolderPath="01 Properties\">
-      <Declaration><![CDATA[PROPERTY On : BOOL]]></Declaration>
-      <Get Name="Get" Id="{8d721ed4-9c3f-4591-be89-ba36c253d3e0}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[On	:= bOn;]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{0b809ca3-1213-42b0-8356-d0953c0ac8d4}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[
-fbDCMotorOut.bBoolValue := True; // Motor Start
-bOn := On;]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+    mStopMotor  := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Motor Start
+fbDCMotorOut.bBoolValue := FALSE; // Motor off]]></ST>
+      </Implementation>
+    </Method>
   </POU>
 </TcPlcObject>

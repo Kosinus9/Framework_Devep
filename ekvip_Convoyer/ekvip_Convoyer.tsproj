@@ -10,7 +10,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{81AFEAAA-A050-46FA-81EC-27E633CBC1C0}" Name="Transport" PrjFilePath="Transport\Transport.plcproj" TmcFilePath="Transport\Transport.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{E5E960FC-4BD2-183F-1304-5F4F01C1F33B}" TmcPath="Transport\Transport.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{5363B79A-A99D-53C7-BD00-ADC4E994B2FC}" TmcPath="Transport\Transport.tmc">
 					<Name>Transport Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -92,6 +92,46 @@
 						</Var>
 						<Var>
 							<Name>MAIN.fbCustomer.fbLUTDevice12.fbLUTSimpleMotor.fbDCMotorOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice3.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice3.fbLUTSimpleMotor.fbDCMotorOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice6.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice6.fbLUTSimpleMotor.fbDCMotorOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice9.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice9.fbLUTSimpleMotor.fbDCMotorOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice12.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice12.fbLUTSimpleMotor.fbDCMotorOut.bQAT_HardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -195,6 +235,26 @@
 						</Var>
 						<Var>
 							<Name>MAIN.fbCustomer.fbLUTDevice12.fbLUTLightBarrier.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice3.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice6.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice9.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbConvoyerDevice12.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>

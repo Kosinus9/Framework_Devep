@@ -22,7 +22,7 @@ VAR
 																															GVL_Customer.C_ID_LUTLightBarrier
 																										  				);																																										
 	
-	fbLUTSimpleMotor									: FB_SimpleMotor      		(GVL_Customer.C_Name_LUTSimpleMotor,
+	fbLUTSimpleMotor									: FB_SimpleMotor      		(GVL_Customer.C_Name_LUTDcMotor,
 																															GVL_Customer.C_ID_LUTSimpleMotor
 																										  				);
 
@@ -45,7 +45,6 @@ END_VAR
       <ST><![CDATA[
 //******* Important and necessary
 SUPER^();  
-
 //====================================
 IF NOT Enable THEN RETURN; END_IF
 
@@ -199,7 +198,9 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[
+SUPER^.mHold(I_bExecute);
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="mHome" Id="{49ad83dc-2a17-49c4-8611-ff23b94da67e}" FolderPath="02 Methodes\">
@@ -221,7 +222,8 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[
+SUPER^.mRelease(I_bExecute);]]></ST>
       </Implementation>
     </Method>
     <Method Name="mSequence" Id="{34a06eeb-9098-4b67-9089-0adc32ada112}" FolderPath="02 Methodes\">
@@ -266,7 +268,8 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[
+SUPER^.mService(I_bExecute);]]></ST>
       </Implementation>
     </Method>
     <Method Name="mStop" Id="{d84c7b32-8c21-42a5-9b35-6c7a9a260b8f}" FolderPath="02 Methodes\">
@@ -276,7 +279,8 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[
+SUPER^.mStop(I_bExecute);]]></ST>
       </Implementation>
     </Method>
   </POU>

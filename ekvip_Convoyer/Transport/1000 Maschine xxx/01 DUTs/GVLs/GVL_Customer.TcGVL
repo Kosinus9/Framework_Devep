@@ -19,19 +19,22 @@ VAR_GLOBAL CONSTANT
 	C_Name_ConvoyerDevice9             : STRING := 'ConvoyerDevice9';
 	C_Name_ConvoyerDevice12             : STRING := 'ConvoyerDevice12';
 	
+	
 	//======================================================= Name Simple Device 
 	C_Name_LTUPneuClyZ			           : STRING := 'PneuCylZAxisLTU';
 	C_Name_LUTStopper									 : STRING := 'StopperLTU';
+	C_Name_LUTDcMotor 						     : STRING := 'LUTSimpleMotor';
 	
+	C_Name_StopperCarrieConvoyer			 : STRING := 'StopperLTU';
+	C_Name_ConvoyerDcMotor						 : STRING := 'StopperLTU';
+	C_Name_ReadHead										 : STRING := 'StopperLTU';
 	
 	
 	//======================================================= Name Componemt
 	C_Name_LUTLightBarrier 						 : STRING := 'LUTLightBarrier';
-	C_Name_LUTSimpleMotor 						 : STRING := 'LUTSimpleMotor';
 	
 	C_Name_PneuCylBottomOut 					 : STRING := 'PneuCylBottomOut';
 	C_Name_PneuCylTopOut 						   : STRING := 'PneuCylTopOut';
-	
 	C_Name_PneuCylBottomIn  					 : STRING := 'PneuCylBottomIn';
 	C_Name_PneuCylTopIn 						   : STRING := 'PneuCylTopIn';
 	C_Name_PneuCylMiddleIn 						 : STRING := 'PneuCylMiddleIn';
@@ -41,7 +44,6 @@ VAR_GLOBAL CONSTANT
 	C_Name_StopperOut									 : STRING := 'DCMotorOut';
 	C_Name_StopperOccupied						 : STRING := 'DCMotorOut';
 	
-	C_Name_ReadHead 									 : STRING := 'ReadHead';
 	
 	//======================================================= ID Device 
 	//10--99
@@ -55,12 +57,16 @@ VAR_GLOBAL CONSTANT
 	C_ID_ConvoyerDevice9               : UINT :=  16;
 	C_ID_ConvoyerDevice12              : UINT :=  17;
 	
+	
 	//======================================================= Name Simple Device 
 	//100--150
 	C_ID_LTUPneuClyZ	                 : UINT :=  100;
 	C_ID_LUTStopper										 : UINT :=  101;
 	C_ID_LUTSimpleMotor								 : UINT :=  101;
 	
+	C_ID_StopperCarrieConvoyer				 : UINT :=  102;
+	C_ID_MotorComvoyer								 : UINT :=  103;
+	C_ID_ReadHead       							 : UINT :=  104;
 	
 	
 	//======================================================= Name Componemt
@@ -77,8 +83,6 @@ VAR_GLOBAL CONSTANT
 	C_ID_DCMotorOut										 : UINT :=  157;
 	C_ID_StopperOut										 : UINT :=  158;
 	C_ID_StopperOccupied							 : UINT :=  159;
-	
-	C_ID_ReadHead       							 : UINT :=  160;
 	
 	
 	//======================================================= Customer

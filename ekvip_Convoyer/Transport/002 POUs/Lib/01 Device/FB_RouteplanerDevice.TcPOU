@@ -31,7 +31,6 @@ END_VAR
       <ST><![CDATA[
 //******* Important and necessary
 SUPER^();  
-
 //====================================
 IF NOT Enable THEN RETURN; END_IF]]></ST>
     </Implementation>

@@ -22,18 +22,17 @@ VAR
 	bTranspOutDone       : BOOL;
 	
 	//===================== Instance
-	fbStopperLut											: FB_PneuCyl_Stopper  (GVL_Customer.C_Name_LUTStopper,
-																													GVL_Customer.C_ID_LUTStopper
+	fbStopperCarrieConvoyer						: FB_PneuCyl_Stopper  (GVL_Customer.C_Name_StopperCarrieConvoyer,
+																													GVL_Customer.C_ID_StopperCarrieConvoyer
 																										  		);																												
 																												
-	fbLUTSimpleMotor									: FB_SimpleMotor      (GVL_Customer.C_Name_LUTSimpleMotor,
-																													 GVL_Customer.C_ID_LUTSimpleMotor
+	fbMotorConvoyer										: FB_SimpleMotor      (GVL_Customer.C_Name_ConvoyerDcMotor,
+																													 GVL_Customer.C_ID_MotorComvoyer
 																										  		);
 																													
 	fbReadHead												: FB_ReadHead        	(GVL_Customer.C_Name_ReadHead,
 																													GVL_Customer.C_ID_ReadHead
 																										  		); 
-		
 																													
 END_VAR
 
@@ -53,12 +52,11 @@ END_VAR
       <ST><![CDATA[
 //******* Important and necessary
 SUPER^();  
-
 //====================================
 IF NOT Enable THEN RETURN; END_IF
 
-fbStopperLut();
-fbLUTSimpleMotor();
+fbStopperCarrieConvoyer();
+fbMotorConvoyer();
 fbReadHead();
 ]]></ST>
     </Implementation>
@@ -203,13 +201,13 @@ CASE SequenceID OF
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_Service" Id="{62d5235b-cba5-4a78-a411-989bf5a841b3}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_Service : UINT
+    <Method Name="mCmdExec_Service" Id="{d322bdec-4501-4078-818a-8eafd3a95f6f}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_Service : E_CmdState
 VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mCmdExec_TranspOut" Id="{2bdddac8-0ea5-442f-81c6-6021ed68c775}" FolderPath="02 Methodes\100 CmdExecute\">
@@ -219,7 +217,44 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[
+IF NOT I_bExecute 
+	THEN
+    bTranspOutBusy := FALSE;
+    mCmdExec_TranspOut := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Route not granted yet.
+// Route noch nicht freigegeben
+IF NOT bRouteGranted 
+	THEN
+  	mCmdExec_TranspOut := E_CmdState.NotReady;
+    RETURN;
+END_IF
+
+bTranspOutBusy := TRUE;
+bTranspOutDone := FALSE;
+
+// Open stopper: stopper down = carrier can pass.
+fbStopperCarrieConvoyer.mCallWork(TRUE);
+
+// Start conveyor motor.
+fbMotorConvoyer.mStartMotor(TRUE);
+
+// Wait until carrier leaves stopper sensor.
+IF NOT fbStopperCarrieConvoyer.CarriePresent 
+	THEN
+  	// Stop local injection.
+  	fbMotorConvoyer.mStopMotor(TRUE);
+		
+  	// Close stopper again.
+  	fbStopperCarrieConvoyer.mCallBase(TRUE);
+  	bTranspOutBusy := FALSE;
+  	bTranspOutDone := TRUE;
+  	mCmdExec_TranspOut := E_CmdState.Succeeded;
+  	RETURN;
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="mHold" Id="{46387c63-22e9-4e63-911a-a5aaa6ea0e64}" FolderPath="02 Methodes\">
@@ -252,7 +287,7 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mSequence" Id="{36e1d1fa-be4b-4b3b-a787-65405960d898}" FolderPath="02 Methodes\">
+    <Method Name="mSequence" Id="{3b40ca71-71ef-49e1-9faa-1a629e293a02}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mSequence : E_CmdState
 VAR_INPUT
 	I_bExecute				: BOOL;
@@ -276,14 +311,11 @@ END_IF
 
 CASE Mode OF
 	E_Mode.Homing:
-		mCmdExec_Homing();
-		
+		mSequence := mCmdExec_Homing();
 	E_Mode.Auto:
-		mCmdExec_Auto();
-		
-	E_Mode.Homing:
-		mCmdExec_Service();
-		
+		mSequence := mCmdExec_Auto();
+	E_Mode.Service:
+		mSequence := mCmdExec_Service();	
 END_CASE]]></ST>
       </Implementation>
     </Method>

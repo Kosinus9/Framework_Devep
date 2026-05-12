@@ -15,9 +15,9 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-SUPER^();
-]]></ST>
+      <ST><![CDATA[//================== Must!!
+SUPER^();  
+IF NOT Enable THEN RETURN; END_IF;]]></ST>
     </Implementation>
     <Folder Name="01 Properties" Id="{b2440afa-7c1f-40b4-9cbc-93b18aee1299}" />
     <Folder Name="02 Methodes" Id="{ffaef3c6-238b-4512-a039-09cfff86c625}" />

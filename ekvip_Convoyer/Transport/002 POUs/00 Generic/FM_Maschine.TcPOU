@@ -22,7 +22,8 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-SUPER^();
+SUPER^();  
+IF NOT Enable THEN RETURN; END_IF;
 
 mVisu();
 // Update global child status every PLC cycle
@@ -238,6 +239,26 @@ CASE SequenceID OF
         mSequence := E_CmdState.Error;
 
 END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mService" Id="{66726885-1ab2-4006-b066-6876c2baf1bc}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mService : E_CmdState
+VAR_INPUT
+	I_bExecute : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT I_bExecute 
+	THEN
+    mService := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+Mode := E_Mode.Service;
+bSequenceBusy := FALSE;
+bSequenceDone := FALSE;
+
+mService := E_CmdState.Busy;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mSetChildMode" Id="{b359a2b7-9f9a-4774-a7bb-b44d823f4f2a}" FolderPath="02 Methodes\010 _SetChild\">
