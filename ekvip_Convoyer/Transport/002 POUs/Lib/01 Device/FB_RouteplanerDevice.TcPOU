@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="FB_RouteplanerDevice" Id="{a191ede9-3197-424d-aa4b-13c5e8e2a6fc}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_RouteplanerDevice EXTENDS FD_Device IMPLEMENTS ITF_Convoyer
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RouteplanerDevice EXTENDS FD_Device 
 VAR_INPUT
 END_VAR
 

@@ -7,13 +7,39 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	eReadDestination						: E_Convoyer;
+	bExecute										: BOOL;
+	fbDrand											: DRAND;
+	aDestinationListe      			: ARRAY[1..4] OF UINT := [3, 6, 9, 12];
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[SUPER^();]]></ST>
+      <ST><![CDATA[
+SUPER^();
+]]></ST>
     </Implementation>
     <Folder Name="01 Properties" Id="{b2440afa-7c1f-40b4-9cbc-93b18aee1299}" />
     <Folder Name="02 Methodes" Id="{ffaef3c6-238b-4512-a039-09cfff86c625}" />
+    <Property Name="Execute" Id="{c4f10ddb-f559-40f1-8458-77d837f34033}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Execute : BOOL]]></Declaration>
+      <Get Name="Get" Id="{43609412-b8d4-4ece-84fb-c6e1262b1d19}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Execute := bExecute;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{83f95d42-f479-48cd-a74e-49b2984b823f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bExecute := Execute;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Method Name="FB_Init" Id="{e8a7e786-1a56-4f8b-9239-87a55b695227}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
@@ -32,5 +58,62 @@ END_VAR]]></Declaration>
 ]]></ST>
       </Implementation>
     </Method>
+    <Method Name="mRead" Id="{f10879c1-6084-4c42-b497-6acc39e492c3}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mRead : E_CmdState
+VAR_INPUT
+END_VAR
+
+VAR
+	L_uiReadData					: UINT;
+	L_uiIndex							: INT;
+	
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+IF NOT Execute 
+	THEN
+    mRead := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+fbDrand(); 
+L_uiIndex			:= LREAL_TO_INT(((fbDrand.Num) * 4)+1);
+IF L_uiIndex < 1 THEN L_uiIndex := 1; END_IF;
+IF L_uiIndex > 4 THEN L_uiIndex := 4; END_IF;
+L_uiReadData 	:= aDestinationListe[L_uiIndex];
+bExecute			:= FALSE;
+
+CASE L_uiReadData OF
+	3 : eReadDestination  := E_Convoyer.Convoyer_3;
+	6 : eReadDestination 	:= E_Convoyer.Convoyer_6; 
+	9 : eReadDestination 	:= E_Convoyer.Convoyer_9;
+ 12 : eReadDestination 	:= E_Convoyer.Convoyer_12;
+ELSE
+    mRead 						:= E_CmdState.Error;
+    RETURN;
+END_CASE
+
+mRead := E_CmdState.Succeeded;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="ReadDestination" Id="{1ddf43fd-fbf7-481e-a044-6c3e0841a14e}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY ReadDestination : E_Convoyer]]></Declaration>
+      <Get Name="Get" Id="{180394fd-6b2f-4234-94af-956eac736f2f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ReadDestination := eReadDestination;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9605183d-64b3-424c-af0f-e291f6b3fa2e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[eReadDestination := ReadDestination;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
   </POU>
 </TcPlcObject>

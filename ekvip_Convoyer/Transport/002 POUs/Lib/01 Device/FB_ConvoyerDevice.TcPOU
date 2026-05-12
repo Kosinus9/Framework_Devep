@@ -9,7 +9,19 @@ VAR_OUTPUT
 END_VAR
 
 VAR 
-	//=====================
+	//===================== Variable
+	eSource 						 : E_Convoyer;
+  eDestination 				 : E_Convoyer;
+	
+	bRouteRequest				 : BOOL;
+	bCarrierWaiting   	 : BOOL;
+	bRouteGranted 			 : BOOL;
+	
+	bTranspOutRequest    : BOOL;
+	bTranspOutBusy       : BOOL;
+	bTranspOutDone       : BOOL;
+	
+	//===================== Instance
 	fbStopperLut											: FB_PneuCyl_Stopper  (GVL_Customer.C_Name_LUTStopper,
 																													GVL_Customer.C_ID_LUTStopper
 																										  		);																												
@@ -54,6 +66,44 @@ fbReadHead();
     <Folder Name="02 Methodes" Id="{6037a7d3-2441-4a02-b758-7b67f5b9751c}">
       <Folder Name="100 CmdExecute" Id="{915cb2b9-e0a9-4914-87d5-0baeeaed19ff}" />
     </Folder>
+    <Property Name="CarrierWaiting" Id="{05c90862-a01c-4d41-bb8b-9f422f1fc899}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY CarrierWaiting : BOOL]]></Declaration>
+      <Get Name="Get" Id="{67938f79-f29a-4cbe-8d7d-487753b2d290}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CarrierWaiting := bCarrierWaiting;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{9e15df62-c638-412d-b1f4-b4bf0ee0e80d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bCarrierWaiting := CarrierWaiting;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Destination" Id="{60e01930-c4c2-43cd-a7d9-e5b12f7f1196}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Destination : E_Convoyer]]></Declaration>
+      <Get Name="Get" Id="{50f207cd-1873-4a37-ac63-f80e4da816e8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Destination := eDestination]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{bc36f908-3346-4f37-b28c-03f65b639893}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[eDestination := Destination;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Method Name="FB_Init" Id="{7868e964-b97f-4b46-9f24-6f16557dff08}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
@@ -162,6 +212,16 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
+    <Method Name="mCmdExec_TranspOut" Id="{2bdddac8-0ea5-442f-81c6-6021ed68c775}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_TranspOut : E_CmdState
+VAR_INPUT
+	I_bExecute 			: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="mHold" Id="{46387c63-22e9-4e63-911a-a5aaa6ea0e64}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mHold : E_CmdState
 VAR_INPUT
@@ -247,5 +307,119 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
+    <Property Name="RouteGranted" Id="{cd1cb68a-27d6-4b9a-aff7-1fc7113476aa}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY RouteGranted : BOOL]]></Declaration>
+      <Get Name="Get" Id="{d9255acc-bca3-4e38-b863-ea159f4ce6df}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[RouteGranted := bRouteGranted;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{eb76f2eb-5589-4c0e-b893-5d7bf2398402}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bRouteGranted := RouteGranted;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="RouteRequest" Id="{a5fb370a-96f9-4d94-8387-bb7d62846ac8}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY RouteRequest : BOOL]]></Declaration>
+      <Get Name="Get" Id="{a28c8fbe-49de-40da-8e17-df8ad6f76647}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[RouteRequest := bRouteRequest;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{8c120947-2645-4e50-95bc-9fbc28162cae}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bRouteRequest := RouteRequest;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="Source" Id="{6d963e4a-854c-4dd7-91c7-948da36b0f5b}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Source : E_Convoyer]]></Declaration>
+      <Get Name="Get" Id="{e71207da-0331-44af-907d-a281da8fb600}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Source := eSource;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{a30af409-5f1c-4e08-b808-7a87cc5aeaca}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[eSource := Source;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="TranspOutBusy" Id="{b8b5a2ba-94ac-4ae1-b191-a3196eacd9fc}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY TranspOutBusy : BOOL]]></Declaration>
+      <Get Name="Get" Id="{631c6046-8190-41fd-a8a5-ff75edf18165}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TranspOutBusy := bTranspOutBusy;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{d7fb4dd2-7420-4ae0-ad17-41213018e36d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bTranspOutBusy := TranspOutBusy;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="TranspOutDone" Id="{fa04fbd9-08e0-48f8-9ce8-4fbd3cc4bd4c}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY TranspOutDone : BOOL]]></Declaration>
+      <Get Name="Get" Id="{76b7288d-7dee-43b0-a835-8980c9dc7118}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TranspOutDone := bTranspOutDone;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{53762087-ce96-4e2c-bc0b-8dfb4b0e588d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bTranspOutDone := TranspOutDone;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="TranspOutRequest" Id="{3896cf4c-3a65-4549-83b4-30d9f26b3986}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY TranspOutRequest : BOOL]]></Declaration>
+      <Get Name="Get" Id="{0477b759-e0c8-4ee6-877e-00686b07c4f1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[TranspOutRequest := bTranspOutRequest;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{f3aacb44-1924-4983-93b4-cfcbe1c746b7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bTranspOutRequest := TranspOutRequest;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
   </POU>
 </TcPlcObject>

@@ -10,7 +10,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{81AFEAAA-A050-46FA-81EC-27E633CBC1C0}" Name="Transport" PrjFilePath="Transport\Transport.plcproj" TmcFilePath="Transport\Transport.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{9F490387-2436-0B92-362D-8EB0526C87F1}" TmcPath="Transport\Transport.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{E5E960FC-4BD2-183F-1304-5F4F01C1F33B}" TmcPath="Transport\Transport.tmc">
 					<Name>Transport Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -114,7 +114,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice3.fbStopperLut.fbStopperState.bIAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -139,7 +139,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice6.fbStopperLut.fbStopperState.bIAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -164,7 +164,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice9.fbStopperLut.fbStopperState.bIAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -189,7 +189,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice12.fbStopperLut.fbStopperState.bIAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>

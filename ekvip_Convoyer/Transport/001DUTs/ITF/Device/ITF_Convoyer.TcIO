@@ -1,7 +1,88 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <Itf Name="ITF_Convoyer" Id="{90eddd4e-caf1-45cb-821f-4d0418794a88}">
-    <Declaration><![CDATA[INTERFACE ITF_Convoyer
+    <Declaration><![CDATA[INTERFACE ITF_Convoyer EXTENDS ITF_Device
 ]]></Declaration>
+    <Folder Name="01 Properties" Id="{25948819-369d-4cfb-87d5-0673cdbd2bc0}" />
+    <Folder Name="02 Methodes" Id="{41fc5648-1eb3-4c9d-b1c3-427d8d28b4c3}" />
+    <Property Name="CarrierWaiting" Id="{8c3b1ce7-8039-4501-87e6-92e2a7ad99b1}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY CarrierWaiting : BOOL]]></Declaration>
+      <Get Name="Get" Id="{a17946cf-2d71-4cd9-8607-3f41b66ed73f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{a746907d-e3ba-4cf8-9230-ce8104a9dd63}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Destination" Id="{b47a1c43-6ff1-465f-a948-c151dd83c45a}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Destination : E_Convoyer]]></Declaration>
+      <Get Name="Get" Id="{60f74629-1c35-4af6-aa3a-d9cf01d8528f}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{cf81e477-3919-4538-acc8-b9fdb00b27be}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="mCmdExec_TranspOut" Id="{b48d58c3-c254-45d7-a26c-a81a68d68665}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mCmdExec_TranspOut : E_CmdState
+VAR_INPUT
+	I_bExecute 			: BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="RouteGranted" Id="{60049cff-0fea-4833-9a29-b20682ed7d75}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY RouteGranted : BOOL]]></Declaration>
+      <Get Name="Get" Id="{aec107ca-0d6a-44cd-98c2-22d10133b99b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{64eb25c1-4dfa-43dd-b06c-f610b31a3451}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="RouteRequest" Id="{4e057cc8-0a4b-4080-9696-96a59acd283a}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY RouteRequest : BOOL]]></Declaration>
+      <Get Name="Get" Id="{895d5925-4f1f-45c9-a0f3-724e1938b37a}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{0ed08ebb-0d0b-40f5-a515-d93dec7b05ec}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="Source" Id="{1db8df5e-19ea-43ff-a166-260f6909228d}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY Source : E_Convoyer]]></Declaration>
+      <Get Name="Get" Id="{1ff2fd8d-53ab-4b12-baab-3cbc06e2edca}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{f0308ba7-ea2b-44d2-8fbd-c257fe8c41ad}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="TranspOutBusy" Id="{e816eece-978c-465f-a8fa-6fbe06b5acea}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY TranspOutBusy : BOOL]]></Declaration>
+      <Get Name="Get" Id="{a726aff5-b640-4740-80a4-d182463ad5a8}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{fb085693-81ee-4d1c-9ec0-887931aecfb9}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="TranspOutDone" Id="{c3025f7e-957d-4ad5-8a94-852046da4ad8}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY TranspOutDone : BOOL]]></Declaration>
+      <Get Name="Get" Id="{039c023b-d758-4b0f-8a40-debdf3fe33c8}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{ff7e476f-7e62-4673-8304-d53ded0b1eaf}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="TranspOutRequest" Id="{93ff2692-d978-4a67-8a3b-033e29045667}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY TranspOutRequest : BOOL]]></Declaration>
+      <Get Name="Get" Id="{37bc0bc4-3a49-43d3-88f3-430efd2d9323}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{302804ac-0eb2-4f63-861e-49d89999aa1c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
   </Itf>
 </TcPlcObject>
