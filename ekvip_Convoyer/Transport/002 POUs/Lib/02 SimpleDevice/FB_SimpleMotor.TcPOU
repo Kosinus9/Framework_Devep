@@ -8,10 +8,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	//================================= Variable
-	bOn					: BOOL;
-	bOff				: BOOL;
-	
-	
+
 	//================================= Instance
 	fbDCMotorOut												: FB_Output					(GVL_Customer.C_Name_DCMotorOut,
 																													 GVL_Customer.C_ID_DCMotorOut
@@ -23,7 +20,7 @@ END_VAR
 SUPER^();  
 IF NOT Enable THEN RETURN; END_IF;
 
-On:=On;]]></ST>
+]]></ST>
     </Implementation>
     <Folder Name="01 Properties" Id="{bd17f19f-4bc5-4ff6-ba2e-b001df3129e1}" />
     <Folder Name="02 Methodes" Id="{ff9e3ec7-8f18-43cf-96ff-a8b9f5e98df5}" />

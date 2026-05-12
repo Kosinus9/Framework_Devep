@@ -38,14 +38,18 @@ END_VAR
 
 VAR CONSTANT
 	// --------------------------Base------------------
-	C_SeqStep_OnBasePos_Start								: UINT :=  20; 
-	C_SeqStep_OnBasePos_WaitOpMode					: UINT :=  30;
-	C_SeqStep_OnBasePos_Done								: UINT :=  100; 
+	C_SeqStep_OnBasePos_Start															: UINT :=  20; 
+	C_SeqStep_OnBasePos_WaitOpMode												: UINT :=  30;
+	C_SeqStep_OnBasePos_Done															: UINT :=  40; 
 	
 	// --------------------------Auto Sequence------------------
+	C_SeqStep_Auto_Start																	: UINT :=  100;
+	C_SeqStep_Auto_Wait_Carrier_At_Stopper								: UINT :=  110;
+	C_SeqStep_Auto_Read_Destination_Once									: UINT :=  120;
+	C_SeqStep_Auto_Ask_RouteManager_For_A_Route						: UINT :=  130;
+	C_SeqStep_Auto_Inject_Carrier_IntoGranted_Route				: UINT :=  140;
+	C_SeqStep_Auto_End																		: UINT :=  150;
 	
-	C_SeqStep_Auto_Start										: UINT :=  200;
-	C_SeqStep_Auto_End											: UINT :=  400;
 END_VAR
 	]]></Declaration>
     <Implementation>
@@ -134,7 +138,10 @@ END_VAR
       <Declaration><![CDATA[METHOD mCmdExec_Auto : E_CmdState
 VAR_INPUT
 END_VAR
-]]></Declaration>
+
+VAR
+    L_eCmd 			: E_CmdState;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 CASE SequenceID OF
@@ -145,28 +152,54 @@ CASE SequenceID OF
   
   //****************************************************** Start
   C_SeqStep_Start:
-  	
-  	SequenceID       :=  C_SeqStep_OnBasePos_Start;
-	C_SeqStep_OnBasePos_Start:
+		bRouteRequest 			:= FALSE;
+    bRouteGranted 			:= FALSE;
+    bTranspOutRequest 	:= FALSE;
+    bTranspOutDone 			:= FALSE; 	
+  	SequenceID          := C_SeqStep_Auto_Wait_Carrier_At_Stopper;
+		
+	C_SeqStep_Auto_Wait_Carrier_At_Stopper :
 	
-		SequenceID       :=  C_SeqStep_Done;;
+	IF fbStopperCarrieConvoyer.CarriePresent 
+		THEN
+      SequenceID := C_SeqStep_Auto_Read_Destination_Once;
+  END_IF
 	
-//	C_SeqStep_OnBasePos_Start:
+	C_SeqStep_Auto_Read_Destination_Once:
+	// Read destination one.
+  	IF fbReadHead.mRead() = E_CmdState.Succeeded 
+			THEN
+  	    eDestination 		:= fbReadHead.ReadDestination;
+  	    SequenceID 			:= C_SeqStep_Auto_Ask_RouteManager_For_A_Route;
+  	END_IF
 	
-	
-//	C_SeqStep_OnBasePos_Start:
-	
-	
+	C_SeqStep_Auto_Ask_RouteManager_For_A_Route:
+	// Ask RouteManager for a route.
+ 		bRouteRequest := TRUE;
+		
+    IF bRouteGranted 
+			THEN
+    		bTranspOutRequest  := TRUE;
+    	  SequenceID         := C_SeqStep_Auto_Inject_Carrier_IntoGranted_Route;
+    	END_IF
+
+	 C_SeqStep_Auto_Inject_Carrier_IntoGranted_Route:
+      // Inject carrier into granted route.				
+		IF mCmdExec_TranspOut(bTranspOutRequest ) = E_CmdState.Succeeded 
+			THEN
+      	bRouteRequest := FALSE;
+      	bRouteGranted := FALSE;
+      	bTranspOutRequest := FALSE;
+      	SequenceID := C_SeqStep_Auto_End;
+     END_IF
+									
   C_SeqStep_Error: 
     //************* all FB reset
-
-		//************* 
-    mCmdExec_Auto := mDone(); 
-  //**********************Done 
-  	
- 	C_SeqStep_Done:
-  	mCmdExec_Auto := mDone();
-
+ 
+ 	C_SeqStep_Auto_End:
+	  //**********************End 
+		SequenceID := C_SeqStep_Start;
+  		
 END_CASE]]></ST>
       </Implementation>
     </Method>
@@ -254,7 +287,8 @@ IF NOT fbStopperCarrieConvoyer.CarriePresent
   	bTranspOutDone := TRUE;
   	mCmdExec_TranspOut := E_CmdState.Succeeded;
   	RETURN;
-END_IF]]></ST>
+END_IF
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="mHold" Id="{46387c63-22e9-4e63-911a-a5aaa6ea0e64}" FolderPath="02 Methodes\">
