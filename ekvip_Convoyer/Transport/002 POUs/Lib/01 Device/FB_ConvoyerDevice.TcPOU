@@ -92,7 +92,7 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[Destination := eDestination]]></ST>
+          <ST><![CDATA[Destination := eDestination;]]></ST>
         </Implementation>
       </Get>
       <Set Name="Set" Id="{bc36f908-3346-4f37-b28c-03f65b639893}">
@@ -132,8 +132,8 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_Auto" Id="{eb23ff90-734c-46fc-9dfb-7d625a1f9afe}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_Auto : UINT
+    <Method Name="mCmdExec_Auto" Id="{973859fe-6ada-4c64-963f-bf319c88cc9e}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_Auto : E_CmdState
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -153,27 +153,27 @@ CASE SequenceID OF
 	
 		SequenceID       :=  C_SeqStep_Done;;
 	
-	C_SeqStep_OnBasePos_Start:
-	;
+//	C_SeqStep_OnBasePos_Start:
 	
-	C_SeqStep_OnBasePos_Start:
-	;
+	
+//	C_SeqStep_OnBasePos_Start:
+	
 	
   C_SeqStep_Error: 
     //************* all FB reset
 
 		//************* 
-    mSequence := mDone(); 
+    mCmdExec_Auto := mDone(); 
   //**********************Done 
   	
  	C_SeqStep_Done:
-  	mSequence := mDone();
+  	mCmdExec_Auto := mDone();
 
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_Homing" Id="{cf431297-bf88-454f-af6e-5acf3951bbc1}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_Homing : UINT
+    <Method Name="mCmdExec_Homing" Id="{eb2de01f-87e9-4e47-9b8c-605e0a054e34}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_Homing : E_CmdState
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -194,11 +194,11 @@ CASE SequenceID OF
     //************* all FB reset
 
 		//************* 
-    mSequence := mDone(); 
+    mCmdExec_Homing := mDone(); 
   //**********************Done 
-  	
+ 
  	C_SeqStep_Done:
-  	mSequence := mDone();
+  	mCmdExec_Homing := mDone();
 
 END_CASE]]></ST>
       </Implementation>
