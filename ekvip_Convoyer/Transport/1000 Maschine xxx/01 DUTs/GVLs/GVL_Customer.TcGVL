@@ -19,10 +19,23 @@ VAR_GLOBAL CONSTANT
 	C_Name_LTUPneuClyZ			           : STRING := 'PneuCylZAxisLTU';
 	C_Name_LUTStopper									 : STRING := 'StopperLTU';
 	
+	
+	
 	//======================================================= Name Componemt
 	C_Name_LUTLightBarrier 						 : STRING := 'LUTLightBarrier';
 	C_Name_LUTSimpleMotor 						 : STRING := 'LUTSimpleMotor';
 	
+	C_Name_PneuCylBottomOut 					 : STRING := 'PneuCylBottomOut';
+	C_Name_PneuCylTopOut 						   : STRING := 'PneuCylTopOut';
+	
+	C_Name_PneuCylBottomIn  					 : STRING := 'PneuCylBottomIn';
+	C_Name_PneuCylTopIn 						   : STRING := 'PneuCylTopIn';
+	C_Name_PneuCylMiddleIn 						 : STRING := 'PneuCylMiddleIn';
+	
+	C_Name_DCMotorOut									 : STRING := 'DCMotorOut';
+	
+	C_Name_StopperOut									 : STRING := 'DCMotorOut';
+	C_Name_StopperState								 : STRING := 'DCMotorOut';
 	
 	//======================================================= ID Device 
 	//
@@ -44,6 +57,16 @@ VAR_GLOBAL CONSTANT
 	//
 	C_ID_LUTLightBarrier							 : UINT :=  151;
 	
+	C_ID_PneuCylBottomOut							 : UINT :=  152;
+	C_ID_PneuCylTopOut  							 : UINT :=  153;
+	
+	C_ID_PneuCylBottomIn							 : UINT :=  154;
+	C_ID_PneuCylTopIn   							 : UINT :=  155;
+	C_ID_PneuCylMiddleIn  						 : UINT :=  156;
+	
+	C_ID_DCMotorOut										: UINT :=  157;
+	C_ID_StopperOut										: UINT :=  158;
+	C_ID_StopperState									: UINT :=  159;
 	
 	
 	//======================================================= Customer

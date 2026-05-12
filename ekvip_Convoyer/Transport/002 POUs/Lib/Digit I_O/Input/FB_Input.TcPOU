@@ -3,16 +3,18 @@
   <POU Name="FB_Input" Id="{03a6797d-89e6-4bde-a671-dac2f9ab8585}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Input EXTENDS FB_Base
 VAR_INPUT
-	bAT_bHardwareLink	AT %I*	:	BOOL; // hardware link
+	bBoolValue												: BOOL; 
 END_VAR
-VAR_OUTPUT
-END_VAR
+
 VAR
-	
+	bIAT_bHardwareLink	AT %I*				:	BOOL; // hardware link
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[SUPER^();
+
+bBoolValue := bIAT_bHardwareLink;
+]]></ST>
     </Implementation>
     <Folder Name="01 Properties" Id="{dd12400f-aed7-4dfb-b4cb-d45c40bffe5f}" />
     <Folder Name="02 Methodes" Id="{ddadb740-76eb-481d-b099-2fbd7a9a1f63}" />

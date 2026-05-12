@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_PneuCyl_Stopper" Id="{a7b52489-8306-4768-bce5-7bb6030c1e74}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PneuCyl_Stopper EXTENDS FB_Base
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	//================================= Variable
+	bCarriePresent										: BOOL;
+	
+	
+	//================================= Instance
+	fbStopperOut											: FB_Output					(GVL_Customer.C_Name_StopperOut,
+																												 GVL_Customer.C_ID_StopperOut
+																											  );
+	
+	fbStopperState										: FB_Input					(GVL_Customer.C_Name_StopperState,
+																												 GVL_Customer.C_ID_StopperState
+																											  );
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[SUPER^();
+// Check Carrie available
+bCarriePresent := fbStopperState.bBoolValue;
+]]></ST>
+    </Implementation>
+    <Folder Name="01 Properties" Id="{c888f04d-257a-4261-96a3-2bc2ced9cf8a}" />
+    <Folder Name="02 Methodes" Id="{a74a2467-4e6f-4a46-b8d2-e35efb4de658}">
+      <Folder Name="100 CmdExecute" Id="{0dc3bf36-6aa2-4b59-914a-e061b2834d5c}" />
+    </Folder>
+    <Property Name="CarriePresent" Id="{1fe83577-a471-4efa-93f2-6d8a43602288}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY CarriePresent : BOOL]]></Declaration>
+      <Get Name="Get" Id="{4276cce5-32f7-4fc0-bb97-bc7ff13ad2c1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CarriePresent := bCarriePresent;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{20673222-1c6e-47b5-a9ab-2005bf440132}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bCarriePresent := CarriePresent;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="FB_Init" Id="{34a01689-1654-4ffa-b208-161dc9b86395}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
+//Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
+//die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
+//zusätzlichen Code bereitstellen. Sie können den Rückgabewert auswerten.
+METHOD FB_Init: BOOL
+VAR_INPUT    
+	bInitRetains					: BOOL; 					// TRUE: Die Retain-Variablen werden initialisiert (Reset warm / Reset kalt)    
+	bInCopyCode						: BOOL;  					// TRUE: Die Instanz wird danach in den Kopiercode kopiert (Online-Change)
+	
+	I_Name                : STRING;         //  Name
+	I_ID                  : UINT;            // ID
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCallBase" Id="{c0824658-47f0-4be1-8e5f-870fedd9fcb4}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCallBase : E_CmdState
+VAR_INPUT
+	I_bExecute			 : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+    mCallBase  := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Base position:
+// stopper up = carrier is blocked.
+fbStopperOut.bBoolValue := FALSE;
+mCallBase := E_CmdState.Succeeded;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCallWork" Id="{1572d40f-43f8-4e86-a55e-26f87b8cb52b}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCallWork : E_CmdState
+VAR_INPUT
+	I_bExecute			 : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+    mCallWork  := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Base position:
+// stopper Down = carrier is free.
+fbStopperOut.bBoolValue := TRUE;
+mCallWork := E_CmdState.Succeeded;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

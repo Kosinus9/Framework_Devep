@@ -7,13 +7,37 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	
+	fbBottomOut												: FB_Output					  (GVL_Customer.C_Name_PneuCylBottomOut,
+																													 GVL_Customer.C_ID_PneuCylBottomOut
+																											  	);
+																														
+	fbTopOut													: FB_Output					  (GVL_Customer.C_Name_PneuCylTopOut,
+																													 GVL_Customer.C_ID_PneuCylTopOut
+																											  	);
+	
+	fbBouttomIn												: FB_Input					  (GVL_Customer.C_Name_PneuCylMiddleIn,
+																													 GVL_Customer.C_ID_PneuCylMiddleIn
+																											  	);
+
+	fbTopIn 													: FB_Input					  (GVL_Customer.C_Name_PneuCylMiddleIn,
+																													 GVL_Customer.C_ID_PneuCylMiddleIn
+																											  	);
+																												
+	fbMiddleIn												: FB_Input					  (GVL_Customer.C_Name_PneuCylMiddleIn,
+																													 GVL_Customer.C_ID_PneuCylMiddleIn
+																											  	);
+																													
+																													
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[SUPER^();]]></ST>
     </Implementation>
     <Folder Name="01 Properties" Id="{7f9f3ab8-59ae-4eca-a2d4-19e93fc901fc}" />
-    <Folder Name="02 Methodes" Id="{fcbe53fd-f5c0-4865-babd-f6fd9d39dfd6}" />
+    <Folder Name="02 Methodes" Id="{fcbe53fd-f5c0-4865-babd-f6fd9d39dfd6}">
+      <Folder Name="100 CmdExecute" Id="{2638535f-0cf6-460e-9dfd-d9fc56172997}" />
+    </Folder>
     <Method Name="FB_Init" Id="{8d364b46-6db2-4a0b-a3fd-36a170ec67fd}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
@@ -29,6 +53,92 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCallBottom" Id="{20d57b03-bf1d-4ff1-b123-9c04c00c3255}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCallBottom : E_CmdState
+VAR_INPUT
+	I_bExecute			 : BOOL;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+    mCallBottom  := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Command cylinder to top.
+// To Bottom=True, To Top=False.
+
+fbBottomOut.bBoolValue 	:= TRUE;
+fbTopOut.bBoolValue   	:= FALSE;
+
+// Wait until top sensor is active.
+IF fbBouttomIn.bBoolValue 
+	THEN
+		mCallBottom 	:= E_CmdState.Succeeded;
+ELSE
+    mCallBottom 	:= E_CmdState.Busy;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCallMiddle" Id="{4fbc886a-155d-41b4-b539-a6a894d01499}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCallMiddle : E_CmdState
+VAR_INPUT
+	I_bExecute			 : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+    mCallMiddle    := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Command cylinder to Middle.
+// To Bottom=False, To Top=False.
+fbBottomOut.bBoolValue 	   := FALSE;
+fbTopOut.bBoolValue    		 := FALSE;
+
+// Wait until top sensor is active.
+IF fbMiddleIn.bIAT_bHardwareLink 
+	THEN
+		mCallMiddle 	 := E_CmdState.Succeeded;
+ELSE
+    mCallMiddle 	 := E_CmdState.Busy;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCallTop" Id="{024c0db2-8530-4e9f-8ed6-a6d408c8fbd6}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCallTop : E_cmdState
+VAR_INPUT
+	I_bExecute		: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+    mCallTop       := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Command cylinder to top.
+// ToBottom=FALSE, ToTop=TRUE.
+fbBottomOut.bBoolValue 		 := FALSE;
+fbTopOut.bBoolValue    	   := TRUE;
+
+// Wait until top sensor is active.
+IF fbTopIn.bBoolValue 
+	THEN
+		mCallTop 			 := E_CmdState.Succeeded;
+ELSE
+    mCallTop 			 := E_CmdState.Busy;
+END_IF]]></ST>
       </Implementation>
     </Method>
   </POU>

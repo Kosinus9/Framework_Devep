@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedType>
+      <Type guid="5feb55c0-427c-48c9-ba35-af743a91e620">FB_LUTDEVICE_1</Type>
+      <From>FB_LUTDevice_1</From>
+      <To>FB_Template</To>
+    </RenamedType>
+  </Renames>
+</Refactors>

@@ -334,7 +334,8 @@ END_VAR
       <Implementation>
         <ST><![CDATA[
 SUPER^.mReset();
-]]></ST>
+
+SequenceID := C_SeqStep_Idle;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mSequence" Id="{ceec0fba-774c-4026-a416-40592d0b39fe}" FolderPath="02 Methodes\">

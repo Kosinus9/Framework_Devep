@@ -10,21 +10,21 @@ END_VAR
 
 VAR
 	//===================== Instance
-	fbPneuCyl3Pos_AxisZ								: FB_PneuCyl_3Pos     (GVL_Customer.C_Name_LTUPneuClyZ,
-																													GVL_Customer.C_ID_LTUPneuClyZ
-																										  		); 
+	fbPneuCyl3Pos_AxisZ								: FB_PneuCyl_3Pos     	 (GVL_Customer.C_Name_LTUPneuClyZ,
+																															GVL_Customer.C_ID_LTUPneuClyZ
+																										  				); 
 																													
-	fbStopperLut											: FB_PneuCyl_1Pos     (GVL_Customer.C_Name_LUTStopper,
-																													GVL_Customer.C_ID_LUTStopper
-																										  		);																												
+	fbStopperLut											: FB_PneuCyl_Stopper     (GVL_Customer.C_Name_LUTStopper,
+																															GVL_Customer.C_ID_LUTStopper
+																										  			 );																												
 																													
-	fbLUTLightBarrier									: FB_Input					  (GVL_Customer.C_Name_LUTLightBarrier,
-																													GVL_Customer.C_ID_LUTLightBarrier
-																										  		);																																										
+	fbLUTLightBarrier									: FB_Input					  		(GVL_Customer.C_Name_LUTLightBarrier,
+																															GVL_Customer.C_ID_LUTLightBarrier
+																										  				);																																										
 	
-	fbLUTSimpleMotor									: FB_MotorSimple      (GVL_Customer.C_Name_LUTSimpleMotor,
-																													GVL_Customer.C_ID_LUTSimpleMotor
-																										  		);
+	fbLUTSimpleMotor									: FB_MotorSimple      		(GVL_Customer.C_Name_LUTSimpleMotor,
+																															GVL_Customer.C_ID_LUTSimpleMotor
+																										  				);
 
 																										
 END_VAR
@@ -49,7 +49,10 @@ SUPER^();
 //====================================
 IF NOT Enable THEN RETURN; END_IF
 
-//fbLUTLightBarrier.AT_bHardwareLink]]></ST>
+fbPneuCyl3Pos_AxisZ();
+fbStopperLut();
+fbLUTLightBarrier();
+fbLUTSimpleMotor();]]></ST>
     </Implementation>
     <Folder Name="01 Properties" Id="{01153c84-2cbf-4774-9afe-06465af82a17}" />
     <Folder Name="02 Methodes" Id="{1154e57b-5607-4e8c-9894-d39905ffa9c5}">
@@ -154,6 +157,32 @@ CASE SequenceID OF
 END_CASE]]></ST>
       </Implementation>
     </Method>
+    <Method Name="mCmdExec_MoveBottom" Id="{8febe5ee-97da-4ab2-9486-5866194a4d14}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_MoveBottom : E_CmdState
+VAR_INPUT
+	I_Execute					: BOOL;
+END_VAR
+
+VAR
+	L_eState 					: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCmdExec_MoveTop" Id="{4ff0852f-f39d-4fd3-895f-9db63096116e}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_MoveTop : E_CmdState
+VAR_INPUT
+	I_Execute					: BOOL;
+END_VAR
+
+VAR
+	L_eState 					: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="mCmdExec_Service" Id="{b17d27f6-62e0-420a-b1d7-d447cfe9cb9d}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_Service : E_CmdState
 VAR_INPUT
@@ -183,30 +212,6 @@ END_VAR
         <ST><![CDATA[
 SUPER^.mHome(I_bExecute);
 ]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mMoveBottom" Id="{8febe5ee-97da-4ab2-9486-5866194a4d14}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mMoveBottom : E_CmdState
-VAR_INPUT
-END_VAR
-
-VAR
-	L_eState 					: E_CmdState;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mMoveTop" Id="{4ff0852f-f39d-4fd3-895f-9db63096116e}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mMoveTop : E_CmdState
-VAR_INPUT
-END_VAR
-
-VAR
-	L_eState 					: E_CmdState;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
     <Method Name="mRelease" Id="{371d93b7-c4a5-4cdb-81ce-2ec14cd8d7cb}" FolderPath="02 Methodes\">

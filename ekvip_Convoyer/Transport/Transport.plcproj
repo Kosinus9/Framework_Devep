@@ -71,9 +71,6 @@
     <Compile Include="002 POUs\00 Generic\FM_Maschine.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\00 Template\FB_LUTDevice_1.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="002 POUs\Lib\01 Device\00 Template\FB_Template.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -92,7 +89,7 @@
     <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_ReadHead.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_PneuCyl_1Pos.TcPOU">
+    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_PneuCyl_Stopper.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_MotorSimple.TcPOU">

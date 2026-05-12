@@ -113,42 +113,53 @@ IF bAnyChildError
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mReset" Id="{9f526523-b7e3-46df-b678-7a9d37521ebc}" FolderPath="02 Methodes\040 Fx\">
+    <Method Name="mReset" Id="{5ff340bf-d875-48ce-8ee0-ba78a52617fe}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mReset : BOOL
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-// Reset machine base status
-SUPER^.mReset();
-
-// Reset all child devices
-mResetChild();
-
-bAnyChildError := FALSE;
-bAnyChildBusy  := FALSE;
-
-Mode := E_Mode.Idle;
-SequenceID := C_SeqStep_Idle;
-mReset := TRUE;]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mResetChild" Id="{a3b91ffa-73bb-466c-a5d7-43ac968571a3}" FolderPath="02 Methodes\010 _SetChild\">
-      <Declaration><![CDATA[METHOD mResetChild : BOOL
 VAR_INPUT
 END_VAR
 VAR
-	uiIndeX						: UINT;
-	
+	L_uiIndex   : UINT;
 END_VAR
+
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-// Reset all registered child devices
-FOR uiIndeX := 1 TO uiChildsCount DO
-    aitfChilds[uiIndeX].mReset();
+// Reset own machine state from parent class
+//==================================================
+SUPER^.mReset();
+
+// Reset all register child devices
+//==================================================
+FOR L_uiIndex := 1 TO uiChildsCount DO
+	aitfChilds[L_uiIndex].mReset();
 END_FOR
 
-mResetChild	 				:= TRUE;]]></ST>
+// Reset machine supervision flags
+//==================================================
+bAllChildsReady 							:= FALSE;
+bAllChildsHomed 							:= FALSE;
+bAllChildsDone  							:= FALSE;
+                							
+bAnyChildBusy   							:= FALSE;
+bAnyChildError  							:= FALSE;
+
+// Reset machine sequence
+//==================================================
+SequenceID 										:= C_SeqStep_Idle;
+              								
+bSequenceBusy 								:= FALSE;
+bSequenceDone 								:= FALSE;
+              								
+bReady 												:= FALSE;
+bHomed 												:= FALSE;
+
+// Reset machine mode
+//==================================================
+Mode 													:= E_Mode.IDLE;
+
+// Reset successful
+//==================================================
+mReset := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mSequence" Id="{d50b92a4-7563-419d-8a14-262b8f70b0f9}" FolderPath="02 Methodes\">

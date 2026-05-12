@@ -10,28 +10,191 @@
 		</System>
 		<Plc>
 			<Project GUID="{81AFEAAA-A050-46FA-81EC-27E633CBC1C0}" Name="Transport" PrjFilePath="Transport\Transport.plcproj" TmcFilePath="Transport\Transport.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{701746E5-0106-B71B-45BD-093340045D66}" TmcPath="Transport\Transport.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{9F490387-2436-0B92-362D-8EB0526C87F1}" TmcPath="Transport\Transport.tmc">
 					<Name>Transport Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Vars VarGrpType="2" AreaNo="1">
+						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbPneuCyl3Pos_AxisZ.fbBottomOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbPneuCyl3Pos_AxisZ.fbTopOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbLUTSimpleMotor.fbDCMotorOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbPneuCyl3Pos_AxisZ.fbBottomOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbPneuCyl3Pos_AxisZ.fbTopOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbLUTSimpleMotor.fbDCMotorOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbPneuCyl3Pos_AxisZ.fbBottomOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbPneuCyl3Pos_AxisZ.fbTopOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbLUTSimpleMotor.fbDCMotorOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbPneuCyl3Pos_AxisZ.fbBottomOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbPneuCyl3Pos_AxisZ.fbTopOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbLUTSimpleMotor.fbDCMotorOut.bQAT_HardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+					</Vars>
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice3.fbLUTLightBarrier.bAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbPneuCyl3Pos_AxisZ.fbBouttomIn.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice6.fbLUTLightBarrier.bAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbPneuCyl3Pos_AxisZ.fbTopIn.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice9.fbLUTLightBarrier.bAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbPneuCyl3Pos_AxisZ.fbMiddleIn.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice12.fbLUTLightBarrier.bAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbStopperLut.fbStopperState.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbLUTLightBarrier.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbPneuCyl3Pos_AxisZ.fbBouttomIn.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbPneuCyl3Pos_AxisZ.fbTopIn.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbPneuCyl3Pos_AxisZ.fbMiddleIn.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbStopperLut.fbStopperState.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbLUTLightBarrier.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbPneuCyl3Pos_AxisZ.fbBouttomIn.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbPneuCyl3Pos_AxisZ.fbTopIn.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbPneuCyl3Pos_AxisZ.fbMiddleIn.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbStopperLut.fbStopperState.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbLUTLightBarrier.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbPneuCyl3Pos_AxisZ.fbBouttomIn.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbPneuCyl3Pos_AxisZ.fbTopIn.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbPneuCyl3Pos_AxisZ.fbMiddleIn.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbStopperLut.fbStopperState.bIAT_bHardwareLink</Name>
+							<Comment><![CDATA[ hardware link]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbLUTLightBarrier.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
