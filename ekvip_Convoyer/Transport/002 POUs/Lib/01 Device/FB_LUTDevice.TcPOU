@@ -9,6 +9,16 @@ VAR_OUTPUT
 END_VAR
 
 VAR
+	//===================== Variable
+	eLTUPosition					: E_LTUPosition;
+	bCarrierPresent				: BOOL;
+	bLTUFree							: BOOL;
+	
+	bReserved							: BOOL;
+	eReservedBy						: E_Convoyer;
+	
+	
+	
 	//===================== Instance
 	fbPneuCyl3Pos_AxisZ								: FB_PneuCyl_3Pos     	 (GVL_Customer.C_Name_LTUPneuClyZ,
 																															GVL_Customer.C_ID_LTUPneuClyZ
@@ -57,6 +67,25 @@ fbLUTSimpleMotor();]]></ST>
     <Folder Name="02 Methodes" Id="{1154e57b-5607-4e8c-9894-d39905ffa9c5}">
       <Folder Name="100 CmdExecute" Id="{737ecdee-bdd3-4011-be43-9c8053143eb0}" />
     </Folder>
+    <Property Name="CarrierPresent" Id="{b074603b-40b1-4657-ab62-b1cd6acb861f}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY CarrierPresent : BOOL]]></Declaration>
+      <Get Name="Get" Id="{88207567-04e5-4568-82f0-781cf9a61ad4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CarrierPresent := bCarrierPresent;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{fd122f58-f442-4621-8637-9e667fca0acd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bCarrierPresent := CarrierPresent;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Method Name="FB_Init" Id="{4e8aa732-d3ac-4d90-bbea-84986dfc142d}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
@@ -75,6 +104,45 @@ END_VAR]]></Declaration>
         <ST><![CDATA[  ]]></ST>
       </Implementation>
     </Method>
+    <Property Name="LTUFree" Id="{1f84a690-a1f2-456d-ad2b-bc5117437904}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY LTUFree : BOOL]]></Declaration>
+      <Get Name="Get" Id="{d00d9a6b-7aca-4015-aa9d-f54e3711617d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[
+LTUFree := bLTUFree;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{d538fb44-3dfc-4c3c-8b31-3a15c25ffd6c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bLTUFree := LTUFree;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="LTUPosition" Id="{c1f15a68-48c8-460e-be2e-811c99b99676}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY LTUPosition : E_LTUPosition]]></Declaration>
+      <Get Name="Get" Id="{6ea8e49b-49a8-4199-a325-4e224d8d6684}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[LTUPosition := eLTUPosition;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{a1718f28-a922-45a4-926f-c3a142e1f8ee}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[eLTUPosition := LTUPosition;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Method Name="mAutomatic" Id="{1a363c95-a5ab-493c-a24f-fc972dc90c4d}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mAutomatic : E_CmdState
 VAR_INPUT
@@ -159,27 +227,88 @@ END_CASE]]></ST>
     <Method Name="mCmdExec_MoveBottom" Id="{8febe5ee-97da-4ab2-9486-5866194a4d14}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_MoveBottom : E_CmdState
 VAR_INPUT
-	I_Execute					: BOOL;
+	I_bExecute					: BOOL;
 END_VAR
 
 VAR
-	L_eState 					: E_CmdState;
+	L_eCmdState 					: E_CmdState;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+  	mCmdExec_MoveMiddle := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Move vertical axis to TOP.
+L_eCmdState := fbPneuCyl3Pos_AxisZ.mCallBottom(TRUE);
+CASE L_eCmdState OF
+	E_CmdState.Succeeded:
+  	mCmdExec_MoveBottom := E_CmdState.Succeeded;
+  E_CmdState.Busy:
+  	mCmdExec_MoveBottom := E_CmdState.Busy;
+ELSE
+	mCmdExec_MoveBottom := L_eCmdState;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCmdExec_MoveMiddle" Id="{31257785-c557-43e8-9c51-32cde10873f6}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_MoveMiddle : E_CmdState
+VAR_INPUT
+	I_bExecute					: BOOL;
+END_VAR
+
+VAR
+	L_eCmdState 					: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+  	mCmdExec_MoveMiddle := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Move vertical axis to TOP.
+L_eCmdState := fbPneuCyl3Pos_AxisZ.mCallMiddle(TRUE);
+CASE L_eCmdState OF
+	E_CmdState.Succeeded:
+  	mCmdExec_MoveMiddle := E_CmdState.Succeeded;
+  E_CmdState.Busy:
+  	mCmdExec_MoveMiddle := E_CmdState.Busy;
+ELSE
+	mCmdExec_MoveMiddle := L_eCmdState;
+END_CASE]]></ST>
       </Implementation>
     </Method>
     <Method Name="mCmdExec_MoveTop" Id="{4ff0852f-f39d-4fd3-895f-9db63096116e}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_MoveTop : E_CmdState
 VAR_INPUT
-	I_Execute					: BOOL;
+	I_bExecute					: BOOL;
 END_VAR
 
 VAR
-	L_eState 					: E_CmdState;
+	L_eCmdState 					: E_CmdState;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+  	mCmdExec_MoveTop := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Move vertical axis to TOP.
+L_eCmdState := fbPneuCyl3Pos_AxisZ.mCallTop(TRUE);
+CASE L_eCmdState OF
+	E_CmdState.Succeeded:
+  	mCmdExec_MoveTop := E_CmdState.Succeeded;
+  E_CmdState.Busy:
+  	mCmdExec_MoveTop := E_CmdState.Busy;
+ELSE
+	mCmdExec_MoveTop := L_eCmdState;
+END_CASE]]></ST>
       </Implementation>
     </Method>
     <Method Name="mCmdExec_Service" Id="{b17d27f6-62e0-420a-b1d7-d447cfe9cb9d}" FolderPath="02 Methodes\100 CmdExecute\">
@@ -189,6 +318,34 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCmdExec_TransferTop" Id="{d2f6dd01-c2ed-4343-891b-6738e835be35}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_TransferTop : E_CmdState
+VAR_INPUT
+	I_bExecute					: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute THEN
+    fbLUTSimpleMotor.mStopMotor(TRUE);
+    mCmdExec_TransferTop := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Start LTU motor for top transfer.
+fbLUTSimpleMotor.mStartMotor(TRUE);
+
+// Wait  carrier leaves LTU.
+IF NOT fbStopperLut.CarriePresent 
+	THEN
+    fbLUTSimpleMotor.mStopMotor(TRUE);
+    mCmdExec_TransferTop := E_CmdState.Succeeded;
+    RETURN;
+END_IF
+
+mCmdExec_TransferTop := E_CmdState.Busy;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mHold" Id="{9c6da647-9b3a-4008-822a-f46989735258}" FolderPath="02 Methodes\">
@@ -283,5 +440,24 @@ END_VAR
 SUPER^.mStop(I_bExecute);]]></ST>
       </Implementation>
     </Method>
+    <Property Name="ReservedBy" Id="{cb2eae19-49dd-472f-ae1a-bd6a0377a00b}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY ReservedBy : E_Convoyer]]></Declaration>
+      <Get Name="Get" Id="{794b05e1-e352-4d18-bf73-38d2b088bb67}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ReservedBy := eReservedBy;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{7ecf7796-1c1a-4216-9263-351ab44afc8c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[eReservedBy := ReservedBy;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
   </POU>
 </TcPlcObject>

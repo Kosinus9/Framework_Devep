@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedType>
+      <Type guid="0699606b-20d9-450f-ac58-6e4a863820c1">MCMDEXEC_MOVETOP_1</Type>
+      <From>mCmdExec_MoveTop_1</From>
+      <To>mCmdExec_TransferTop</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="31257785-c557-43e8-9c51-32cde10873f6">MCMDEXEC_TRANSFERTOP_1</Type>
+      <From>mCmdExec_TransferTop_1</From>
+      <To>mCmdExec_MoveMiddle</To>
+    </RenamedType>
+  </Renames>
+</Refactors>

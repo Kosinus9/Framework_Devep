@@ -3,5 +3,71 @@
   <Itf Name="ITF_LUT" Id="{6c0d6849-e396-4313-9db5-4e08f7814412}">
     <Declaration><![CDATA[INTERFACE ITF_LUT EXTENDS ITF_Device
 ]]></Declaration>
+    <Folder Name="01 Properties" Id="{918ca8a6-e0b0-4e1d-9c02-fec848137e0f}" />
+    <Folder Name="02 Methodes" Id="{52451a06-1a21-4dc8-86d8-33d6b2f2007a}" />
+    <Property Name="CarrierPresent" Id="{3edd6f5f-6da5-4acc-96c1-1a9245c92eb7}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY CarrierPresent : BOOL]]></Declaration>
+      <Get Name="Get" Id="{42de535c-13e8-4f5f-8400-33ca1492df76}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{26b3fc33-8256-408e-8a8d-b46d2057804b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="LTUFree" Id="{3c50412d-7b7a-4f29-b7b2-a28bde9f6fe5}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY LTUFree : BOOL]]></Declaration>
+      <Get Name="Get" Id="{4f194186-e093-4e45-aaa1-47844022f82b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{11087894-221b-4eee-b108-75a26939d905}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="LTUPosition" Id="{4e70c088-9f39-4b77-87a2-e5e8c87d9ec5}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY LTUPosition : E_LTUPosition]]></Declaration>
+      <Get Name="Get" Id="{52a9326c-be79-41ea-920c-a613d38c0be4}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{925464df-cff8-4827-b5d7-bc532a493b28}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Method Name="mCmdExec_MoveBottom" Id="{9ddedb5f-5861-4538-808c-36f0d32352cb}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mCmdExec_MoveBottom : E_CmdState
+VAR_INPUT
+	I_Execute					: BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mCmdExec_MoveMiddle" Id="{065f028c-a162-4f8e-ad8f-163ada6683f3}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mCmdExec_MoveMiddle : E_CmdState
+VAR_INPUT
+	I_Execute					: BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mCmdExec_MoveTop" Id="{dd172e8b-57a6-4c50-aedb-1b42c50c4b0f}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mCmdExec_MoveTop : E_CmdState
+VAR_INPUT
+	I_Execute					: BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mCmdExec_TransferTop" Id="{0699606b-20d9-450f-ac58-6e4a863820c1}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mCmdExec_TransferTop : E_CmdState
+VAR_INPUT
+	I_Execute					: BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Property Name="ReservedBy" Id="{3282ed56-d078-4912-b714-d61a45b4bf20}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY ReservedBy : E_Convoyer]]></Declaration>
+      <Get Name="Get" Id="{b869b8e0-48e0-42f6-990b-b68194ec4278}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{8f605f2e-5c6b-4860-b6d8-424710527a42}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
   </Itf>
 </TcPlcObject>
