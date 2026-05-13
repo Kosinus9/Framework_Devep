@@ -11,5 +11,15 @@
       <From>mCmdExec_TransferTop_1</From>
       <To>mCmdExec_MoveMiddle</To>
     </RenamedType>
+    <RenamedType>
+      <Type guid="ec212c1f-d213-4550-add5-c0351f9927e9">MCMDEXEC_BASEPOST</Type>
+      <From>mCmdExec_Homing</From>
+      <To>mCmdExec_BasePos</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="eb2de01f-87e9-4e47-9b8c-605e0a054e34">MCMDEXEC_HOMING</Type>
+      <From>mCmdExec_Homing</From>
+      <To>mCmdExec_BasePos</To>
+    </RenamedType>
   </Renames>
 </Refactors>

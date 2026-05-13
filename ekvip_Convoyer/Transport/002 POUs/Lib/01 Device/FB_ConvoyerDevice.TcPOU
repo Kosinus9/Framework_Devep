@@ -203,14 +203,13 @@ CASE SequenceID OF
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_Homing" Id="{eb2de01f-87e9-4e47-9b8c-605e0a054e34}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_Homing : E_CmdState
+    <Method Name="mCmdExec_BasePos" Id="{eb2de01f-87e9-4e47-9b8c-605e0a054e34}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_BasePos : E_CmdState
 VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-CASE SequenceID OF
+        <ST><![CDATA[CASE SequenceID OF
 
   //******************************************************* Idle 
   C_SeqStep_Idle: 
@@ -218,18 +217,21 @@ CASE SequenceID OF
   
   //****************************************************** Start
   C_SeqStep_Start:
-   
-  	SequenceID       :=  C_SeqStep_Done;
-	
+	// Home position for LTU is MIDDLE.
+		fbMotorConvoyer.mStopMotor(TRUE);
+		IF E_CmdState.Succeeded  = fbStopperCarrieConvoyer.mCallBase(TRUE)
+			THEN
+			Homed := TRUE;
+  	  Ready := TRUE;
+  	  SequenceID := C_SeqStep_OnBasePos_Done;
+		END_IF
+		
   C_SeqStep_Error: 
     //************* all FB reset
-
-		//************* 
-    mCmdExec_Homing := mDone(); 
-  //**********************Done 
- 
- 	C_SeqStep_Done:
-  	mCmdExec_Homing := mDone();
+    mCmdExec_BasePos := mDone(); 
+  //**********************Done
+ 	C_SeqStep_OnBasePos_Done:
+  	mCmdExec_BasePos := mDone();
 
 END_CASE]]></ST>
       </Implementation>
@@ -345,7 +347,7 @@ END_IF
 
 CASE Mode OF
 	E_Mode.Homing:
-		mSequence := mCmdExec_Homing();
+		mSequence := mCmdExec_BasePos();
 	E_Mode.Auto:
 		mSequence := mCmdExec_Auto();
 	E_Mode.Service:
