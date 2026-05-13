@@ -47,6 +47,9 @@
     <Compile Include="001DUTs\ITF\Device\ITF_LTU.TcIO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="001DUTs\ITF\Device\ITF_RouteProvider.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="001DUTs\ITF\Generic\ITF_Base.TcIO">
       <SubType>Code</SubType>
     </Compile>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <Itf Name="ITF_RouteProvider" Id="{6c7a5320-1a88-4e12-a054-ecf97a557707}">
+    <Declaration><![CDATA[INTERFACE ITF_RouteProvider
+]]></Declaration>
+    <Folder Name="02 Methodes" Id="{8e81328c-7763-4e8a-800e-ad2237e1095b}" />
+    <Method Name="mGetNextRoute" Id="{b6327824-f7b1-44ee-a0e9-c5bceba6116f}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mGetNextRoute : E_CmdState
+VAR_OUTPUT
+	O_refRouteJob				: REFERENCE TO ST_RouteJob;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mReleaseRoute" Id="{5743e54f-fb91-46d2-a568-7d2cedab24c7}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mReleaseRoute : E_CmdState
+VAR_INPUT
+	I_uiJobID					 : UINT;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

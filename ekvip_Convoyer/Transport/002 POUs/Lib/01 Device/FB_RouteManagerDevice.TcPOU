@@ -29,18 +29,18 @@ VAR
 	itfC12   											: ITF_Convoyer;
 	
 	//===================== Variable
-	eSource			 									: E_Convoyer;
-	eDestination 									: E_Convoyer;
+//	eSource			 									: E_Convoyer;
+//	eDestination 									: E_Convoyer;
 	
-	stCurrentRoute 								: ST_Route;
-	 
-	bRouteRequest   							: BOOL;
-	bRouteAvailable 							: BOOL;
-  bRouteReserved								: BOOL;
+	astRouteQueue 								: ARRAY[1..10] OF ST_RouteJob; // Warteschlange speichern die berechneteten route 
+	uiNextJobID 									: UINT := 1;
+	
+//	bRouteRequest   							: BOOL;
+//	bRouteAvailable 							: BOOL;
+//  bRouteReserved								: BOOL;
 	
 	//===================== Instance
-	
-																							
+																								
 END_VAR
 
 VAR CONSTANT
@@ -68,25 +68,6 @@ IF NOT Enable THEN RETURN; END_IF
       <Folder Name="100 CmdExecute" Id="{0313f81c-d9a9-4b37-95e5-806775012e03}" />
       <Folder Name="200 CmdRouteManager" Id="{fe266e6d-53aa-463c-84bf-fb8e0d836b88}" />
     </Folder>
-    <Property Name="CarrierPresent" Id="{28a673b2-92d9-4578-9add-5105e9b22dff}" FolderPath="01 Properties\">
-      <Declaration><![CDATA[PROPERTY CarrierPresent : BOOL]]></Declaration>
-      <Get Name="Get" Id="{cd977f3d-1cc9-4142-82f8-0df85badda43}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[CarrierPresent := bCarrierPresent;]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{01e77b4c-da8f-432e-a40e-1981853395ff}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[bCarrierPresent := CarrierPresent;]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
     <Method Name="FB_Init" Id="{f025e0f4-08c7-4495-afa3-601541f6e854}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
@@ -101,10 +82,13 @@ VAR_INPUT
 	I_ID                  : UINT;           // ID
   I_itfOwner					  : ITF_Owner;      // owner 
 	
-	I_itfLTU3  						: ITF_LTU;
+// ITF_LTU	
+	I_itfLTU3  						: ITF_LTU;        
  	I_itfLTU6  						: ITF_LTU;
  	I_itfLTU9  						: ITF_LTU;
- 	I_itfLTU12 						: ITF_LTU;     							
+ 	I_itfLTU12 						: ITF_LTU;
+  
+// ITF_Convoyer  							
 	I_itfC3    						: ITF_Convoyer;
 	I_itfC6    						: ITF_Convoyer;
 	I_itfC9    						: ITF_Convoyer;
@@ -112,58 +96,20 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-	
+// chek and link LTU
 IF itfLTU3  <>0 THEN itfLTU3  := I_itfLTU3; END_IF
 IF itfLTU6  <>0 THEN itfLTU6  := I_itfLTU6; END_IF
 IF itfLTU9  <>0 THEN itfLTU9  := I_itfLTU9; END_IF
 IF itfLTU12 <>0 THEN itfLTU12 := I_itfLTU12;END_IF
 
-IF itfC3  	<>0 THEN itfC3  	:= I_itfC3; END_IF
-IF itfC6  	<>0 THEN itfC6  	:= I_itfC6; END_IF
-IF itfC9  	<>0 THEN itfC9  	:= I_itfC9; END_IF
-IF itfC12 	<>0 THEN itfC12 	:= I_itfC12;END_IF
+// chek and link covoyer
+IF itfC3  <>0 THEN itfC3  := I_itfC3; END_IF
+IF itfC6  <>0 THEN itfC6  := I_itfC6; END_IF
+IF itfC9  <>0 THEN itfC9  := I_itfC9; END_IF
+IF itfC12 <>0 THEN itfC12 := I_itfC12;END_IF
 	]]></ST>
       </Implementation>
     </Method>
-    <Property Name="LTUFree" Id="{49fa8a07-b1e5-48b2-90fe-944d56de56a3}" FolderPath="01 Properties\">
-      <Declaration><![CDATA[PROPERTY LTUFree : BOOL]]></Declaration>
-      <Get Name="Get" Id="{aba29ed6-c00d-4836-a0ff-b45e09ae0b67}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[
-LTUFree := bLTUFree;]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{da6fa49d-0e20-4c3d-9bef-f3d9525c3bf6}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[bLTUFree := LTUFree;]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
-    <Property Name="LTUPosition" Id="{8f4bacc7-bc81-4d32-a31f-03cc1155a60b}" FolderPath="01 Properties\">
-      <Declaration><![CDATA[PROPERTY LTUPosition : E_LTUPosition]]></Declaration>
-      <Get Name="Get" Id="{f1c87639-7def-4256-904d-e18349e053ea}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[LTUPosition := eLTUPosition;]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{8871ae61-30fb-4d1c-9a4f-2f686729bd3b}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[eLTUPosition := LTUPosition;]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
     <Method Name="mAutomatic" Id="{96a825f9-7aeb-41cb-a336-78f3a907220b}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mAutomatic : E_CmdState
 VAR_INPUT
@@ -177,7 +123,8 @@ END_VAR
     <Method Name="mBuildRoute" Id="{7200bf03-7fa0-4280-a8ff-c4a05727f4d4}" FolderPath="02 Methodes\200 CmdRouteManager\">
       <Declaration><![CDATA[METHOD mBuildRoute : BOOL
 VAR_INPUT
-	
+	I_eSource      		: E_Convoyer;
+  I_eDestination 		: E_Convoyer;
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -188,12 +135,43 @@ END_VAR
     <Method Name="mCheckRouteFree" Id="{677ed7d3-36c4-4960-8f5d-5f1bc61e49dd}" FolderPath="02 Methodes\200 CmdRouteManager\">
       <Declaration><![CDATA[METHOD mCheckRouteFree : BOOL
 VAR_INPUT
-	
+    Ref_stRoute : REFERENCE TO ST_Route;
+END_VAR
+VAR
+    i : UINT;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// No command requested.
-]]></ST>
+        <ST><![CDATA[
+mCheckRouteFree := TRUE;
+
+FOR i := 1 TO Ref_stRoute.iuStepCount DO
+	CASE Ref_stRoute.astSteps[i].eTransp OF
+		E_Convoyer.Convoyer_3:
+			IF itfLTU3.bReserved OR itfConvoyer3.bReserved THEN
+			    mCheckRouteFree := FALSE;
+			    RETURN;
+			END_IF
+		E_Convoyer.Convoyer_6:
+			IF itfLTU6.bReserved OR itfConvoyer6.bReserved 
+				THEN
+			    mCheckRouteFree := FALSE;
+			    RETURN;
+			END_IF
+		E_Convoyer.Convoyer_9:
+			IF itfLTU9.bReserved OR itfConvoyer9.bReserved 
+				THEN
+			    mCheckRouteFree := FALSE;
+			    RETURN;
+			END_IF
+		E_Convoyer.Convoyer_12:
+			IF itfLTU12.bReserved OR itfConvoyer12.bReserved 
+				THEN
+			  	mCheckRouteFree := FALSE;
+			    RETURN;
+			END_IF
+	END_CASE
+END_FOR]]></ST>
       </Implementation>
     </Method>
     <Method Name="mCmdExec_Auto" Id="{8119614c-5c76-4267-a8ee-e2944e67878d}" FolderPath="02 Methodes\100 CmdExecute\">
@@ -264,43 +242,8 @@ END_VAR
         <ST><![CDATA[;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHold" Id="{fb155185-5dd5-45a4-8ccd-2c88c48f99cd}" FolderPath="02 Methodes\">
-      <Declaration><![CDATA[METHOD mHold : E_CmdState
-VAR_INPUT
-	I_bExecute	: BOOL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-SUPER^.mHold(I_bExecute);
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mHome" Id="{70f1a819-da67-4528-b36e-9effb9c23247}" FolderPath="02 Methodes\">
-      <Declaration><![CDATA[METHOD mHome : E_CmdState
-VAR_INPUT
-	I_bExecute	: BOOL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-SUPER^.mHome(I_bExecute);
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mRelease" Id="{9fc9f7cd-d81c-45c4-94fb-80fa991ddff3}" FolderPath="02 Methodes\">
-      <Declaration><![CDATA[METHOD mRelease : E_CmdState
-VAR_INPUT
-	I_bExecute	: BOOL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-SUPER^.mRelease(I_bExecute);]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mRequestRoute" Id="{4a417486-f8d2-4dd6-9779-5933800df322}" FolderPath="02 Methodes\200 CmdRouteManager\">
-      <Declaration><![CDATA[METHOD mRequestRoute : E_CmdState
+    <Method Name="mCreateRouteJob" Id="{72477f1d-916a-4940-95a3-70ae4b16d8cf}" FolderPath="02 Methodes\200 CmdRouteManager\">
+      <Declaration><![CDATA[METHOD mCreateRouteJob : E_CmdState
 VAR_INPUT
    I_bExecute     		: BOOL;
    I_eSource      		: E_Convoyer;
@@ -350,6 +293,170 @@ bRouteAvailable 				:= TRUE;
 bRouteReserved 					:= TRUE;
 
 mRequestRoute 					:= E_CmdState.Succeeded;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mGetNextRoute" Id="{06984068-3194-4d74-b193-97ce62a6c78e}" FolderPath="02 Methodes\200 CmdRouteManager\">
+      <Declaration><![CDATA[METHOD mGetNextRoute : E_CmdState
+VAR_OUTPUT
+	O_refRouteJob				: REFERENCE TO ST_RouteJob;
+END_VAR
+
+VAR
+	L_uiIndex  : UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+FOR L_uiIndex := 1 TO 10 DO
+	IF astRouteQueue[L_uiIndex].bValid
+		 AND astRouteQueue[L_uiIndex].bReserved
+		 AND NOT astRouteQueue[L_uiIndex].bExecuting
+		 AND NOT astRouteQueue[L_uiIndex].bDone
+		 AND NOT astRouteQueue[L_uiIndex].bError 
+		 	THEN
+        astRouteQueue[L_uiIndex].bExecuting := TRUE;
+        O_refRouteJob   REF= astRouteQueue[L_uiIndex];
+        mGetNextRoute   := E_CmdState.Succeeded;
+        RETURN;
+   END_IF
+END_FOR
+
+mGetNextRoute := E_CmdState.Idle;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mHold" Id="{fb155185-5dd5-45a4-8ccd-2c88c48f99cd}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mHold : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+SUPER^.mHold(I_bExecute);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mHome" Id="{70f1a819-da67-4528-b36e-9effb9c23247}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mHome : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+SUPER^.mHome(I_bExecute);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mRelease" Id="{9fc9f7cd-d81c-45c4-94fb-80fa991ddff3}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mRelease : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+SUPER^.mRelease(I_bExecute);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mReleaseRoute" Id="{7a28c4d0-ec98-4ffc-acae-0f1005e73972}" FolderPath="02 Methodes\200 CmdRouteManager\">
+      <Declaration><![CDATA[METHOD mReleaseRoute : E_CmdState
+VAR_INPUT
+	I_uiJobID					 : UINT;
+END_VAR
+
+VAR
+    L_uiIndex : UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+
+FOR L_uiIndex := 1 TO 10 DO
+	IF astRouteQueue[L_uiIndex].bValid
+	AND astRouteQueue[L_uiIndex].uiJobID = I_uiJobID 
+		THEN
+	  	mReleaseResources(astRouteQueue[L_uiIndex].stRoute);
+	  	astRouteQueue[L_uiIndex].bValid     := FALSE;
+	  	astRouteQueue[L_uiIndex].bReserved  := FALSE;
+	  	astRouteQueue[L_uiIndex].bExecuting := FALSE;
+	  	astRouteQueue[L_uiIndex].bDone      := TRUE;
+	  	astRouteQueue[L_uiIndex].bError     := FALSE;
+	  	mReleaseRoute := E_CmdState.Succeeded;
+	  	RETURN;
+	END_IF
+END_FOR
+
+mReleaseRoute := E_CmdState.NotReady;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mRequestRoute" Id="{4a417486-f8d2-4dd6-9779-5933800df322}" FolderPath="02 Methodes\200 CmdRouteManager\">
+      <Declaration><![CDATA[METHOD mRequestRoute : E_CmdState
+VAR_INPUT
+   I_bExecute     		: BOOL;
+   I_eSource      		: E_Convoyer;
+   I_eDestination 		: E_Convoyer;
+END_VAR
+
+VAR
+	L_uiIndex						: UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+  	mRequestRoute  		:= E_CmdState.Idle;
+    RETURN;         		
+END_IF              		
+
+IF I_eSource = E_Convoyer.Convoyer_NONE OR 
+	 I_eDestination = E_Convoyer.Convoyer_NONE 
+	 	THEN
+    	mRequestRoute     := E_CmdState.Error;
+    	RETURN;
+END_IF
+
+FOR L_uiIndex := 1 TO 10 DO
+	IF NOT astRouteQueue[L_uiIndex].bValid 
+		THEN
+    	astRouteQueue[L_uiIndex].uiJobID       := uiNextJobID;
+    	astRouteQueue[L_uiIndex].eSource       := I_eSource;
+    	astRouteQueue[L_uiIndex].eDestination  := I_eDestination;
+    	
+    	astRouteQueue[L_uiIndex].bValid        := TRUE;
+    	astRouteQueue[L_uiIndex].bReserved     := FALSE;
+    	astRouteQueue[L_uiIndex].bExecuting    := FALSE;
+    	astRouteQueue[L_uiIndex].bDone         := FALSE;
+    	astRouteQueue[L_uiIndex].bError        := FALSE;
+
+	IF NOT mBuildRoute(I_eSource, I_eDestination, astRouteQueue[L_uiIndex].stRoute) 
+  	THEN
+    astRouteQueue[L_uiIndex].bValid := FALSE;
+    mRequestRoute := E_CmdState.Error;
+    RETURN;
+  END_IF
+
+  IF NOT mCheckRouteFree(astRouteQueue[L_uiIndex].stRoute ) 
+  	THEN
+    	astRouteQueue[L_uiIndex].bValid := FALSE;
+    	mRequestRoute := E_CmdState.NotReady;
+    	RETURN;
+  END_IF
+	 
+  IF NOT mReserveRoute(Ref_stRoute := astRouteQueue[L_uiIndex].stRoute ) 
+		THEN
+    	astRouteQueue[L_uiIndex].bValid := FALSE;
+    	mRequestRoute := E_CmdState.NotReady;
+    	RETURN;
+  END_IF
+	
+  	astRouteQueue[L_uiIndex].bReserved := TRUE;
+  	uiNextJobID := uiNextJobID + 1;
+  	mRequestRoute := E_CmdState.Succeeded;
+  	RETURN;
+	END_IF
+END_FOR 
+	  
+mRequestRoute := E_CmdState.NotReady;
 ]]></ST>
       </Implementation>
     </Method>
@@ -419,24 +526,5 @@ END_VAR
 SUPER^.mStop(I_bExecute);]]></ST>
       </Implementation>
     </Method>
-    <Property Name="ReservedBy" Id="{4be86b5b-4bbe-4304-abbc-ee6242639d87}" FolderPath="01 Properties\">
-      <Declaration><![CDATA[PROPERTY ReservedBy : E_Convoyer]]></Declaration>
-      <Get Name="Get" Id="{ee9999dc-ecd5-48f5-a251-e105ba0d0c1f}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[ReservedBy := eReservedBy;]]></ST>
-        </Implementation>
-      </Get>
-      <Set Name="Set" Id="{ec09d9d5-f6e3-4d28-9036-78bfd4186a9e}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[eReservedBy := ReservedBy;]]></ST>
-        </Implementation>
-      </Set>
-    </Property>
   </POU>
 </TcPlcObject>

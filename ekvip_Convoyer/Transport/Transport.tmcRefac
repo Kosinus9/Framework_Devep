@@ -31,5 +31,25 @@
       <From>mBuildRoute_2</From>
       <To>mReserveRoute</To>
     </RenamedType>
+    <RenamedType>
+      <Type guid="8500f4ba-da8e-4d6e-9bf2-81d0e2c714ed">MBUILDROUTE_1</Type>
+      <From>mBuildRoute_1</From>
+      <To>mCreateRouteJob</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="72477f1d-916a-4940-95a3-70ae4b16d8cf">MREQUESTROUTE_1</Type>
+      <From>mRequestRoute_1</From>
+      <To>mCreateRouteJob</To>
+    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="06984068-3194-4d74-b193-97ce62a6c78e">mGetNextRoute</Type>
+      <From>i</From>
+      <To>L_uiIndex</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="7a28c4d0-ec98-4ffc-acae-0f1005e73972">mReleaseRoute</Type>
+      <From>i</From>
+      <To>L_uiIndex</To>
+    </RenamedSymbol>
   </Renames>
 </Refactors>
