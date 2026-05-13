@@ -7,7 +7,7 @@
     <Method Name="mGetNextRoute" Id="{b6327824-f7b1-44ee-a0e9-c5bceba6116f}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mGetNextRoute : E_CmdState
 VAR_OUTPUT
-	O_refRouteJob				: REFERENCE TO ST_RouteJob;
+	O_refRouteJob				: POINTER TO ST_RouteJob;
 END_VAR
 ]]></Declaration>
     </Method>

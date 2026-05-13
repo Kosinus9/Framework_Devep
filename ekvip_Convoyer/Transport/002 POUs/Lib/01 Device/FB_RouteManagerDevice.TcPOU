@@ -110,14 +110,388 @@ IF itfC12 <>0 THEN itfC12 := I_itfC12;END_IF
       </Implementation>
     </Method>
     <Method Name="mBuildRoute" Id="{7200bf03-7fa0-4280-a8ff-c4a05727f4d4}" FolderPath="02 Methodes\200 CmdRouteManager\">
-      <Declaration><![CDATA[METHOD mBuildRoute : BOOL
+      <Declaration><![CDATA[METHOD PROTECTED mBuildRoute : BOOL
 VAR_INPUT
-	I_eSource      		: E_Convoyer;
-  I_eDestination 		: E_Convoyer;
-END_VAR
-]]></Declaration>
+	I_eSource      : E_Convoyer;
+	I_eDestination : E_Convoyer;
+	Ref_stRoute    : REFERENCE TO ST_Route;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// No command requested.
+        <ST><![CDATA[
+// Reset route.
+Ref_stRoute.eSource      := I_eSource;
+Ref_stRoute.eDestination := I_eDestination;
+Ref_stRoute.iuStepCount  := 0;
+
+//==================================================
+// R3 -> 3
+// C3 -> LTU3 -> LTU6
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_3)
+	AND (I_eDestination = E_Convoyer.Convoyer_3) 
+		THEN
+    	Ref_stRoute.iuStepCount := 2;
+			
+    	Ref_stRoute.astSteps[1].eConvoyer    := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[1].eLTUPosition := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[2].eConvoyer    := E_Convoyer.Convoyer_6;
+    	Ref_stRoute.astSteps[2].eLTUPosition := E_LTUPosition.LTU_TOP;
+    	
+    	mBuildRoute := TRUE;
+    	RETURN;
+END_IF
+
+//==================================================
+// R3 -> 6
+// C3 -> LTU3 -> LTU6 -> bottom -> C6
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_3)
+   AND (I_eDestination = E_Convoyer.Convoyer_6) 
+	 	THEN
+    	Ref_stRoute.iuStepCount := 3;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_6;
+    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_6;
+    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	mBuildRoute := TRUE;
+    RETURN;
+END_IF
+
+// R3 -> 9
+// C3 -> LTU6 bottom -> LTU9 top -> LTU12 -> C9
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_3)
+   AND (I_eDestination = E_Convoyer.Convoyer_9) 
+	 	THEN
+    	Ref_stRoute.iuStepCount := 6;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_6;
+    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_6;
+    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_9;
+    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_9;
+    	Ref_stRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	mBuildRoute := TRUE;
+			RETURN;
+END_IF
+
+//==================================================
+// R3 -> 12
+// C3 -> LTU3 -> bottom -> C12
+// Needs LTU3 only
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_3)
+   AND (I_eDestination = E_Convoyer.Convoyer_12) 
+	 THEN
+   	Ref_stRoute.iuStepCount := 1;
+		
+   	Ref_stRoute.astSteps[1].eConvoyer 		:= E_Convoyer.Convoyer_3;
+   	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+   	
+   	mBuildRoute := TRUE;
+   	RETURN;
+END_IF
+
+//==================================================
+// R6 -> 6
+// C6 line, BOTTOM continuity LTU6 + LTU9
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_6)
+   AND (I_eDestination = E_Convoyer.Convoyer_6) 
+   	THEN
+    Ref_stRoute.iuStepCount := 2;
+
+    Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
+    Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+
+    Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_9;
+    Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+
+    mBuildRoute := TRUE;
+    RETURN;
+END_IF
+
+//==================================================
+// R6 -> 3
+// C6 -> LTU6 -> top -> C3
+// Needs LTU6 only
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_6)
+   AND (I_eDestination = E_Convoyer.Convoyer_3) 
+   	THEN
+    Ref_stRoute.iuStepCount := 1;
+
+    Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
+    Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+
+    mBuildRoute := TRUE;
+    RETURN;
+END_IF
+
+//==================================================
+// R6 -> 9
+// C6 -> LTU6 -> LTU9 -> top -> LTU12 -> C9
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_6)
+   AND (I_eDestination = E_Convoyer.Convoyer_9) 
+   	THEN
+    	Ref_stRoute.iuStepCount := 4;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_9;
+    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_9;
+    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	mBuildRoute := TRUE;
+    	RETURN;
+END_IF
+
+//==================================================
+// R6 -> 12
+// C6 -> LTU9 top -> LTU12 bottom -> C12
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_6)
+   AND (I_eDestination = E_Convoyer.Convoyer_12) 
+   	THEN
+    	Ref_stRoute.iuStepCount := 6;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_9;
+    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_9;
+    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	mBuildRoute := TRUE;
+    	RETURN;
+END_IF
+
+//==================================================
+// R9 -> 9
+// C9 line, TOP continuity LTU9 + LTU12
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_9)
+   AND (I_eDestination = E_Convoyer.Convoyer_9) 
+   	THEN
+    	Ref_stRoute.iuStepCount := 2;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	mBuildRoute := TRUE;
+    	RETURN;
+END_IF
+
+//==================================================
+// R9 -> 3
+// C9 -> LTU12 bottom -> LTU3 top -> LTU6 -> C3
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_9)
+   AND (I_eDestination = E_Convoyer.Convoyer_3) 
+   	THEN
+    	Ref_stRoute.iuStepCount := 6;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_6;
+    	Ref_stRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_TOP;
+
+    	mBuildRoute := TRUE;
+   	  RETURN;
+END_IF
+
+//==================================================
+// R9 -> 6
+// C9 -> LTU9 -> bottom -> C6
+// Needs LTU9 only
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_9)
+   AND (I_eDestination = E_Convoyer.Convoyer_6) 
+	 	THEN
+    	Ref_stRoute.iuStepCount := 1;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	mBuildRoute := TRUE;
+    	RETURN;
+END_IF
+
+//==================================================
+// R9 -> 12
+// C9 -> LTU12 -> bottom -> C12
+// Needs LTU12 + LTU3 bottom for complete C12 line
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_9)
+   AND (I_eDestination = E_Convoyer.Convoyer_12) 
+	 	THEN
+    	Ref_stRoute.iuStepCount := 4;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	mBuildRoute := TRUE;
+    	RETURN;
+END_IF
+
+//==================================================
+// R12 -> 12
+// C12 line, BOTTOM continuity LTU12 + LTU3
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_12)
+   AND (I_eDestination = E_Convoyer.Convoyer_12) 
+   	THEN
+    	Ref_stRoute.iuStepCount := 2;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	mBuildRoute := TRUE;
+    	RETURN;
+END_IF
+
+//==================================================
+// R12 -> 3
+// C12 -> LTU3 top -> LTU6 -> C3
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_12)
+   AND (I_eDestination = E_Convoyer.Convoyer_3) 
+   	THEN
+    	Ref_stRoute.iuStepCount := 4;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_6;
+    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	mBuildRoute := TRUE;
+    	RETURN;
+END_IF
+
+//==================================================
+// R12 -> 6
+// C12 -> LTU3 top -> LTU6 bottom -> LTU9 -> C6
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_12)
+   AND (I_eDestination = E_Convoyer.Convoyer_6) 
+   	THEN
+    	Ref_stRoute.iuStepCount := 6;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_3;
+    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_6;
+    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	Ref_stRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_6;
+    	Ref_stRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	Ref_stRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_9;
+    	Ref_stRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	
+    	mBuildRoute := TRUE;
+    	RETURN;
+END_IF
+
+//==================================================
+// R12 -> 9
+// C12 -> LTU12 -> top -> C9
+// Needs LTU12 only
+//==================================================
+IF (I_eSource = E_Convoyer.Convoyer_12)
+   AND (I_eDestination = E_Convoyer.Convoyer_9) 
+   	THEN
+    	Ref_stRoute.iuStepCount := 1;
+    	
+    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
+    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	
+    	mBuildRoute := TRUE;
+    	RETURN;
+END_IF
+
+//==================================================
+// No route found
+//==================================================
+mBuildRoute := FALSE;
 ]]></ST>
       </Implementation>
     </Method>
@@ -127,34 +501,37 @@ VAR_INPUT
     Ref_stRoute : REFERENCE TO ST_Route;
 END_VAR
 VAR
-    i : UINT;
+	L_uiIndex : UINT;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 mCheckRouteFree := TRUE;
 
-FOR i := 1 TO Ref_stRoute.iuStepCount DO
-	CASE Ref_stRoute.astSteps[i].eTransp OF
+//========================Check each LTU used by the route
+FOR L_uiIndex := 1 TO Ref_stRoute.iuStepCount DO
+	
+	CASE Ref_stRoute.astSteps[L_uiIndex].eConvoyer OF
 		E_Convoyer.Convoyer_3:
-			IF itfLTU3.bReserved OR itfConvoyer3.bReserved THEN
-			    mCheckRouteFree := FALSE;
-			    RETURN;
+			IF itfLTU3.ReservedBy <> E_Convoyer.Convoyer_NONE 
+				THEN
+					mCheckRouteFree := FALSE;
+					RETURN;
 			END_IF
 		E_Convoyer.Convoyer_6:
-			IF itfLTU6.bReserved OR itfConvoyer6.bReserved 
+			IF itfLTU6.ReservedBy <> E_Convoyer.Convoyer_NONE  
 				THEN
 			    mCheckRouteFree := FALSE;
 			    RETURN;
 			END_IF
 		E_Convoyer.Convoyer_9:
-			IF itfLTU9.bReserved OR itfConvoyer9.bReserved 
+			IF itfLTU9.ReservedBy <> E_Convoyer.Convoyer_NONE 
 				THEN
 			    mCheckRouteFree := FALSE;
 			    RETURN;
 			END_IF
 		E_Convoyer.Convoyer_12:
-			IF itfLTU12.bReserved OR itfConvoyer12.bReserved 
+			IF itfLTU12.ReservedBy <> E_Convoyer.Convoyer_NONE 
 				THEN
 			  	mCheckRouteFree := FALSE;
 			    RETURN;
@@ -163,64 +540,10 @@ FOR i := 1 TO Ref_stRoute.iuStepCount DO
 END_FOR]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCreateRouteJob" Id="{72477f1d-916a-4940-95a3-70ae4b16d8cf}" FolderPath="02 Methodes\200 CmdRouteManager\">
-      <Declaration><![CDATA[METHOD mCreateRouteJob : E_CmdState
-VAR_INPUT
-   I_bExecute     		: BOOL;
-   I_eSource      		: E_Convoyer;
-   I_eDestination 		: E_Convoyer;
-END_VAR
-
-VAR
-	L_eCmdState 					: E_CmdState;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[// No command requested.
-IF NOT I_bExecute 
-	THEN
-  	mRequestRoute 			:= E_CmdState.Idle;
-    RETURN;         		
-END_IF              		
-                    		
-eSource 								:= I_eSource;
-eDestination 					  := I_eDestination;
-
-IF eSource = E_Convoyer.Convoyer_NONE OR 
-	 eDestination = E_Convoyer.Convoyer_NONE 
-	 	THEN
-    	mRequestRoute     := E_CmdState.Error;
-    	RETURN;
-END_IF
-
-IF NOT mBuildRoute() 
-	THEN
-    mRequestRoute       := E_CmdState.Error;
-    RETURN;
-END_IF
-
-IF NOT mCheckRouteFree() 
-	THEN
-    mRequestRoute 			:= E_CmdState.NotReady;
-    RETURN;
-END_IF
-
-IF NOT mReserveRoute() 
-	THEN
-    mRequestRoute 			:= E_CmdState.NotReady;
-    RETURN;
-END_IF
-
-bRouteAvailable 				:= TRUE;
-bRouteReserved 					:= TRUE;
-
-mRequestRoute 					:= E_CmdState.Succeeded;
-]]></ST>
-      </Implementation>
-    </Method>
     <Method Name="mGetNextRoute" Id="{06984068-3194-4d74-b193-97ce62a6c78e}" FolderPath="02 Methodes\200 CmdRouteManager\">
       <Declaration><![CDATA[METHOD mGetNextRoute : E_CmdState
 VAR_OUTPUT
-	O_refRouteJob				: REFERENCE TO ST_RouteJob;
+	O_refRouteJob				: POINTER TO ST_RouteJob;
 END_VAR
 
 VAR
@@ -228,6 +551,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
+// Search if first valid route job not already executing
 FOR L_uiIndex := 1 TO 10 DO
 	IF astRouteQueue[L_uiIndex].bValid
 		 AND astRouteQueue[L_uiIndex].bReserved
@@ -236,13 +560,37 @@ FOR L_uiIndex := 1 TO 10 DO
 		 AND NOT astRouteQueue[L_uiIndex].bError 
 		 	THEN
         astRouteQueue[L_uiIndex].bExecuting := TRUE;
-        O_refRouteJob   REF= astRouteQueue[L_uiIndex];
+        O_refRouteJob   := ADR(astRouteQueue[L_uiIndex]);
         mGetNextRoute   := E_CmdState.Succeeded;
         RETURN;
    END_IF
 END_FOR
-
 mGetNextRoute := E_CmdState.Idle;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mReleaseResources" Id="{884a604f-8cfe-442c-bfdc-78eda1235e7a}" FolderPath="02 Methodes\200 CmdRouteManager\">
+      <Declaration><![CDATA[METHOD mReleaseResources : BOOL
+VAR_INPUT
+    Ref_stRoute : REFERENCE TO ST_Route;
+END_VAR
+VAR
+	L_uiIndex : UINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+//===================Release all LTUs used by the route
+FOR L_uiIndex := 1 TO Ref_stRoute.iuStepCount 
+	DO
+    CASE Ref_stRoute.astSteps[L_uiIndex].eConvoyer 
+			OF
+        E_Convoyer.Convoyer_3:  itfLTU3.ReservedBy  := E_Convoyer.Convoyer_NONE;
+        E_Convoyer.Convoyer_6:  itfLTU6.ReservedBy  := E_Convoyer.Convoyer_NONE;
+        E_Convoyer.Convoyer_9:  itfLTU9.ReservedBy  := E_Convoyer.Convoyer_NONE;
+        E_Convoyer.Convoyer_12: itfLTU12.ReservedBy := E_Convoyer.Convoyer_NONE;
+    END_CASE
+END_FOR
+mReleaseResources := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mReleaseRoute" Id="{7a28c4d0-ec98-4ffc-acae-0f1005e73972}" FolderPath="02 Methodes\200 CmdRouteManager\">
@@ -256,19 +604,21 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-
+//=================== Search job by ID and clear job
 FOR L_uiIndex := 1 TO 10 DO
 	IF astRouteQueue[L_uiIndex].bValid
-	AND astRouteQueue[L_uiIndex].uiJobID = I_uiJobID 
-		THEN
-	  	mReleaseResources(astRouteQueue[L_uiIndex].stRoute);
-	  	astRouteQueue[L_uiIndex].bValid     := FALSE;
-	  	astRouteQueue[L_uiIndex].bReserved  := FALSE;
-	  	astRouteQueue[L_uiIndex].bExecuting := FALSE;
-	  	astRouteQueue[L_uiIndex].bDone      := TRUE;
-	  	astRouteQueue[L_uiIndex].bError     := FALSE;
-	  	mReleaseRoute := E_CmdState.Succeeded;
-	  	RETURN;
+	   AND astRouteQueue[L_uiIndex].uiJobID = I_uiJobID 
+		 	THEN
+				//===================Release reserved LTU resources
+	  		mReleaseResources(astRouteQueue[L_uiIndex].stRoute);  
+				//=================== Clear queue slot
+	  		astRouteQueue[L_uiIndex].bValid     := FALSE;
+	  		astRouteQueue[L_uiIndex].bReserved  := FALSE;
+	  		astRouteQueue[L_uiIndex].bExecuting := FALSE;
+	  		astRouteQueue[L_uiIndex].bDone      := TRUE;
+	  		astRouteQueue[L_uiIndex].bError     := FALSE;
+	  		mReleaseRoute := E_CmdState.Succeeded;
+	  		RETURN;
 	END_IF
 END_FOR
 
@@ -294,6 +644,7 @@ IF NOT I_bExecute
     RETURN;         		
 END_IF              		
 
+//======================= Invalid source or destination
 IF I_eSource = E_Convoyer.Convoyer_NONE OR 
 	 I_eDestination = E_Convoyer.Convoyer_NONE 
 	 	THEN
@@ -301,9 +652,11 @@ IF I_eSource = E_Convoyer.Convoyer_NONE OR
     	RETURN;
 END_IF
 
+//======================= Search free queue slot
 FOR L_uiIndex := 1 TO 10 DO
 	IF NOT astRouteQueue[L_uiIndex].bValid 
 		THEN
+			//======================= Create new job
     	astRouteQueue[L_uiIndex].uiJobID       := uiNextJobID;
     	astRouteQueue[L_uiIndex].eSource       := I_eSource;
     	astRouteQueue[L_uiIndex].eDestination  := I_eDestination;
@@ -314,21 +667,22 @@ FOR L_uiIndex := 1 TO 10 DO
     	astRouteQueue[L_uiIndex].bDone         := FALSE;
     	astRouteQueue[L_uiIndex].bError        := FALSE;
 
+	//=======================Build route steps
 	IF NOT mBuildRoute(I_eSource, I_eDestination, astRouteQueue[L_uiIndex].stRoute) 
   	THEN
     astRouteQueue[L_uiIndex].bValid := FALSE;
     mRequestRoute := E_CmdState.Error;
     RETURN;
   END_IF
-
+  //=======================Check resources
   IF NOT mCheckRouteFree(astRouteQueue[L_uiIndex].stRoute ) 
   	THEN
     	astRouteQueue[L_uiIndex].bValid := FALSE;
     	mRequestRoute := E_CmdState.NotReady;
     	RETURN;
   END_IF
-	 
-  IF NOT mReserveRoute(Ref_stRoute := astRouteQueue[L_uiIndex].stRoute ) 
+	//======================= Reserve resources. 
+  IF NOT mReserveRoute(astRouteQueue[L_uiIndex].stRoute, I_eSource) 
 		THEN
     	astRouteQueue[L_uiIndex].bValid := FALSE;
     	mRequestRoute := E_CmdState.NotReady;
@@ -341,20 +695,34 @@ FOR L_uiIndex := 1 TO 10 DO
   	RETURN;
 	END_IF
 END_FOR 
-	  
-mRequestRoute := E_CmdState.NotReady;
 ]]></ST>
       </Implementation>
     </Method>
     <Method Name="mReserveRoute" Id="{b2fe83f5-9021-4c29-a99a-0b7e44acec3e}" FolderPath="02 Methodes\200 CmdRouteManager\">
       <Declaration><![CDATA[METHOD mReserveRoute : BOOL
 VAR_INPUT
-	
+	Ref_stRoute    : REFERENCE TO ST_Route;
+	I_eReservedBy  : E_Convoyer;  // source
+END_VAR
+
+VAR
+	L_uiIndex 		 : UINT;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// No command requested.
-]]></ST>
+        <ST><![CDATA[
+//=================== Reserve all Ltu used by the route
+FOR L_uiIndex := 1 TO Ref_stRoute.iuStepCount 
+	DO
+		CASE Ref_stRoute.astSteps[L_uiIndex].eConvoyer 
+			OF
+  			E_Convoyer.Convoyer_3: 	itfLTU3.ReservedBy  := I_eReservedBy;	
+  			E_Convoyer.Convoyer_6: 	itfLTU6.ReservedBy  := I_eReservedBy;
+  			E_Convoyer.Convoyer_9: 	itfLTU9.ReservedBy  := I_eReservedBy;
+  	  	E_Convoyer.Convoyer_12: itfLTU12.ReservedBy := I_eReservedBy;
+  	END_CASE
+END_FOR
+mReserveRoute := TRUE;]]></ST>
       </Implementation>
     </Method>
   </POU>
