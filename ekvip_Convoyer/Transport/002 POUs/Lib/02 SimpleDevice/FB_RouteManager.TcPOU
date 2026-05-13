@@ -543,7 +543,7 @@ END_FOR]]></ST>
     <Method Name="mGetNextRoute" Id="{06984068-3194-4d74-b193-97ce62a6c78e}" FolderPath="02 Methodes\200 CmdRouteManager\">
       <Declaration><![CDATA[METHOD mGetNextRoute : E_CmdState
 VAR_OUTPUT
-	O_refRouteJob				: POINTER TO ST_RouteJob;
+	O_pRouteJob				: POINTER TO ST_RouteJob;
 END_VAR
 
 VAR
@@ -560,7 +560,7 @@ FOR L_uiIndex := 1 TO 10 DO
 		 AND NOT astRouteQueue[L_uiIndex].bError 
 		 	THEN
         astRouteQueue[L_uiIndex].bExecuting := TRUE;
-        O_refRouteJob   := ADR(astRouteQueue[L_uiIndex]);
+        O_pRouteJob   := ADR(astRouteQueue[L_uiIndex]);
         mGetNextRoute   := E_CmdState.Succeeded;
         RETURN;
    END_IF

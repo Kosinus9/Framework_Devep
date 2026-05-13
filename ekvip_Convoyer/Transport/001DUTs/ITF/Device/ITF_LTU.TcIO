@@ -32,6 +32,13 @@
         <Declaration><![CDATA[]]></Declaration>
       </Set>
     </Property>
+    <Method Name="mCmdExec_MoveBottom" Id="{9ddedb5f-5861-4538-808c-36f0d32352cb}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mCmdExec_MoveBottom : E_CmdState
+VAR_INPUT
+	I_bExecute					: BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
     <Method Name="mCmdExec_MoveMiddle" Id="{065f028c-a162-4f8e-ad8f-163ada6683f3}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mCmdExec_MoveMiddle : E_CmdState
 VAR_INPUT
@@ -48,13 +55,6 @@ END_VAR
     </Method>
     <Method Name="mCmdExec_TransferTop" Id="{0699606b-20d9-450f-ac58-6e4a863820c1}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mCmdExec_TransferTop : E_CmdState
-VAR_INPUT
-	I_bExecute					: BOOL;
-END_VAR
-]]></Declaration>
-    </Method>
-    <Method Name="mGetLTUByConvoyer" Id="{9ddedb5f-5861-4538-808c-36f0d32352cb}" FolderPath="02 Methodes\">
-      <Declaration><![CDATA[METHOD mGetLTUByConvoyer : E_CmdState
 VAR_INPUT
 	I_bExecute					: BOOL;
 END_VAR

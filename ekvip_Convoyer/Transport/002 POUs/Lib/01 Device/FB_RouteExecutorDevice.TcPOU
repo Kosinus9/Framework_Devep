@@ -21,7 +21,15 @@ VAR
 	itfC12   											: ITF_Convoyer;
 	
 	itfRouteProvider							: ITF_RouteProvider;
+	
+	
 	//===================== Variable
+	// Ich muss Pointer verwenden, weil der RouteExecutor direkt mit dem echten Job arbeiten muss, 
+  //der im RouteManager gespeichert ist.
+	pstCurrentJob 								: POINTER TO ST_RouteJob; //
+	
+	uiCurrentStep 								: UINT; // Current route step index
+	bJobActive 										: BOOL; // TRUE while executor is processing a route
 	
 	
 	//===================== Instance
@@ -189,41 +197,169 @@ END_VAR
     <Method Name="mExecuteCurrentStep" Id="{41586432-ae89-4e94-b32c-63429b036cd5}" FolderPath="02 Methodes\200 Cmd RoueExecutor\">
       <Declaration><![CDATA[METHOD mExecuteCurrentStep : E_CmdState
 VAR_INPUT
-	I_bExecute					: BOOL;
 END_VAR
-
 VAR
-	L_eCmdState 					: E_CmdState;
+	L_stStep     : ST_RouteStep;
+	L_itfLTU     : ITF_LTU;
+	L_eCmdState  : E_CmdState;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-//Execute the current routing step (MoveTop, MoveBottom, transport, etc.)]]></ST>
+//Execute the current routing step (MoveTop, MoveBottom, transport, etc.)
+// Check current job pointer
+IF pstCurrentJob = 0 
+	THEN
+  	mExecuteCurrentStep := E_CmdState.NotReady;
+    RETURN;
+END_IF
+
+// Check current step index
+IF uiCurrentStep = 0 
+	THEN
+    mExecuteCurrentStep := E_CmdState.NotReady;
+    RETURN;
+END_IF
+
+IF uiCurrentStep > pstCurrentJob^.stRoute.iuStepCount 
+	THEN
+    mExecuteCurrentStep := E_CmdState.Succeeded;
+    RETURN;
+END_IF
+
+// Get current route step
+L_stStep := pstCurrentJob^.stRoute.astSteps[uiCurrentStep];
+
+// Get LTU linked to this convoyer
+L_eCmdState := mGetLTUByConvoyer(L_stStep.eConvoyer, O_itfLTU => L_itfLTU);
+
+IF L_eCmdState <> E_CmdState.Succeeded THEN
+    mExecuteCurrentStep := L_eCmdState;
+    RETURN;
+END_IF
+
+// Execute requested LTU position
+//==================================================
+CASE L_stStep.eLTUPosition 
+	OF
+    E_LTUPosition.LTU_TOP:    L_eCmdState := L_itfLTU.mCmdExec_MoveTop(TRUE);
+    E_LTUPosition.LTU_BOTTOM: L_eCmdState := L_itfLTU.mCmdExec_MoveBottom(TRUE);
+    E_LTUPosition.LTU_MIDDLE: L_eCmdState := L_itfLTU.mCmdExec_MoveMiddle(TRUE);
+  ELSE
+    mExecuteCurrentStep := E_CmdState.Error;
+    RETURN;
+END_CASE
+
+CASE L_eCmdState 
+	OF
+    E_CmdState.Succeeded:
+    	// Current step completed, move to next step.
+    	uiCurrentStep := uiCurrentStep + 1;
+      mExecuteCurrentStep := E_CmdState.Succeeded;
+      RETURN;
+			
+    E_CmdState.Busy:
+    // Step still running.
+    	mExecuteCurrentStep := E_CmdState.Busy;
+    	RETURN;
+    ELSE
+    // Any other state is considered not ready/error.
+    	mExecuteCurrentStep := L_eCmdState;
+    	RETURN;
+END_CASE
+
+
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="mGetConvoyerByID" Id="{d0fd3913-d831-4ce7-9451-c4112a8ecf23}" FolderPath="02 Methodes\200 Cmd RoueExecutor\">
       <Declaration><![CDATA[METHOD mGetConvoyerByID : E_CmdState
 VAR_INPUT
-	I_bExecute					: BOOL;
+	I_eConvoyer : E_Convoyer;
 END_VAR
-
-VAR
-	L_eCmdState 					: E_CmdState;
+VAR_OUTPUT
+  O_itfConvoyer : ITF_Convoyer;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[;]]></ST>
+        <ST><![CDATA[
+// Return convoyer interface corresponding to ID
+CASE I_eConvoyer 
+	OF
+    E_Convoyer.Convoyer_3: // Convoyer 3
+    	O_itfConvoyer := itfC3;
+    	mGetConvoyerByID := E_CmdState.Succeeded;
+    	RETURN;
+
+    E_Convoyer.Convoyer_6:  // Convoyer 6
+    	O_itfConvoyer := itfC6;
+    	mGetConvoyerByID := E_CmdState.Succeeded;
+    	RETURN;
+
+    E_Convoyer.Convoyer_9: // Convoyer 9
+    	O_itfConvoyer := itfC9;
+    	mGetConvoyerByID := E_CmdState.Succeeded;
+    	RETURN;
+
+    E_Convoyer.Convoyer_12: // Convoyer 12
+    	O_itfConvoyer := itfC12;
+    	mGetConvoyerByID := E_CmdState.Succeeded;
+    	RETURN;
+
+END_CASE
+//Invalid convoyer
+mGetConvoyerByID := E_CmdState.Error;
+
+
+
+
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="mGetLTUByConvoyer" Id="{aaad68e6-210f-48da-9786-295b53a5b807}" FolderPath="02 Methodes\200 Cmd RoueExecutor\">
       <Declaration><![CDATA[METHOD mGetLTUByConvoyer : E_CmdState
 VAR_INPUT
-	I_bExecute					: BOOL;
+	I_eConvoyer : E_Convoyer;
 END_VAR
 
-VAR
-	L_eCmdState 					: E_CmdState;
-END_VAR]]></Declaration>
+VAR_OUTPUT
+  O_itfLTU : ITF_LTU;
+END_VAR
+
+]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[
+// Return LTU interface corresponding to convoyer ID
+CASE I_eConvoyer 
+	OF
+    E_Convoyer.Convoyer_3: // Convoyer 3 -> LTU3
+    	O_itfLTU := itfLTU3;
+    	mGetLTUByConvoyer := E_CmdState.Succeeded;
+    	RETURN;
+
+    E_Convoyer.Convoyer_6: // Convoyer 6 -> LTU6
+    	O_itfLTU := itfLTU6;
+    	mGetLTUByConvoyer := E_CmdState.Succeeded;
+    	RETURN;
+
+    E_Convoyer.Convoyer_9: // Convoyer 9 -> LTU9
+    	O_itfLTU := itfLTU9;
+    	mGetLTUByConvoyer := E_CmdState.Succeeded;
+    	RETURN;
+
+    E_Convoyer.Convoyer_12: // Convoyer 12 -> LTU12
+    	O_itfLTU := itfLTU12;
+    	mGetLTUByConvoyer := E_CmdState.Succeeded;
+    	RETURN;
+END_CASE
+
+// Invalid convoyer
+mGetLTUByConvoyer := E_CmdState.Error;
+
+
+
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="mGetNextJob" Id="{ed0fe9bd-ca08-4621-a9d1-447d067d0ad3}" FolderPath="02 Methodes\200 Cmd RoueExecutor\">
@@ -239,8 +375,37 @@ END_VAR]]></Declaration>
         <ST><![CDATA[
 // Request the next available ST_RouteJob from the RouteManager
 
-// 
-]]></ST>
+// No route provider connected
+IF (itfRouteProvider = 0 ) 
+	THEN
+  	mGetNextJob := E_CmdState.NotReady;
+  	RETURN;
+END_IF
+
+// Safety check for null pointer
+IF pstCurrentJob = 0 
+	THEN
+    mGetNextJob := E_CmdState.Error;
+    RETURN;
+END_IF
+
+// Ask RouteManager for next route job
+L_eCmdState := itfRouteProvider.mGetNextRoute(O_pRouteJob => pstCurrentJob);
+
+// Check command state.
+IF L_eCmdState <> E_CmdState.Succeeded 
+	THEN
+    mGetNextJob := L_eCmdState;
+    RETURN;
+END_IF
+
+// Job successfully received
+bJobActive    := TRUE;
+
+// Start from first step
+uiCurrentStep := 1;
+
+mGetNextJob   := E_CmdState.Succeeded;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mHold" Id="{9826c73f-b5ab-4504-8c66-e7eeba15a691}" FolderPath="02 Methodes\">
