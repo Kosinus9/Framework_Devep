@@ -39,13 +39,17 @@ END_VAR
 
 VAR CONSTANT
 	// --------------------------Base------------------
-	C_SeqStep_OnBasePos_Start								: UINT :=  1; 
-	C_SeqStep_OnBasePos_Error								: UINT :=  30;
-	C_SeqStep_OnBasePos_Done								: UINT :=  100; 
+	C_SeqStep_OnBasePos_Start															: UINT :=  1; 
+	C_SeqStep_OnBasePos_Error															: UINT :=  30;
+	C_SeqStep_OnBasePos_Done															: UINT :=  100; 
 
 	// --------------------------Auto Sequence------------------
-	C_SeqStep_Auto_Start										: UINT :=  200;
-	C_SeqStep_Auto_End											: UINT :=  400;
+	C_SeqStep_Auto_Start																	: UINT :=  1;
+	C_SeqStep_Auto_Execute_GetNext_Route_Job							: UINT :=  10;
+	C_SeqStep_Auto_Execute_Current_Route_Step							: UINT :=  20;
+	C_SeqStep_Auto_Release_Current_Job										: UINT :=  30;
+	C_SeqStep_Auto_Error																	: UINT :=  40;
+	C_SeqStep_Auto_End																		: UINT :=  50;
 	
 END_VAR
 ]]></Declaration>
@@ -130,22 +134,58 @@ END_VAR
       <Declaration><![CDATA[METHOD mCmdExec_Auto : E_CmdState
 VAR_INPUT
 END_VAR
+VAR
+	L_eCmdState 					: E_CmdState;
+END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-// hat kein automatique sequence
-CASE SequenceID OF
-  //******************************************************* Idle 
-  C_SeqStep_Idle: 
-  	SequenceID       :=  C_SeqStep_Auto_Start;
-		
-  //****************************************************** Start
-  C_SeqStep_Auto_Start:
-  	SequenceID       :=  C_SeqStep_OnBasePos_Start;
-		
-	//************* all FB reset
+
+CASE SequenceID OF	
+  //============================ Start
+	C_SeqStep_Auto_Start:
+		// Initialize the route executor state.
+  	bJobActive    := FALSE;
+  	uiCurrentStep := 0;
+  	pstCurrentJob := 0;
+  	SequenceID       :=  C_SeqStep_Auto_Execute_GetNext_Route_Job;
+
+	C_SeqStep_Auto_Execute_GetNext_Route_Job:
+  	// If no job is active, ask RouteManager for one.
+  	IF NOT bJobActive 
+		THEN
+  		L_eCmdState := mGetNextJob();
+  		CASE L_eCmdState OF
+  		  	E_CmdState.Succeeded:
+  		    	// A job was received. Start executing route steps.
+  		     	SequenceID := C_SeqStep_Auto_Execute_Current_Route_Step;
+  		    E_CmdState.Idle:
+  		    	// No job available. Stay waiting.
+  		  		SequenceID := C_SeqStep_Auto_Start;
+  		  ELSE
+  		    // Route provider error or not ready
+  		  	SequenceID 	 := C_SeqStep_Error;
+  			END_CASE
+  		ELSE
+  		  // A job is already active.
+  			SequenceID   	 := C_SeqStep_Auto_Execute_Current_Route_Step;
+  		END_IF
+			mCmdExec_Auto    := E_CmdState.Busy;
+ 
+	C_SeqStep_Auto_Execute_Current_Route_Step:	
+		SequenceID := C_SeqStep_Auto_Release_Current_Job;
+	
+	
+	
+	C_SeqStep_Auto_Release_Current_Job:
+	
+		SequenceID := C_SeqStep_Auto_End;	
+
+	
   C_SeqStep_Error:  
   	;
+		
+		
  	C_SeqStep_Auto_End:
   	SequenceID := C_SeqStep_Auto_Start;
 END_CASE]]></ST>
@@ -365,9 +405,7 @@ mGetLTUByConvoyer := E_CmdState.Error;
     <Method Name="mGetNextJob" Id="{ed0fe9bd-ca08-4621-a9d1-447d067d0ad3}" FolderPath="02 Methodes\200 Cmd RoueExecutor\">
       <Declaration><![CDATA[METHOD mGetNextJob : E_CmdState
 VAR_INPUT
-	I_bExecute					: BOOL;
 END_VAR
-
 VAR
 	L_eCmdState 					: E_CmdState;
 END_VAR]]></Declaration>
@@ -435,15 +473,46 @@ SUPER^.mHome(I_bExecute);
     <Method Name="mRealeaseCurrentJob" Id="{7dfd8ad7-dbfa-4800-8f47-7a8acf353eca}" FolderPath="02 Methodes\200 Cmd RoueExecutor\">
       <Declaration><![CDATA[METHOD mRealeaseCurrentJob : E_CmdState
 VAR_INPUT
-	I_bExecute					: BOOL;
 END_VAR
 
 VAR
-	L_eCmdState 					: E_CmdState;
+	L_eCmdState : E_CmdState;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-// Notify the RouteManager that the job is complete and release the resources]]></ST>
+        <ST><![CDATA[// Notify the RouteManager that the job is complete and release the resources
+// Check route provider
+IF itfRouteProvider = 0 
+	THEN
+    mRealeaseCurrentJob := E_CmdState.NotReady;
+    RETURN;
+END_IF
+
+// Check current job pointer
+IF pstCurrentJob = 0 
+	THEN
+    mRealeaseCurrentJob := E_CmdState.NotReady;
+    RETURN;
+END_IF
+
+// Tell RouteManager to release route resources
+L_eCmdState := itfRouteProvider.mReleaseRoute(pstCurrentJob^.uiJobID);
+
+// Evaluate release result
+IF L_eCmdState = E_CmdState.Succeeded 
+	THEN
+    // Mark local executor state as free
+    bJobActive 					:= FALSE;
+    // Reset step counter
+    uiCurrentStep 			:= 0;
+    // Clear pointer to avoid using an old job
+    pstCurrentJob 			:= 0;
+    mRealeaseCurrentJob := E_CmdState.Succeeded;
+    RETURN;
+END_IF
+// Release failed
+mRealeaseCurrentJob := L_eCmdState;
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="mRelease" Id="{53d477d2-f31b-49d2-807b-dd9cc171f4a0}" FolderPath="02 Methodes\">
