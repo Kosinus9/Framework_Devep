@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_RouteExecutorDevice" Id="{a029717b-dfa2-4581-b4e8-7347f75dc7f5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RouteExecutorDevice EXTENDS FD_Device 
+VAR_INPUT
+END_VAR
+
+VAR_OUTPUT
+END_VAR
+
+VAR
+	//===================== interface
+ 	itfLTU3  											: ITF_LTU;
+ 	itfLTU6  											: ITF_LTU;
+ 	itfLTU9  											: ITF_LTU;
+ 	itfLTU12 											: ITF_LTU;
+          											
+	itfC3    											: ITF_Convoyer;
+	itfC6    											: ITF_Convoyer;
+	itfC9    											: ITF_Convoyer;
+	itfC12   											: ITF_Convoyer;
+	
+	itfRouteProvider							: ITF_RouteProvider;
+	//===================== Variable
+	
+	
+	//===================== Instance
+
+																								
+END_VAR
+
+VAR CONSTANT
+	// --------------------------Base------------------
+	C_SeqStep_OnBasePos_Start								: UINT :=  1; 
+	C_SeqStep_OnBasePos_Error								: UINT :=  30;
+	C_SeqStep_OnBasePos_Done								: UINT :=  100; 
+
+	// --------------------------Auto Sequence------------------
+	C_SeqStep_Auto_Start										: UINT :=  200;
+	C_SeqStep_Auto_End											: UINT :=  400;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+//******* Important and necessary
+SUPER^();  
+//====================================
+IF NOT Enable THEN RETURN; END_IF
+
+]]></ST>
+    </Implementation>
+    <Folder Name="01 Properties" Id="{eac2aa03-7ea6-4d75-a023-a13fe1428527}" />
+    <Folder Name="02 Methodes" Id="{717c44f6-c96e-41a8-89f5-06b22d0c9069}">
+      <Folder Name="100 CmdExecute" Id="{c0ec372c-0671-4b3a-a8b5-4fce6e412148}" />
+      <Folder Name="200 Cmd RoueExecutor" Id="{eacbc3a0-13e3-467d-bf05-4faf01046530}" />
+    </Folder>
+    <Method Name="FB_Init" Id="{30bf4515-e308-418c-87d1-6b7687fa091c}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
+//Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
+//die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
+//zusätzlichen Code bereitstellen. Sie können den Rückgabewert auswerten.
+METHOD FB_Init: BOOL
+VAR_INPUT    
+	bInitRetains					: BOOL; 					// TRUE: Die Retain-Variablen werden initialisiert (Reset warm / Reset kalt)    
+	bInCopyCode						: BOOL;  					// TRUE: Die Instanz wird danach in den Kopiercode kopiert (Online-Change)
+	
+	I_Name                : STRING;         //  Name
+	I_ID                  : UINT;           // ID
+  I_itfOwner					  : ITF_Owner;      // owner 
+	
+	// ITF_LTU	
+	I_itfLTU3  						: ITF_LTU;        
+ 	I_itfLTU6  						: ITF_LTU;
+ 	I_itfLTU9  						: ITF_LTU;
+ 	I_itfLTU12 						: ITF_LTU;
+	
+	// ITF_Convoyer  							
+	I_itfC3    						: ITF_Convoyer;
+	I_itfC6    						: ITF_Convoyer;
+	I_itfC9    						: ITF_Convoyer;
+	I_itfC12   						: ITF_Convoyer;
+	// Route Provider
+	I_itfRouteProvider		: ITF_RouteProvider;
+END_VAR
+
+
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// chek and link LTU
+IF I_itfLTU3  <>0 THEN itfLTU3  := I_itfLTU3; END_IF
+IF I_itfLTU6  <>0 THEN itfLTU6  := I_itfLTU6; END_IF
+IF I_itfLTU9  <>0 THEN itfLTU9  := I_itfLTU9; END_IF
+IF I_itfLTU12 <>0 THEN itfLTU12 := I_itfLTU12;END_IF
+
+// chek and link covoyer
+IF I_itfC3  <>0 THEN itfC3  := I_itfC3; END_IF
+IF I_itfC6  <>0 THEN itfC6  := I_itfC6; END_IF
+IF I_itfC9  <>0 THEN itfC9  := I_itfC9; END_IF
+IF I_itfC12 <>0 THEN itfC12 := I_itfC12;END_IF
+
+// chek lind to Route manager
+IF I_itfRouteProvider <>0 THEN itfRouteProvider := I_itfRouteProvider;END_IF
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mAutomatic" Id="{a75fe4d4-7f2d-4070-80b3-f99e488c96ba}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mAutomatic : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCmdExec_Auto" Id="{03cf2b91-4222-4afc-a087-16c1b093e471}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_Auto : E_CmdState
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// hat kein automatique sequence
+CASE SequenceID OF
+  //******************************************************* Idle 
+  C_SeqStep_Idle: 
+  	SequenceID       :=  C_SeqStep_Auto_Start;
+		
+  //****************************************************** Start
+  C_SeqStep_Auto_Start:
+  	SequenceID       :=  C_SeqStep_OnBasePos_Start;
+		
+	//************* all FB reset
+  C_SeqStep_Error:  
+  	;
+ 	C_SeqStep_Auto_End:
+  	SequenceID := C_SeqStep_Auto_Start;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCmdExec_BasePos" Id="{93528f47-f079-4de5-8592-0df7bfc75303}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_BasePos : E_CmdState
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+CASE SequenceID OF
+  //******************************************************* Idle 
+  C_SeqStep_Idle: 
+  	SequenceID       :=  C_SeqStep_OnBasePos_Start;
+		
+  //****************************************************** Start
+  C_SeqStep_OnBasePos_Start:
+	// Home position for LTU is MIDDLE.
+		Homed 					 := TRUE;
+  	Ready 					 := TRUE;
+  	SequenceID 			 := C_SeqStep_OnBasePos_Done;
+	
+  C_SeqStep_Error: 
+    //************* all FB reset
+    mCmdExec_BasePos := mDone(); 
+  //**********************Done
+ 	C_SeqStep_OnBasePos_Done:
+  	mCmdExec_BasePos := mDone();
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCmdExec_Service" Id="{08c18487-5011-428e-a25b-183a7ccea4f0}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCmdExec_Service : E_CmdState
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+ Ready 								:= TRUE;
+ SequenceBusy 				:= FALSE;
+ SequenceDone 				:= TRUE;
+ SequenceID 					:= C_SeqStep_Idle;
+ mCmdExec_Service 		:= E_CmdState.Succeeded;
+ RETURN;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mExecuteCurrentStep" Id="{41586432-ae89-4e94-b32c-63429b036cd5}" FolderPath="02 Methodes\200 Cmd RoueExecutor\">
+      <Declaration><![CDATA[METHOD mExecuteCurrentStep : E_CmdState
+VAR_INPUT
+	I_bExecute					: BOOL;
+END_VAR
+
+VAR
+	L_eCmdState 					: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+//Execute the current routing step (MoveTop, MoveBottom, transport, etc.)]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mGetConvoyerByID" Id="{d0fd3913-d831-4ce7-9451-c4112a8ecf23}" FolderPath="02 Methodes\200 Cmd RoueExecutor\">
+      <Declaration><![CDATA[METHOD mGetConvoyerByID : E_CmdState
+VAR_INPUT
+	I_bExecute					: BOOL;
+END_VAR
+
+VAR
+	L_eCmdState 					: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mGetLTUByConvoyer" Id="{aaad68e6-210f-48da-9786-295b53a5b807}" FolderPath="02 Methodes\200 Cmd RoueExecutor\">
+      <Declaration><![CDATA[METHOD mGetLTUByConvoyer : E_CmdState
+VAR_INPUT
+	I_bExecute					: BOOL;
+END_VAR
+
+VAR
+	L_eCmdState 					: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mGetNextJob" Id="{ed0fe9bd-ca08-4621-a9d1-447d067d0ad3}" FolderPath="02 Methodes\200 Cmd RoueExecutor\">
+      <Declaration><![CDATA[METHOD mGetNextJob : E_CmdState
+VAR_INPUT
+	I_bExecute					: BOOL;
+END_VAR
+
+VAR
+	L_eCmdState 					: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Request the next available ST_RouteJob from the RouteManager
+
+// 
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mHold" Id="{9826c73f-b5ab-4504-8c66-e7eeba15a691}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mHold : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+SUPER^.mHold(I_bExecute);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mHome" Id="{34465ffa-d1f7-4e63-80a7-5ee016b31c7d}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mHome : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+SUPER^.mHome(I_bExecute);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mRealeaseCurrentJob" Id="{7dfd8ad7-dbfa-4800-8f47-7a8acf353eca}" FolderPath="02 Methodes\200 Cmd RoueExecutor\">
+      <Declaration><![CDATA[METHOD mRealeaseCurrentJob : E_CmdState
+VAR_INPUT
+	I_bExecute					: BOOL;
+END_VAR
+
+VAR
+	L_eCmdState 					: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+// Notify the RouteManager that the job is complete and release the resources]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mRelease" Id="{53d477d2-f31b-49d2-807b-dd9cc171f4a0}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mRelease : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+SUPER^.mRelease(I_bExecute);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mSequence" Id="{f40f09ba-b814-4a11-a73f-f4ac5b8d4cc1}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mSequence : E_CmdState
+VAR_INPUT
+	I_bExecute				: BOOL;
+END_VAR
+
+VAR_INST
+	L_eCmdState 		 : E_CmdState; // To Generic checks from parent state 
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[mSequence := SUPER^.mSequence(I_bExecute);	
+
+// Generic checks from parent
+L_eCmdState := SUPER^.mSequence(I_bExecute := I_bExecute);
+
+IF L_eCmdState <> E_CmdState.Busy 
+	THEN
+    mSequence := L_eCmdState;
+    RETURN;
+END_IF
+
+CASE Mode OF
+	E_Mode.Homing:
+		mSequence := mCmdExec_BasePos();
+	E_Mode.Auto:
+		mSequence := mCmdExec_Auto();		
+	E_Mode.Service:
+		mSequence := mCmdExec_Service();		
+END_CASE
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mService" Id="{8fa21da5-945c-497d-8737-332ba65925b4}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mService : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+SUPER^.mService(I_bExecute);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mStop" Id="{378f9ff1-8807-49ec-a1d9-53faa113472c}" FolderPath="02 Methodes\">
+      <Declaration><![CDATA[METHOD mStop : E_CmdState
+VAR_INPUT
+	I_bExecute	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+SUPER^.mStop(I_bExecute);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
