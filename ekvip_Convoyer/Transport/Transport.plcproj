@@ -62,6 +62,9 @@
     <Compile Include="001DUTs\STRUCT\ST_Route.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="001DUTs\STRUCT\ST_RouteJob.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="001DUTs\STRUCT\ST_RouteStep.TcDUT">
       <SubType>Code</SubType>
     </Compile>

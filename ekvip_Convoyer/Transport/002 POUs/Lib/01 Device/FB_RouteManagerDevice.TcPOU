@@ -32,6 +32,8 @@ VAR
 	eSource			 									: E_Convoyer;
 	eDestination 									: E_Convoyer;
 	
+	stCurrentRoute 								: ST_Route;
+	 
 	bRouteRequest   							: BOOL;
 	bRouteAvailable 							: BOOL;
   bRouteReserved								: BOOL;
@@ -64,6 +66,7 @@ IF NOT Enable THEN RETURN; END_IF
     <Folder Name="01 Properties" Id="{85cf6baa-21e4-4eab-a250-484e0149eff4}" />
     <Folder Name="02 Methodes" Id="{7ada561f-4a10-4dab-8217-abe504d828f1}">
       <Folder Name="100 CmdExecute" Id="{0313f81c-d9a9-4b37-95e5-806775012e03}" />
+      <Folder Name="200 CmdRouteManager" Id="{fe266e6d-53aa-463c-84bf-fb8e0d836b88}" />
     </Folder>
     <Property Name="CarrierPresent" Id="{28a673b2-92d9-4578-9add-5105e9b22dff}" FolderPath="01 Properties\">
       <Declaration><![CDATA[PROPERTY CarrierPresent : BOOL]]></Declaration>
@@ -97,9 +100,29 @@ VAR_INPUT
 	I_Name                : STRING;         //  Name
 	I_ID                  : UINT;           // ID
   I_itfOwner					  : ITF_Owner;      // owner 
+	
+	I_itfLTU3  						: ITF_LTU;
+ 	I_itfLTU6  						: ITF_LTU;
+ 	I_itfLTU9  						: ITF_LTU;
+ 	I_itfLTU12 						: ITF_LTU;     							
+	I_itfC3    						: ITF_Convoyer;
+	I_itfC6    						: ITF_Convoyer;
+	I_itfC9    						: ITF_Convoyer;
+	I_itfC12   						: ITF_Convoyer;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[  ]]></ST>
+        <ST><![CDATA[
+	
+IF itfLTU3  <>0 THEN itfLTU3  := I_itfLTU3; END_IF
+IF itfLTU6  <>0 THEN itfLTU6  := I_itfLTU6; END_IF
+IF itfLTU9  <>0 THEN itfLTU9  := I_itfLTU9; END_IF
+IF itfLTU12 <>0 THEN itfLTU12 := I_itfLTU12;END_IF
+
+IF itfC3  	<>0 THEN itfC3  	:= I_itfC3; END_IF
+IF itfC6  	<>0 THEN itfC6  	:= I_itfC6; END_IF
+IF itfC9  	<>0 THEN itfC9  	:= I_itfC9; END_IF
+IF itfC12 	<>0 THEN itfC12 	:= I_itfC12;END_IF
+	]]></ST>
       </Implementation>
     </Method>
     <Property Name="LTUFree" Id="{49fa8a07-b1e5-48b2-90fe-944d56de56a3}" FolderPath="01 Properties\">
@@ -151,7 +174,7 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mBuildRoute" Id="{7200bf03-7fa0-4280-a8ff-c4a05727f4d4}" FolderPath="02 Methodes\100 CmdExecute\">
+    <Method Name="mBuildRoute" Id="{7200bf03-7fa0-4280-a8ff-c4a05727f4d4}" FolderPath="02 Methodes\200 CmdRouteManager\">
       <Declaration><![CDATA[METHOD mBuildRoute : BOOL
 VAR_INPUT
 	
@@ -162,7 +185,7 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCheckRouteFree" Id="{677ed7d3-36c4-4960-8f5d-5f1bc61e49dd}" FolderPath="02 Methodes\100 CmdExecute\">
+    <Method Name="mCheckRouteFree" Id="{677ed7d3-36c4-4960-8f5d-5f1bc61e49dd}" FolderPath="02 Methodes\200 CmdRouteManager\">
       <Declaration><![CDATA[METHOD mCheckRouteFree : BOOL
 VAR_INPUT
 	
@@ -184,19 +207,19 @@ CASE SequenceID OF
 
   //******************************************************* Idle 
   C_SeqStep_Idle: 
-  	SequenceID       :=  C_SeqStep_OnBasePos_Start;
+  	SequenceID       :=  C_SeqStep_Auto_Start;
   
   //****************************************************** Start
-  C_SeqStep_OnBasePos_Start:
+  C_SeqStep_Auto_Start:
   	
-  	SequenceID       :=  C_SeqStep_OnBasePos_Start;
+  	SequenceID       :=  C_SeqStep_Auto_End;
 	
   C_SeqStep_Error: 
     //************* all FB reset
 
 		//************* 
   	
- 	C_SeqStep_OnBasePos_Done:
+ 	C_SeqStep_Auto_End:
   	mCmdExec_Auto := mDone();
 
 END_CASE]]></ST>
@@ -276,7 +299,7 @@ END_VAR
 SUPER^.mRelease(I_bExecute);]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mRequestRoute" Id="{4a417486-f8d2-4dd6-9779-5933800df322}" FolderPath="02 Methodes\100 CmdExecute\">
+    <Method Name="mRequestRoute" Id="{4a417486-f8d2-4dd6-9779-5933800df322}" FolderPath="02 Methodes\200 CmdRouteManager\">
       <Declaration><![CDATA[METHOD mRequestRoute : E_CmdState
 VAR_INPUT
    I_bExecute     		: BOOL;
@@ -330,7 +353,7 @@ mRequestRoute 					:= E_CmdState.Succeeded;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mReserveRoute" Id="{b2fe83f5-9021-4c29-a99a-0b7e44acec3e}" FolderPath="02 Methodes\100 CmdExecute\">
+    <Method Name="mReserveRoute" Id="{b2fe83f5-9021-4c29-a99a-0b7e44acec3e}" FolderPath="02 Methodes\200 CmdRouteManager\">
       <Declaration><![CDATA[METHOD mReserveRoute : BOOL
 VAR_INPUT
 	

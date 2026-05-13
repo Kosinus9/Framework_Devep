@@ -35,22 +35,30 @@ VAR
 																														
 	fbConvoyerDevice6			  					: FB_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice6,  // Name
 																						 				      	GVL_Customer.C_ID_ConvoyerDevice6,		 // ID
-																										    		THIS^,															  // ITF_Owner
+																										    		THIS^,															   // ITF_Owner
 																										      	);
                                                           	
 	fbConvoyerDevice9			  					: FB_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice9,  // Name
 																						 				      	GVL_Customer.C_ID_ConvoyerDevice9,		 // ID
-																										    		THIS^,															  // ITF_Owner
+																										    		THIS^,															   // ITF_Owner
 																										      	);
                                                           	
 	fbConvoyerDevice12			  			  : FB_ConvoyerDevice		  (GVL_Customer.C_Name_ConvoyerDevice12,  // Name
-																						 				        GVL_Customer.C_ID_ConvoyerDevice12,		 // ID
-																										    	  THIS^,															  // ITF_Owner
+																						 				        GVL_Customer.C_ID_ConvoyerDevice12,		  // ID
+																										    	  THIS^,															    // ITF_Owner
 																										        );																										
 			
 	fbRouteManagerDevice			  			: FB_RouteManagerDevice		  (GVL_Customer.C_Name_RouteManagerDevice,   // Name
 																						 				        		 GVL_Customer.C_ID_RouteManagerDevice,		 // ID
 																										    	       THIS^,															       // ITF_Owner
+																																 fbLUTDevice3,   													//ITF_LTUDevice
+																																 fbLUTDevice6,	 													//ITF_LTUDevice
+																																 fbLUTDevice9,	 													//ITF_LTUDevice
+																																 fbLUTDevice12,	 													//ITF_LTUDevice
+																																 fbConvoyerDevice3,                       // ITF_Convoyer
+																																 fbConvoyerDevice6,                       // ITF_Convoyer
+																																 fbConvoyerDevice9,                       // ITF_Convoyer
+																																 fbConvoyerDevice12,                      // ITF_Convoyer
 																										            );
 
 																				

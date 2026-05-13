@@ -5,7 +5,7 @@
 {attribute 'strict'}
 {attribute 'to_string'}
 (*
-	This ENUM describes the system's elementary actions.
+	this ENUM describes elementary actions the system
 *)
 TYPE E_RouteStepType :
 (
