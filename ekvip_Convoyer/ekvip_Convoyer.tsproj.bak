@@ -10,7 +10,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{81AFEAAA-A050-46FA-81EC-27E633CBC1C0}" Name="Transport" PrjFilePath="Transport\Transport.plcproj" TmcFilePath="Transport\Transport.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{A24BABEB-CD03-1896-FC2D-34DFE792E175}" TmcPath="Transport\Transport.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{1946E338-A267-1C6E-A79E-D613834DAEE9}" TmcPath="Transport\Transport.tmc">
 					<Name>Transport Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" AreaNo="1">
@@ -26,7 +26,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice3.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbStopperLtu.fbStopperOut.bQAT_HardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -46,7 +46,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice6.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbStopperLtu.fbStopperOut.bQAT_HardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -66,7 +66,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice9.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbStopperLtu.fbStopperOut.bQAT_HardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -86,7 +86,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice12.fbStopperLut.fbStopperOut.bQAT_HardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbStopperLtu.fbStopperOut.bQAT_HardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -154,7 +154,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice3.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice3.fbStopperLtu.fbStopperOccupied.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -179,7 +179,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice6.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice6.fbStopperLtu.fbStopperOccupied.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -204,7 +204,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice9.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice9.fbStopperLtu.fbStopperOccupied.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
@@ -229,7 +229,7 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>MAIN.fbCustomer.fbLUTDevice12.fbStopperLut.fbStopperOccupied.bIAT_bHardwareLink</Name>
+							<Name>MAIN.fbCustomer.fbLUTDevice12.fbStopperLtu.fbStopperOccupied.bIAT_bHardwareLink</Name>
 							<Comment><![CDATA[ hardware link]]></Comment>
 							<Type>BOOL</Type>
 						</Var>

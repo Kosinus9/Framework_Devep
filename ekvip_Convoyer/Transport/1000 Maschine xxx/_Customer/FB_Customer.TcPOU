@@ -47,7 +47,13 @@ VAR
 																						 				        GVL_Customer.C_ID_ConvoyerDevice12,		 // ID
 																										    	  THIS^,															  // ITF_Owner
 																										        );																										
-																						
+			
+	fbRouteManagerDevice			  			: FB_RouteManagerDevice		  (GVL_Customer.C_Name_RouteManagerDevice,   // Name
+																						 				        		 GVL_Customer.C_ID_RouteManagerDevice,		 // ID
+																										    	       THIS^,															       // ITF_Owner
+																										            );
+
+																				
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -67,6 +73,8 @@ fbConvoyerDevice3();
 fbConvoyerDevice6();
 fbConvoyerDevice9();
 fbConvoyerDevice12();
+
+fbRouteManagerDevice();
 
 
 ]]></ST>

@@ -44,7 +44,7 @@
     <Compile Include="001DUTs\ITF\Device\ITF_Convoyer.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="001DUTs\ITF\Device\ITF_LUT.TcIO">
+    <Compile Include="001DUTs\ITF\Device\ITF_LTU.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="001DUTs\ITF\Generic\ITF_Base.TcIO">
@@ -83,7 +83,7 @@
     <Compile Include="002 POUs\Lib\01 Device\FB_ConvoyerDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\FB_RoutePlanerDevice.TcPOU">
+    <Compile Include="002 POUs\Lib\01 Device\FB_RouteManagerDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="002 POUs\Lib\02 SimpleDevice\00 Template\FB_TemplateSimpleDevice.TcPOU">

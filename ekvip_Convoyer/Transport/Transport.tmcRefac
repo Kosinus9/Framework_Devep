@@ -1,10 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Refactors>
   <Renames>
-    <RenamedSymbol>
-      <Type guid="1d37f6f4-ced3-4fc7-b8fb-537fe5b0ee0b">FB_LUTDevice</Type>
-      <From>fbStopperLut</From>
-      <To>fbStopperLtu</To>
-    </RenamedSymbol>
+    <RenamedType>
+      <Type guid="8270a267-7ccc-4c56-898e-a1440cf6b64c">FB_ROUTEPLANERDEVICE</Type>
+      <From>FB_RoutePlanerDevice</From>
+      <To>FB_RouteManagerDevice</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="6c0d6849-e396-4313-9db5-4e08f7814412">ITF_LUT</Type>
+      <From>ITF_LUT</From>
+      <To>ITF_LTU</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="4a417486-f8d2-4dd6-9779-5933800df322">MCMDEXEC_MOVEBOTTOM</Type>
+      <From>mCmdExec_MoveBottom</From>
+      <To>mRequestRoute</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="7200bf03-7fa0-4280-a8ff-c4a05727f4d4">MCMDEXEC_TRANSFERTOP</Type>
+      <From>mCmdExec_TransferTop</From>
+      <To>mBuildRoute</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="677ed7d3-36c4-4960-8f5d-5f1bc61e49dd">MBUILDROUTE_1</Type>
+      <From>mBuildRoute_1</From>
+      <To>mCheckRouteFree</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="b2fe83f5-9021-4c29-a99a-0b7e44acec3e">MBUILDROUTE_2</Type>
+      <From>mBuildRoute_2</From>
+      <To>mReserveRoute</To>
+    </RenamedType>
   </Renames>
 </Refactors>

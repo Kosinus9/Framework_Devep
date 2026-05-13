@@ -17,8 +17,10 @@ VAR_GLOBAL CONSTANT
 	C_Name_ConvoyerDevice3             : STRING := 'ConvoyerDevice3';
 	C_Name_ConvoyerDevice6             : STRING := 'ConvoyerDevice6';
 	C_Name_ConvoyerDevice9             : STRING := 'ConvoyerDevice9';
-	C_Name_ConvoyerDevice12             : STRING := 'ConvoyerDevice12';
+	C_Name_ConvoyerDevice12            : STRING := 'ConvoyerDevice12';
 	
+	C_Name_RouteManagerDevice          : STRING := 'RouteManagerDevice';
+
 	
 	//======================================================= Name Simple Device 
 	C_Name_LTUPneuClyZ			           : STRING := 'PneuCylZAxisLTU';
@@ -56,6 +58,8 @@ VAR_GLOBAL CONSTANT
 	C_ID_ConvoyerDevice6               : UINT :=  15;
 	C_ID_ConvoyerDevice9               : UINT :=  16;
 	C_ID_ConvoyerDevice12              : UINT :=  17;
+	
+	C_ID_RouteManagerDevice            : UINT :=  18;
 	
 	
 	//======================================================= Name Simple Device 

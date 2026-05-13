@@ -1,7 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
-  <POU Name="FB_RoutePlanerDevice" Id="{8270a267-7ccc-4c56-898e-a1440cf6b64c}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_RoutePlanerDevice EXTENDS FD_Device 
+  <POU Name="FB_RouteManagerDevice" Id="{8270a267-7ccc-4c56-898e-a1440cf6b64c}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+ receive a request : source on destination
+ calculate the  path
+ verify required resources
+ reserve the relevant Ltu or conveyors
+ give a ST_Route to the route executor
+*)
+
+FUNCTION_BLOCK FB_RouteManagerDevice EXTENDS FD_Device 
 VAR_INPUT
 END_VAR
 
@@ -9,23 +17,39 @@ VAR_OUTPUT
 END_VAR
 
 VAR
+	//===================== interface
+ 	itfLTU3  											: ITF_LTU;
+ 	itfLTU6  											: ITF_LTU;
+ 	itfLTU9  											: ITF_LTU;
+ 	itfLTU12 											: ITF_LTU;
+          											
+	itfC3    											: ITF_Convoyer;
+	itfC6    											: ITF_Convoyer;
+	itfC9    											: ITF_Convoyer;
+	itfC12   											: ITF_Convoyer;
+	
 	//===================== Variable
+	eSource			 									: E_Convoyer;
+	eDestination 									: E_Convoyer;
+	
+	bRouteRequest   							: BOOL;
+	bRouteAvailable 							: BOOL;
+  bRouteReserved								: BOOL;
 	
 	//===================== Instance
-
-																								
+	
+																							
 END_VAR
 
 VAR CONSTANT
 	// --------------------------Base------------------
-	C_SeqStep_OnBasePos_Start								: UINT :=  20; 
-	C_SeqStep_OnBasePos_WaitOpMode					: UINT :=  30;
-	C_SeqStep_OnBasePos_Done								: UINT :=  100; 
+	C_SeqStep_OnBasePos_Start								: UINT :=  10; 
+	C_SeqStep_OnBasePos_Wait      					: UINT :=  30;
+	C_SeqStep_OnBasePos_Done								: UINT :=  40; 
 	
-	// --------------------------Auto Sequence------------------
-	
-	C_SeqStep_Auto_Start										: UINT :=  200;
-	C_SeqStep_Auto_End											: UINT :=  400;
+	// --------------------------Auto Sequence---------
+	C_SeqStep_Auto_Start										: UINT :=  100;
+	C_SeqStep_Auto_End											: UINT :=  200;
 END_VAR
 	]]></Declaration>
     <Implementation>
@@ -127,6 +151,28 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
+    <Method Name="mBuildRoute" Id="{7200bf03-7fa0-4280-a8ff-c4a05727f4d4}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mBuildRoute : BOOL
+VAR_INPUT
+	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mCheckRouteFree" Id="{677ed7d3-36c4-4960-8f5d-5f1bc61e49dd}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mCheckRouteFree : BOOL
+VAR_INPUT
+	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="mCmdExec_Auto" Id="{8119614c-5c76-4267-a8ee-e2944e67878d}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_Auto : E_CmdState
 VAR_INPUT
@@ -138,10 +184,10 @@ CASE SequenceID OF
 
   //******************************************************* Idle 
   C_SeqStep_Idle: 
-  	SequenceID       :=  C_SeqStep_Start;
+  	SequenceID       :=  C_SeqStep_OnBasePos_Start;
   
   //****************************************************** Start
-  C_SeqStep_Start:
+  C_SeqStep_OnBasePos_Start:
   	
   	SequenceID       :=  C_SeqStep_OnBasePos_Start;
 	
@@ -150,7 +196,7 @@ CASE SequenceID OF
 
 		//************* 
   	
- 	C_SeqStep_Done:
+ 	C_SeqStep_OnBasePos_Done:
   	mCmdExec_Auto := mDone();
 
 END_CASE]]></ST>
@@ -171,13 +217,11 @@ CASE SequenceID OF
   
   //****************************************************** Start
   C_SeqStep_Start:
-	// Home position for LTU is MIDDLE.
-		IF E_CmdState.Succeeded  = fbPneuCyl3Pos_AxisZ.mCallMiddle(TRUE)
-			THEN
-			Homed := TRUE;
-  	  Ready := TRUE;
-  	  SequenceID := C_SeqStep_OnBasePos_Done;
-		END_IF
+	//
+	Homed := TRUE;
+  Ready := TRUE;
+  SequenceID := C_SeqStep_OnBasePos_Done;
+	
   C_SeqStep_Error: 
     //************* all FB reset
     mCmdExec_BasePos := mDone(); 
@@ -188,93 +232,6 @@ CASE SequenceID OF
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_MoveBottom" Id="{4a417486-f8d2-4dd6-9779-5933800df322}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_MoveBottom : E_CmdState
-VAR_INPUT
-	I_bExecute					: BOOL;
-END_VAR
-
-VAR
-	L_eCmdState 					: E_CmdState;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[// No command requested.
-IF NOT I_bExecute 
-	THEN
-  	mCmdExec_MoveMiddle := E_CmdState.Idle;
-    RETURN;
-END_IF
-
-// Move vertical axis to TOP.
-L_eCmdState := fbPneuCyl3Pos_AxisZ.mCallBottom(TRUE);
-CASE L_eCmdState OF
-	E_CmdState.Succeeded:
-  	mCmdExec_MoveBottom := E_CmdState.Succeeded;
-  E_CmdState.Busy:
-  	mCmdExec_MoveBottom := E_CmdState.Busy;
-ELSE
-	mCmdExec_MoveBottom := L_eCmdState;
-END_CASE]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mCmdExec_MoveMiddle" Id="{81c7f6cf-c250-497d-b28d-bc9e53f3181e}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_MoveMiddle : E_CmdState
-VAR_INPUT
-	I_bExecute					: BOOL;
-END_VAR
-
-VAR
-	L_eCmdState 					: E_CmdState;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[// No command requested.
-IF NOT I_bExecute 
-	THEN
-  	mCmdExec_MoveMiddle := E_CmdState.Idle;
-    RETURN;
-END_IF
-
-// Move vertical axis to TOP.
-L_eCmdState := fbPneuCyl3Pos_AxisZ.mCallMiddle(TRUE);
-CASE L_eCmdState OF
-	E_CmdState.Succeeded:
-  	mCmdExec_MoveMiddle := E_CmdState.Succeeded;
-  E_CmdState.Busy:
-  	mCmdExec_MoveMiddle := E_CmdState.Busy;
-ELSE
-	mCmdExec_MoveMiddle := L_eCmdState;
-END_CASE]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mCmdExec_MoveTop" Id="{36757621-6758-4668-864e-88c5a3362a39}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_MoveTop : E_CmdState
-VAR_INPUT
-	I_bExecute					: BOOL;
-END_VAR
-
-VAR
-	L_eCmdState 					: E_CmdState;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[// No command requested.
-IF NOT I_bExecute 
-	THEN
-  	mCmdExec_MoveTop := E_CmdState.Idle;
-    RETURN;
-END_IF
-
-// Move vertical axis to TOP.
-L_eCmdState := fbPneuCyl3Pos_AxisZ.mCallTop(TRUE);
-CASE L_eCmdState OF
-	E_CmdState.Succeeded:
-  	mCmdExec_MoveTop := E_CmdState.Succeeded;
-  E_CmdState.Busy:
-  	mCmdExec_MoveTop := E_CmdState.Busy;
-ELSE
-	mCmdExec_MoveTop := L_eCmdState;
-END_CASE]]></ST>
-      </Implementation>
-    </Method>
     <Method Name="mCmdExec_Service" Id="{f8896431-6abb-450c-98ff-dfb8e5b37029}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_Service : E_CmdState
 VAR_INPUT
@@ -282,34 +239,6 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[;]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mCmdExec_TransferTop" Id="{7200bf03-7fa0-4280-a8ff-c4a05727f4d4}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_TransferTop : E_CmdState
-VAR_INPUT
-	I_bExecute					: BOOL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[// No command requested.
-IF NOT I_bExecute THEN
-    fbLUTSimpleMotor.mStopMotor(TRUE);
-    mCmdExec_TransferTop := E_CmdState.Idle;
-    RETURN;
-END_IF
-
-// Start LTU motor for top transfer.
-fbLUTSimpleMotor.mStartMotor(TRUE);
-
-// Wait  carrier leaves LTU.
-IF NOT fbStopperLut.CarriePresent 
-	THEN
-    fbLUTSimpleMotor.mStopMotor(TRUE);
-    mCmdExec_TransferTop := E_CmdState.Succeeded;
-    RETURN;
-END_IF
-
-mCmdExec_TransferTop := E_CmdState.Busy;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mHold" Id="{fb155185-5dd5-45a4-8ccd-2c88c48f99cd}" FolderPath="02 Methodes\">
@@ -347,6 +276,71 @@ END_VAR
 SUPER^.mRelease(I_bExecute);]]></ST>
       </Implementation>
     </Method>
+    <Method Name="mRequestRoute" Id="{4a417486-f8d2-4dd6-9779-5933800df322}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mRequestRoute : E_CmdState
+VAR_INPUT
+   I_bExecute     		: BOOL;
+   I_eSource      		: E_Convoyer;
+   I_eDestination 		: E_Convoyer;
+END_VAR
+
+VAR
+	L_eCmdState 					: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+  	mRequestRoute 			:= E_CmdState.Idle;
+    RETURN;         		
+END_IF              		
+                    		
+eSource 								:= I_eSource;
+eDestination 					  := I_eDestination;
+
+IF eSource = E_Convoyer.Convoyer_NONE OR 
+	 eDestination = E_Convoyer.Convoyer_NONE 
+	 	THEN
+    	mRequestRoute     := E_CmdState.Error;
+    	RETURN;
+END_IF
+
+IF NOT mBuildRoute() 
+	THEN
+    mRequestRoute       := E_CmdState.Error;
+    RETURN;
+END_IF
+
+IF NOT mCheckRouteFree() 
+	THEN
+    mRequestRoute 			:= E_CmdState.NotReady;
+    RETURN;
+END_IF
+
+IF NOT mReserveRoute() 
+	THEN
+    mRequestRoute 			:= E_CmdState.NotReady;
+    RETURN;
+END_IF
+
+bRouteAvailable 				:= TRUE;
+bRouteReserved 					:= TRUE;
+
+mRequestRoute 					:= E_CmdState.Succeeded;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mReserveRoute" Id="{b2fe83f5-9021-4c29-a99a-0b7e44acec3e}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mReserveRoute : BOOL
+VAR_INPUT
+	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="mSequence" Id="{9d46ef71-25fa-47b2-8325-82cf496e3abc}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mSequence : E_CmdState
 VAR_INPUT
@@ -372,14 +366,11 @@ END_IF
 
 CASE Mode OF
 	E_Mode.Homing:
-		mSequence := mCmdExec_BasePos();
-		
+		mSequence := mCmdExec_BasePos();		
 	E_Mode.Auto:
-		mSequence := mCmdExec_Auto();
-		
+		mSequence := mCmdExec_Auto();	
 	E_Mode.Service:
-		mSequence := mCmdExec_Service();
-		
+		mSequence := mCmdExec_Service();	
 END_CASE]]></ST>
       </Implementation>
     </Method>
