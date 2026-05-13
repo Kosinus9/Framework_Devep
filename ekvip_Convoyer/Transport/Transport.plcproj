@@ -74,7 +74,7 @@
     <Compile Include="002 POUs\00 Generic\FM_Maschine.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\00 Template\FB_Template.TcPOU">
+    <Compile Include="002 POUs\Lib\01 Device\00 Template\FB_RoutePlanerDevice_1.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="002 POUs\Lib\01 Device\FB_LUTDevice.TcPOU">
@@ -83,7 +83,7 @@
     <Compile Include="002 POUs\Lib\01 Device\FB_ConvoyerDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\FB_RouteplanerDevice.TcPOU">
+    <Compile Include="002 POUs\Lib\01 Device\FB_RoutePlanerDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="002 POUs\Lib\02 SimpleDevice\00 Template\FB_TemplateSimpleDevice.TcPOU">

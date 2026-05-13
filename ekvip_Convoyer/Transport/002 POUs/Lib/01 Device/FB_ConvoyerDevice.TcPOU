@@ -209,8 +209,8 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[CASE SequenceID OF
-
+        <ST><![CDATA[
+CASE SequenceID OF
   //******************************************************* Idle 
   C_SeqStep_Idle: 
   	SequenceID       :=  C_SeqStep_Start;
@@ -232,7 +232,6 @@ END_VAR
   //**********************Done
  	C_SeqStep_OnBasePos_Done:
   	mCmdExec_BasePos := mDone();
-
 END_CASE]]></ST>
       </Implementation>
     </Method>

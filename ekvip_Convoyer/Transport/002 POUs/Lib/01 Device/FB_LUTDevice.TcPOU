@@ -17,16 +17,14 @@ VAR
 	bReserved							: BOOL;
 	eReservedBy						: E_Convoyer;
 	
-	
-	
 	//===================== Instance
-	fbPneuCyl3Pos_AxisZ								: FB_PneuCyl_3Pos     	 (GVL_Customer.C_Name_LTUPneuClyZ,
+	fbPneuCyl3Pos_AxisZ								: FB_PneuCyl_3Pos     	  (GVL_Customer.C_Name_LTUPneuClyZ,
 																															GVL_Customer.C_ID_LTUPneuClyZ
 																										  				); 
 																													
-	fbStopperLut											: FB_PneuCyl_Stopper     (GVL_Customer.C_Name_LUTStopper,
+	fbStopperLtu											: FB_PneuCyl_Stopper      (GVL_Customer.C_Name_LUTStopper,
 																															GVL_Customer.C_ID_LUTStopper
-																										  			 );																												
+																										  			  );																												
 																													
 	fbLUTLightBarrier									: FB_Input					  		(GVL_Customer.C_Name_LUTLightBarrier,
 																															GVL_Customer.C_ID_LUTLightBarrier
@@ -35,14 +33,13 @@ VAR
 	fbLUTSimpleMotor									: FB_SimpleMotor      		(GVL_Customer.C_Name_LUTDcMotor,
 																															GVL_Customer.C_ID_LUTSimpleMotor
 																										  				);
-
-																										
+																								
 END_VAR
 
 VAR CONSTANT
 	// --------------------------Base------------------
 	C_SeqStep_OnBasePos_Start								: UINT :=  20; 
-	C_SeqStep_OnBasePos_WaitOpMode					: UINT :=  30;
+	C_SeqStep_OnBasePos_Error								: UINT :=  30;
 	C_SeqStep_OnBasePos_Done								: UINT :=  100; 
 	
 	// --------------------------Auto Sequence------------------
@@ -59,7 +56,7 @@ SUPER^();
 IF NOT Enable THEN RETURN; END_IF
 
 fbPneuCyl3Pos_AxisZ();
-fbStopperLut();
+fbStopperLtu();
 fbLUTLightBarrier();
 fbLUTSimpleMotor();]]></ST>
     </Implementation>
@@ -159,15 +156,15 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[// hat kein automatique sequence
 CASE SequenceID OF
 
   //******************************************************* Idle 
   C_SeqStep_Idle: 
-  	SequenceID       :=  C_SeqStep_Start;
+  	SequenceID       :=  C_SeqStep_Auto_Start;
   
   //****************************************************** Start
-  C_SeqStep_Start:
+  C_SeqStep_Auto_Start:
   	
   	SequenceID       :=  C_SeqStep_OnBasePos_Start;
 	
@@ -176,8 +173,8 @@ CASE SequenceID OF
 
 		//************* 
   	
- 	C_SeqStep_Done:
-  	mCmdExec_Auto := mDone();
+ 	C_SeqStep_Auto_End:
+  	SequenceID := C_SeqStep_Auto_Start;
 
 END_CASE]]></ST>
       </Implementation>
@@ -193,18 +190,21 @@ CASE SequenceID OF
 
   //******************************************************* Idle 
   C_SeqStep_Idle: 
-  	SequenceID       :=  C_SeqStep_Start;
+  	SequenceID       :=  C_SeqStep_OnBasePos_Start;
   
   //****************************************************** Start
-  C_SeqStep_Start:
+  C_SeqStep_OnBasePos_Start:
 	// Home position for LTU is MIDDLE.
 		IF E_CmdState.Succeeded  = fbPneuCyl3Pos_AxisZ.mCallMiddle(TRUE)
 			THEN
 			Homed := TRUE;
   	  Ready := TRUE;
   	  SequenceID := C_SeqStep_OnBasePos_Done;
+		ELSIF E_CmdState.Error = fbPneuCyl3Pos_AxisZ.mCallMiddle(TRUE) THEN
+      SequenceID := C_SeqStep_OnBasePos_Error;
 		END_IF
-  C_SeqStep_Error: 
+		
+  C_SeqStep_OnBasePos_Error: 
     //************* all FB reset
     mCmdExec_BasePos := mDone(); 
   //**********************Done
@@ -227,11 +227,11 @@ END_VAR]]></Declaration>
         <ST><![CDATA[// No command requested.
 IF NOT I_bExecute 
 	THEN
-  	mCmdExec_MoveMiddle := E_CmdState.Idle;
+  	mCmdExec_MoveBottom := E_CmdState.Idle;
     RETURN;
 END_IF
 
-// Move vertical axis to TOP.
+// Move vertical axis to Bottom.
 L_eCmdState := fbPneuCyl3Pos_AxisZ.mCallBottom(TRUE);
 CASE L_eCmdState OF
 	E_CmdState.Succeeded:
@@ -239,7 +239,7 @@ CASE L_eCmdState OF
   E_CmdState.Busy:
   	mCmdExec_MoveBottom := E_CmdState.Busy;
 ELSE
-	mCmdExec_MoveBottom := L_eCmdState;
+	mCmdExec_MoveBottom   := L_eCmdState;
 END_CASE]]></ST>
       </Implementation>
     </Method>
@@ -268,7 +268,7 @@ CASE L_eCmdState OF
   E_CmdState.Busy:
   	mCmdExec_MoveMiddle := E_CmdState.Busy;
 ELSE
-	mCmdExec_MoveMiddle := L_eCmdState;
+	mCmdExec_MoveMiddle   := L_eCmdState;
 END_CASE]]></ST>
       </Implementation>
     </Method>
@@ -285,7 +285,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[// No command requested.
 IF NOT I_bExecute 
 	THEN
-  	mCmdExec_MoveTop := E_CmdState.Idle;
+  	mCmdExec_MoveTop    := E_CmdState.Idle;
     RETURN;
 END_IF
 
@@ -293,11 +293,11 @@ END_IF
 L_eCmdState := fbPneuCyl3Pos_AxisZ.mCallTop(TRUE);
 CASE L_eCmdState OF
 	E_CmdState.Succeeded:
-  	mCmdExec_MoveTop := E_CmdState.Succeeded;
+  	mCmdExec_MoveTop    := E_CmdState.Succeeded;
   E_CmdState.Busy:
-  	mCmdExec_MoveTop := E_CmdState.Busy;
+  	mCmdExec_MoveTop    := E_CmdState.Busy;
 ELSE
-	mCmdExec_MoveTop := L_eCmdState;
+	mCmdExec_MoveTop      := L_eCmdState;
 END_CASE]]></ST>
       </Implementation>
     </Method>
@@ -307,7 +307,13 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[;]]></ST>
+        <ST><![CDATA[
+ Ready 								:= TRUE;
+ SequenceBusy 				:= FALSE;
+ SequenceDone 				:= TRUE;
+ SequenceID 					:= C_SeqStep_Idle;
+ mCmdExec_Service 		:= E_CmdState.Succeeded;
+ RETURN;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mCmdExec_TransferTop" Id="{d2f6dd01-c2ed-4343-891b-6738e835be35}" FolderPath="02 Methodes\100 CmdExecute\">
@@ -326,11 +332,13 @@ END_IF
 
 // Start LTU motor for top transfer.
 fbLUTSimpleMotor.mStartMotor(TRUE);
+fbStopperLtu.mCallWork(TRUE); // to leave Ltu
 
-// Wait  carrier leaves LTU.
-IF NOT fbStopperLut.CarriePresent 
+// Wait  carrier leaves Ltu.
+IF NOT fbStopperLtu.CarriePresent 
 	THEN
-    fbLUTSimpleMotor.mStopMotor(TRUE);
+		fbStopperLtu.mCallBase(TRUE); // Ltu to Top 
+    fbLUTSimpleMotor.mStopMotor(TRUE);  // motor aus 
     mCmdExec_TransferTop := E_CmdState.Succeeded;
     RETURN;
 END_IF

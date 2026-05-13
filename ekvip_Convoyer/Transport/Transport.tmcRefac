@@ -1,25 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Refactors>
   <Renames>
-    <RenamedType>
-      <Type guid="0699606b-20d9-450f-ac58-6e4a863820c1">MCMDEXEC_MOVETOP_1</Type>
-      <From>mCmdExec_MoveTop_1</From>
-      <To>mCmdExec_TransferTop</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="31257785-c557-43e8-9c51-32cde10873f6">MCMDEXEC_TRANSFERTOP_1</Type>
-      <From>mCmdExec_TransferTop_1</From>
-      <To>mCmdExec_MoveMiddle</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="ec212c1f-d213-4550-add5-c0351f9927e9">MCMDEXEC_BASEPOST</Type>
-      <From>mCmdExec_Homing</From>
-      <To>mCmdExec_BasePos</To>
-    </RenamedType>
-    <RenamedType>
-      <Type guid="eb2de01f-87e9-4e47-9b8c-605e0a054e34">MCMDEXEC_HOMING</Type>
-      <From>mCmdExec_Homing</From>
-      <To>mCmdExec_BasePos</To>
-    </RenamedType>
+    <RenamedSymbol>
+      <Type guid="1d37f6f4-ced3-4fc7-b8fb-537fe5b0ee0b">FB_LUTDevice</Type>
+      <From>fbStopperLut</From>
+      <To>fbStopperLtu</To>
+    </RenamedSymbol>
   </Renames>
 </Refactors>

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
-  <POU Name="FB_RoutePlanerDevice" Id="{8270a267-7ccc-4c56-898e-a1440cf6b64c}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_RoutePlanerDevice EXTENDS FD_Device 
+  <POU Name="FB_RoutePlanerDevice_1" Id="{951623ee-5d23-49e9-b448-97e4a82a818f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RoutePlanerDevice_1 EXTENDS FD_Device 
 VAR_INPUT
 END_VAR
 
@@ -10,9 +10,29 @@ END_VAR
 
 VAR
 	//===================== Variable
+	eLTUPosition					: E_LTUPosition;
+	bCarrierPresent				: BOOL;
+	bLTUFree							: BOOL;
+	
+	bReserved							: BOOL;
+	eReservedBy						: E_Convoyer;
 	
 	//===================== Instance
-
+	fbPneuCyl3Pos_AxisZ								: FB_PneuCyl_3Pos     	  (GVL_Customer.C_Name_LTUPneuClyZ,
+																															GVL_Customer.C_ID_LTUPneuClyZ
+																										  				); 
+																													
+	fbStopperLut											: FB_PneuCyl_Stopper      (GVL_Customer.C_Name_LUTStopper,
+																															GVL_Customer.C_ID_LUTStopper
+																										  			  );																												
+																													
+	fbLUTLightBarrier									: FB_Input					  		(GVL_Customer.C_Name_LUTLightBarrier,
+																															GVL_Customer.C_ID_LUTLightBarrier
+																										  				);																																										
+	
+	fbLUTSimpleMotor									: FB_SimpleMotor      		(GVL_Customer.C_Name_LUTDcMotor,
+																															GVL_Customer.C_ID_LUTSimpleMotor
+																										  				);
 																								
 END_VAR
 
@@ -35,15 +55,18 @@ SUPER^();
 //====================================
 IF NOT Enable THEN RETURN; END_IF
 
-]]></ST>
+fbPneuCyl3Pos_AxisZ();
+fbStopperLut();
+fbLUTLightBarrier();
+fbLUTSimpleMotor();]]></ST>
     </Implementation>
-    <Folder Name="01 Properties" Id="{85cf6baa-21e4-4eab-a250-484e0149eff4}" />
-    <Folder Name="02 Methodes" Id="{7ada561f-4a10-4dab-8217-abe504d828f1}">
-      <Folder Name="100 CmdExecute" Id="{0313f81c-d9a9-4b37-95e5-806775012e03}" />
+    <Folder Name="01 Properties" Id="{36fa7bc2-67cd-4af1-97e5-0297c93e4e7a}" />
+    <Folder Name="02 Methodes" Id="{eddc26e7-f6c9-459a-83d8-748d0556fa2b}">
+      <Folder Name="100 CmdExecute" Id="{d4684b57-53f3-49c3-9feb-31c68aaca216}" />
     </Folder>
-    <Property Name="CarrierPresent" Id="{28a673b2-92d9-4578-9add-5105e9b22dff}" FolderPath="01 Properties\">
+    <Property Name="CarrierPresent" Id="{05bebe5f-4006-4dac-80eb-004fb6fd7d62}" FolderPath="01 Properties\">
       <Declaration><![CDATA[PROPERTY CarrierPresent : BOOL]]></Declaration>
-      <Get Name="Get" Id="{cd977f3d-1cc9-4142-82f8-0df85badda43}">
+      <Get Name="Get" Id="{587390fd-2a72-48be-a7b7-637b03816148}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -51,7 +74,7 @@ END_VAR
           <ST><![CDATA[CarrierPresent := bCarrierPresent;]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{01e77b4c-da8f-432e-a40e-1981853395ff}">
+      <Set Name="Set" Id="{f8060fff-f78f-4645-92d9-b5f4517158f6}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -60,7 +83,7 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Method Name="FB_Init" Id="{f025e0f4-08c7-4495-afa3-601541f6e854}" FolderPath="02 Methodes\">
+    <Method Name="FB_Init" Id="{dec75655-d026-48b5-80e1-f3e41b77ec36}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
 //die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
@@ -78,9 +101,9 @@ END_VAR]]></Declaration>
         <ST><![CDATA[  ]]></ST>
       </Implementation>
     </Method>
-    <Property Name="LTUFree" Id="{49fa8a07-b1e5-48b2-90fe-944d56de56a3}" FolderPath="01 Properties\">
+    <Property Name="LTUFree" Id="{bdfaddd3-de49-4a16-80f4-85eaf77a1d7e}" FolderPath="01 Properties\">
       <Declaration><![CDATA[PROPERTY LTUFree : BOOL]]></Declaration>
-      <Get Name="Get" Id="{aba29ed6-c00d-4836-a0ff-b45e09ae0b67}">
+      <Get Name="Get" Id="{a20edc92-0063-4ca0-9e42-147edcdaad69}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -89,7 +112,7 @@ END_VAR
 LTUFree := bLTUFree;]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{da6fa49d-0e20-4c3d-9bef-f3d9525c3bf6}">
+      <Set Name="Set" Id="{46023bcb-69f3-4ea3-845a-20826c379b24}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -98,9 +121,9 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="LTUPosition" Id="{8f4bacc7-bc81-4d32-a31f-03cc1155a60b}" FolderPath="01 Properties\">
+    <Property Name="LTUPosition" Id="{6d4e210c-ec3f-45cf-945d-3b175a50b751}" FolderPath="01 Properties\">
       <Declaration><![CDATA[PROPERTY LTUPosition : E_LTUPosition]]></Declaration>
-      <Get Name="Get" Id="{f1c87639-7def-4256-904d-e18349e053ea}">
+      <Get Name="Get" Id="{668c1385-307c-4126-8e21-fd6ad6b33cda}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -108,7 +131,7 @@ END_VAR
           <ST><![CDATA[LTUPosition := eLTUPosition;]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{8871ae61-30fb-4d1c-9a4f-2f686729bd3b}">
+      <Set Name="Set" Id="{e7973a35-3fd2-4bab-aa1c-377dbdddb407}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -117,7 +140,7 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Method Name="mAutomatic" Id="{96a825f9-7aeb-41cb-a336-78f3a907220b}" FolderPath="02 Methodes\">
+    <Method Name="mAutomatic" Id="{31595f43-22c0-451e-a811-3fa712f9c1ea}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mAutomatic : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -127,7 +150,7 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_Auto" Id="{8119614c-5c76-4267-a8ee-e2944e67878d}" FolderPath="02 Methodes\100 CmdExecute\">
+    <Method Name="mCmdExec_Auto" Id="{1c6ff37d-c564-4918-a37e-202cb54a1aaf}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_Auto : E_CmdState
 VAR_INPUT
 END_VAR
@@ -156,7 +179,7 @@ CASE SequenceID OF
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_BasePos" Id="{d65780c7-4e9f-42a3-9358-58c323439d29}" FolderPath="02 Methodes\100 CmdExecute\">
+    <Method Name="mCmdExec_BasePos" Id="{9ccb5bb6-26f1-4044-b8a6-739499d84fd1}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_BasePos : E_CmdState
 VAR_INPUT
 END_VAR
@@ -188,7 +211,7 @@ CASE SequenceID OF
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_MoveBottom" Id="{4a417486-f8d2-4dd6-9779-5933800df322}" FolderPath="02 Methodes\100 CmdExecute\">
+    <Method Name="mCmdExec_MoveBottom" Id="{edd0b7b3-9804-463b-b527-2725182fed5d}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_MoveBottom : E_CmdState
 VAR_INPUT
 	I_bExecute					: BOOL;
@@ -217,7 +240,7 @@ ELSE
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_MoveMiddle" Id="{81c7f6cf-c250-497d-b28d-bc9e53f3181e}" FolderPath="02 Methodes\100 CmdExecute\">
+    <Method Name="mCmdExec_MoveMiddle" Id="{e4f28548-3151-4b3a-a700-239ef3244658}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_MoveMiddle : E_CmdState
 VAR_INPUT
 	I_bExecute					: BOOL;
@@ -246,7 +269,7 @@ ELSE
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_MoveTop" Id="{36757621-6758-4668-864e-88c5a3362a39}" FolderPath="02 Methodes\100 CmdExecute\">
+    <Method Name="mCmdExec_MoveTop" Id="{41670507-f4d6-4cdf-a9d2-256dfb7d429c}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_MoveTop : E_CmdState
 VAR_INPUT
 	I_bExecute					: BOOL;
@@ -275,7 +298,7 @@ ELSE
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_Service" Id="{f8896431-6abb-450c-98ff-dfb8e5b37029}" FolderPath="02 Methodes\100 CmdExecute\">
+    <Method Name="mCmdExec_Service" Id="{b072555d-3f88-4787-8531-9eef6e15036b}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_Service : E_CmdState
 VAR_INPUT
 END_VAR
@@ -284,7 +307,7 @@ END_VAR
         <ST><![CDATA[;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_TransferTop" Id="{7200bf03-7fa0-4280-a8ff-c4a05727f4d4}" FolderPath="02 Methodes\100 CmdExecute\">
+    <Method Name="mCmdExec_TransferTop" Id="{5e51f3d6-b053-4ffb-8fa3-5dd68301e4c0}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_TransferTop : E_CmdState
 VAR_INPUT
 	I_bExecute					: BOOL;
@@ -312,7 +335,7 @@ END_IF
 mCmdExec_TransferTop := E_CmdState.Busy;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHold" Id="{fb155185-5dd5-45a4-8ccd-2c88c48f99cd}" FolderPath="02 Methodes\">
+    <Method Name="mHold" Id="{7f2a038d-4c14-48e6-8ca3-08a9b0c95d7a}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mHold : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -324,7 +347,7 @@ SUPER^.mHold(I_bExecute);
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHome" Id="{70f1a819-da67-4528-b36e-9effb9c23247}" FolderPath="02 Methodes\">
+    <Method Name="mHome" Id="{db7afe05-71bd-458f-bf8d-a42b520d7c6b}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mHome : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -336,7 +359,7 @@ SUPER^.mHome(I_bExecute);
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mRelease" Id="{9fc9f7cd-d81c-45c4-94fb-80fa991ddff3}" FolderPath="02 Methodes\">
+    <Method Name="mRelease" Id="{063aaf66-41a5-4295-abac-267bb8e092d4}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mRelease : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -347,7 +370,7 @@ END_VAR
 SUPER^.mRelease(I_bExecute);]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mSequence" Id="{9d46ef71-25fa-47b2-8325-82cf496e3abc}" FolderPath="02 Methodes\">
+    <Method Name="mSequence" Id="{67f71208-296a-44e6-95f8-ed4325486da0}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mSequence : E_CmdState
 VAR_INPUT
 	I_bExecute				: BOOL;
@@ -383,7 +406,7 @@ CASE Mode OF
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mService" Id="{aa5a7582-2696-4d03-8fdd-0d09e4564bca}" FolderPath="02 Methodes\">
+    <Method Name="mService" Id="{97a19498-82ef-4250-8e8a-80e7cb06ee83}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mService : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -394,7 +417,7 @@ END_VAR
 SUPER^.mService(I_bExecute);]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mStop" Id="{f5b09365-1a2f-4597-adcb-e0c7898af24e}" FolderPath="02 Methodes\">
+    <Method Name="mStop" Id="{bfab2a60-6683-4a7c-aa86-b15b71ef9855}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mStop : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -405,9 +428,9 @@ END_VAR
 SUPER^.mStop(I_bExecute);]]></ST>
       </Implementation>
     </Method>
-    <Property Name="ReservedBy" Id="{4be86b5b-4bbe-4304-abbc-ee6242639d87}" FolderPath="01 Properties\">
+    <Property Name="ReservedBy" Id="{cbf186b7-9a96-4d99-b103-788d63b16d9d}" FolderPath="01 Properties\">
       <Declaration><![CDATA[PROPERTY ReservedBy : E_Convoyer]]></Declaration>
-      <Get Name="Get" Id="{ee9999dc-ecd5-48f5-a251-e105ba0d0c1f}">
+      <Get Name="Get" Id="{cdaf0cc0-0e6e-4a34-9a1e-25ca3a24724f}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -415,7 +438,7 @@ END_VAR
           <ST><![CDATA[ReservedBy := eReservedBy;]]></ST>
         </Implementation>
       </Get>
-      <Set Name="Set" Id="{ec09d9d5-f6e3-4d28-9036-78bfd4186a9e}">
+      <Set Name="Set" Id="{a715e758-2ff2-4abb-b08b-be2cfb383774}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
