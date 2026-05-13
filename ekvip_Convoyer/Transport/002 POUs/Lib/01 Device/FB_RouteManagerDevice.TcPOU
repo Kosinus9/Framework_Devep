@@ -9,7 +9,7 @@
  give a ST_Route to the route executor
 *)
 
-FUNCTION_BLOCK FB_RouteManagerDevice EXTENDS FD_Device 
+FUNCTION_BLOCK FB_RouteManagerDevice EXTENDS FB_Base 
 VAR_INPUT
 END_VAR
 
@@ -65,7 +65,6 @@ IF NOT Enable THEN RETURN; END_IF
     </Implementation>
     <Folder Name="01 Properties" Id="{85cf6baa-21e4-4eab-a250-484e0149eff4}" />
     <Folder Name="02 Methodes" Id="{7ada561f-4a10-4dab-8217-abe504d828f1}">
-      <Folder Name="100 CmdExecute" Id="{0313f81c-d9a9-4b37-95e5-806775012e03}" />
       <Folder Name="200 CmdRouteManager" Id="{fe266e6d-53aa-463c-84bf-fb8e0d836b88}" />
     </Folder>
     <Method Name="FB_Init" Id="{f025e0f4-08c7-4495-afa3-601541f6e854}" FolderPath="02 Methodes\">
@@ -108,16 +107,6 @@ IF itfC6  <>0 THEN itfC6  := I_itfC6; END_IF
 IF itfC9  <>0 THEN itfC9  := I_itfC9; END_IF
 IF itfC12 <>0 THEN itfC12 := I_itfC12;END_IF
 	]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mAutomatic" Id="{96a825f9-7aeb-41cb-a336-78f3a907220b}" FolderPath="02 Methodes\">
-      <Declaration><![CDATA[METHOD mAutomatic : E_CmdState
-VAR_INPUT
-	I_bExecute	: BOOL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
     <Method Name="mBuildRoute" Id="{7200bf03-7fa0-4280-a8ff-c4a05727f4d4}" FolderPath="02 Methodes\200 CmdRouteManager\">
@@ -172,74 +161,6 @@ FOR i := 1 TO Ref_stRoute.iuStepCount DO
 			END_IF
 	END_CASE
 END_FOR]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mCmdExec_Auto" Id="{8119614c-5c76-4267-a8ee-e2944e67878d}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_Auto : E_CmdState
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-CASE SequenceID OF
-
-  //******************************************************* Idle 
-  C_SeqStep_Idle: 
-  	SequenceID       :=  C_SeqStep_Auto_Start;
-  
-  //****************************************************** Start
-  C_SeqStep_Auto_Start:
-  	
-  	SequenceID       :=  C_SeqStep_Auto_End;
-	
-  C_SeqStep_Error: 
-    //************* all FB reset
-
-		//************* 
-  	
- 	C_SeqStep_Auto_End:
-  	mCmdExec_Auto := mDone();
-
-END_CASE]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mCmdExec_BasePos" Id="{d65780c7-4e9f-42a3-9358-58c323439d29}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_BasePos : E_CmdState
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-CASE SequenceID OF
-
-  //******************************************************* Idle 
-  C_SeqStep_Idle: 
-  	SequenceID       :=  C_SeqStep_Start;
-  
-  //****************************************************** Start
-  C_SeqStep_Start:
-	//
-	Homed := TRUE;
-  Ready := TRUE;
-  SequenceID := C_SeqStep_OnBasePos_Done;
-	
-  C_SeqStep_Error: 
-    //************* all FB reset
-    mCmdExec_BasePos := mDone(); 
-  //**********************Done
- 	C_SeqStep_OnBasePos_Done:
-  	mCmdExec_BasePos := mDone();
-
-END_CASE]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mCmdExec_Service" Id="{f8896431-6abb-450c-98ff-dfb8e5b37029}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_Service : E_CmdState
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mCreateRouteJob" Id="{72477f1d-916a-4940-95a3-70ae4b16d8cf}" FolderPath="02 Methodes\200 CmdRouteManager\">
@@ -322,41 +243,6 @@ FOR L_uiIndex := 1 TO 10 DO
 END_FOR
 
 mGetNextRoute := E_CmdState.Idle;]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mHold" Id="{fb155185-5dd5-45a4-8ccd-2c88c48f99cd}" FolderPath="02 Methodes\">
-      <Declaration><![CDATA[METHOD mHold : E_CmdState
-VAR_INPUT
-	I_bExecute	: BOOL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-SUPER^.mHold(I_bExecute);
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mHome" Id="{70f1a819-da67-4528-b36e-9effb9c23247}" FolderPath="02 Methodes\">
-      <Declaration><![CDATA[METHOD mHome : E_CmdState
-VAR_INPUT
-	I_bExecute	: BOOL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-SUPER^.mHome(I_bExecute);
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mRelease" Id="{9fc9f7cd-d81c-45c4-94fb-80fa991ddff3}" FolderPath="02 Methodes\">
-      <Declaration><![CDATA[METHOD mRelease : E_CmdState
-VAR_INPUT
-	I_bExecute	: BOOL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-SUPER^.mRelease(I_bExecute);]]></ST>
       </Implementation>
     </Method>
     <Method Name="mReleaseRoute" Id="{7a28c4d0-ec98-4ffc-acae-0f1005e73972}" FolderPath="02 Methodes\200 CmdRouteManager\">
@@ -469,61 +355,6 @@ END_VAR
       <Implementation>
         <ST><![CDATA[// No command requested.
 ]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mSequence" Id="{9d46ef71-25fa-47b2-8325-82cf496e3abc}" FolderPath="02 Methodes\">
-      <Declaration><![CDATA[METHOD mSequence : E_CmdState
-VAR_INPUT
-	I_bExecute				: BOOL;
-END_VAR
-
-VAR_INST
-	L_eCmdState 		 : E_CmdState; // To Generic checks from parent state 
-	
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[mSequence := SUPER^.mSequence(I_bExecute);	
-
-
-// Generic checks from parent
-L_eCmdState := SUPER^.mSequence(I_bExecute := I_bExecute);
-
-IF L_eCmdState <> E_CmdState.Busy 
-	THEN
-    mSequence := L_eCmdState;
-    RETURN;
-END_IF
-
-CASE Mode OF
-	E_Mode.Homing:
-		mSequence := mCmdExec_BasePos();		
-	E_Mode.Auto:
-		mSequence := mCmdExec_Auto();	
-	E_Mode.Service:
-		mSequence := mCmdExec_Service();	
-END_CASE]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mService" Id="{aa5a7582-2696-4d03-8fdd-0d09e4564bca}" FolderPath="02 Methodes\">
-      <Declaration><![CDATA[METHOD mService : E_CmdState
-VAR_INPUT
-	I_bExecute	: BOOL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-SUPER^.mService(I_bExecute);]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mStop" Id="{f5b09365-1a2f-4597-adcb-e0c7898af24e}" FolderPath="02 Methodes\">
-      <Declaration><![CDATA[METHOD mStop : E_CmdState
-VAR_INPUT
-	I_bExecute	: BOOL;
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-SUPER^.mStop(I_bExecute);]]></ST>
       </Implementation>
     </Method>
   </POU>
