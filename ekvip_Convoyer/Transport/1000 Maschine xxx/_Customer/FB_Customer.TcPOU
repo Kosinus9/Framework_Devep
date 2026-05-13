@@ -48,25 +48,41 @@ VAR
 																										    	  THIS^,															    // ITF_Owner
 																										        );																										
 			
-	fbRouteManagerDevice			  			: FB_RouteManagerDevice		  (GVL_Customer.C_Name_RouteManagerDevice,   // Name
-																						 				        		 GVL_Customer.C_ID_RouteManagerDevice,		 // ID
-																										    	       THIS^,															       // ITF_Owner
-																																 fbLUTDevice3,   													//ITF_LTUDevice
-																																 fbLUTDevice6,	 													//ITF_LTUDevice
-																																 fbLUTDevice9,	 													//ITF_LTUDevice
-																																 fbLUTDevice12,	 													//ITF_LTUDevice
-																																 fbConvoyerDevice3,                       // ITF_Convoyer
-																																 fbConvoyerDevice6,                       // ITF_Convoyer
-																																 fbConvoyerDevice9,                       // ITF_Convoyer
-																																 fbConvoyerDevice12,                      // ITF_Convoyer
-																										            );
+	fbRouteManager			  						: FB_RouteManager		  (GVL_Customer.C_Name_RouteManagerDevice,   // Name
+																						 				        GVL_Customer.C_ID_RouteManagerDevice,		 // ID
+																										    	  THIS^,															     // ITF_Owner
+																														fbLUTDevice3,   												 //ITF_LTUDevice
+																														fbLUTDevice6,	 													 //ITF_LTUDevice
+																														fbLUTDevice9,	 													 //ITF_LTUDevice
+																														fbLUTDevice12,	 												 //ITF_LTUDevice
+																														fbConvoyerDevice3,                       // ITF_Convoyer
+																														fbConvoyerDevice6,                       // ITF_Convoyer
+																														fbConvoyerDevice9,                       // ITF_Convoyer
+																														fbConvoyerDevice12,                      // ITF_Convoyer
+																										      );
+																													
+	fbRouteExecutorDevice			  			: FB_RouteExecutorDevice		  (GVL_Customer.C_Name_RouteManagerDevice,   // Name
+																						 				        				GVL_Customer.C_ID_RouteManagerDevice,		 // ID
+																										    	  				THIS^,															     // ITF_Owner
+																																		fbLUTDevice3,   												 //ITF_LTUDevice
+																																		fbLUTDevice6,	 													 //ITF_LTUDevice
+																																		fbLUTDevice9,	 													 //ITF_LTUDevice
+																																		fbLUTDevice12,	 												 //ITF_LTUDevice
+																																		fbConvoyerDevice3,                       // ITF_Convoyer
+																																		fbConvoyerDevice6,                       // ITF_Convoyer
+																																		fbConvoyerDevice9,                       // ITF_Convoyer
+																																		fbConvoyerDevice12,                      // ITF_Convoyer
+																																		fbRouteManager,
+																										      				);																													
 																				
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// Must !!
-SUPER^();
-
+      <ST><![CDATA[
+//must !! 
+SUPER^();  
+//====================================
+IF NOT Enable THEN RETURN; END_IF
 //HMI
 mVisu();
 
@@ -81,8 +97,8 @@ fbConvoyerDevice6();
 fbConvoyerDevice9();
 fbConvoyerDevice12();
 
-fbRouteManagerDevice();
-
+fbRouteManager();
+fbRouteExecutorDevice();
 
 ]]></ST>
     </Implementation>

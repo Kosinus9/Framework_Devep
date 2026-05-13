@@ -89,7 +89,7 @@
     <Compile Include="002 POUs\Lib\01 Device\FB_ConvoyerDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\FB_RouteManagerDevice.TcPOU">
+    <Compile Include="002 POUs\Lib\01 Device\FB_RouteExecutorDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="002 POUs\Lib\02 SimpleDevice\00 Template\FB_TemplateSimpleDevice.TcPOU">
@@ -99,6 +99,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_PneuCyl_Stopper.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_RouteManager.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_SimpleMotor.TcPOU">
@@ -126,6 +129,10 @@
     <Compile Include="1000 Maschine xxx\_Customer\FB_Customer.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="1000 Maschine xxx\_Customer\VISUs\Visu_Customer.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualisierungsmanager.TcVMO</DependentUpon>
+    </Compile>
     <Compile Include="GlobalTextList.TcGTLO">
       <SubType>Code</SubType>
     </Compile>
@@ -134,10 +141,6 @@
     </Compile>
     <Compile Include="Visualisierungsmanager.TcVMO">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="VISUs\Visualization.TcVIS">
-      <SubType>Code</SubType>
-      <DependentUpon>Visualisierungsmanager.TcVMO</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -163,7 +166,7 @@
     <Folder Include="1000 Maschine xxx\_Customer" />
     <Folder Include="002 POUs" />
     <Folder Include="1000 Maschine xxx" />
-    <Folder Include="VISUs" />
+    <Folder Include="1000 Maschine xxx\_Customer\VISUs" />
     <Folder Include="POUs" />
   </ItemGroup>
   <ItemGroup>

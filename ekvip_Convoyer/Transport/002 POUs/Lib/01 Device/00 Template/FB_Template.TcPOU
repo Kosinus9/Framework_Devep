@@ -28,7 +28,7 @@ VAR CONSTANT
 	C_SeqStep_Auto_Start										: UINT :=  200;
 	C_SeqStep_Auto_End											: UINT :=  400;
 END_VAR
-	]]></Declaration>
+]]></Declaration>
     <Implementation>
       <ST><![CDATA[
 //******* Important and necessary

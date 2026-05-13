@@ -214,35 +214,6 @@ CASE SequenceID OF
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mCmdExec_MoveBottom" Id="{8febe5ee-97da-4ab2-9486-5866194a4d14}" FolderPath="02 Methodes\100 CmdExecute\">
-      <Declaration><![CDATA[METHOD mCmdExec_MoveBottom : E_CmdState
-VAR_INPUT
-	I_bExecute					: BOOL;
-END_VAR
-
-VAR
-	L_eCmdState 					: E_CmdState;
-END_VAR]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[// No command requested.
-IF NOT I_bExecute 
-	THEN
-  	mCmdExec_MoveBottom := E_CmdState.Idle;
-    RETURN;
-END_IF
-
-// Move vertical axis to Bottom.
-L_eCmdState := fbPneuCyl3Pos_AxisZ.mCallBottom(TRUE);
-CASE L_eCmdState OF
-	E_CmdState.Succeeded:
-  	mCmdExec_MoveBottom := E_CmdState.Succeeded;
-  E_CmdState.Busy:
-  	mCmdExec_MoveBottom := E_CmdState.Busy;
-ELSE
-	mCmdExec_MoveBottom   := L_eCmdState;
-END_CASE]]></ST>
-      </Implementation>
-    </Method>
     <Method Name="mCmdExec_MoveMiddle" Id="{31257785-c557-43e8-9c51-32cde10873f6}" FolderPath="02 Methodes\100 CmdExecute\">
       <Declaration><![CDATA[METHOD mCmdExec_MoveMiddle : E_CmdState
 VAR_INPUT
@@ -344,6 +315,35 @@ IF NOT fbStopperLtu.CarriePresent
 END_IF
 
 mCmdExec_TransferTop := E_CmdState.Busy;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mGetLTUByConvoyer" Id="{8febe5ee-97da-4ab2-9486-5866194a4d14}" FolderPath="02 Methodes\100 CmdExecute\">
+      <Declaration><![CDATA[METHOD mGetLTUByConvoyer : E_CmdState
+VAR_INPUT
+	I_bExecute					: BOOL;
+END_VAR
+
+VAR
+	L_eCmdState 					: E_CmdState;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// No command requested.
+IF NOT I_bExecute 
+	THEN
+  	mGetLTUByConvoyer := E_CmdState.Idle;
+    RETURN;
+END_IF
+
+// Move vertical axis to Bottom.
+L_eCmdState := fbPneuCyl3Pos_AxisZ.mCallBottom(TRUE);
+CASE L_eCmdState OF
+	E_CmdState.Succeeded:
+  	mGetLTUByConvoyer := E_CmdState.Succeeded;
+  E_CmdState.Busy:
+  	mGetLTUByConvoyer := E_CmdState.Busy;
+ELSE
+	mGetLTUByConvoyer   := L_eCmdState;
+END_CASE]]></ST>
       </Implementation>
     </Method>
     <Method Name="mHold" Id="{9c6da647-9b3a-4008-822a-f46989735258}" FolderPath="02 Methodes\">
