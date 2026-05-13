@@ -96,16 +96,16 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 // chek and link LTU
-IF itfLTU3  <>0 THEN itfLTU3  := I_itfLTU3; END_IF
-IF itfLTU6  <>0 THEN itfLTU6  := I_itfLTU6; END_IF
-IF itfLTU9  <>0 THEN itfLTU9  := I_itfLTU9; END_IF
-IF itfLTU12 <>0 THEN itfLTU12 := I_itfLTU12;END_IF
+IF I_itfLTU3  <>0 THEN itfLTU3  := I_itfLTU3; END_IF
+IF I_itfLTU6  <>0 THEN itfLTU6  := I_itfLTU6; END_IF
+IF I_itfLTU9  <>0 THEN itfLTU9  := I_itfLTU9; END_IF
+IF I_itfLTU12 <>0 THEN itfLTU12 := I_itfLTU12;END_IF
 
 // chek and link covoyer
-IF itfC3  <>0 THEN itfC3  := I_itfC3; END_IF
-IF itfC6  <>0 THEN itfC6  := I_itfC6; END_IF
-IF itfC9  <>0 THEN itfC9  := I_itfC9; END_IF
-IF itfC12 <>0 THEN itfC12 := I_itfC12;END_IF
+IF I_itfC3  <>0 THEN itfC3  := I_itfC3; END_IF
+IF I_itfC6  <>0 THEN itfC6  := I_itfC6; END_IF
+IF I_itfC9  <>0 THEN itfC9  := I_itfC9; END_IF
+IF I_itfC12 <>0 THEN itfC12 := I_itfC12;END_IF
 	]]></ST>
       </Implementation>
     </Method>

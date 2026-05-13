@@ -60,7 +60,6 @@ VAR
 																																 fbConvoyerDevice9,                       // ITF_Convoyer
 																																 fbConvoyerDevice12,                      // ITF_Convoyer
 																										            );
-
 																				
 END_VAR
 ]]></Declaration>

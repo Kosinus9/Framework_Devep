@@ -38,12 +38,12 @@ END_VAR
 
 VAR CONSTANT
 	// --------------------------Base------------------
-	C_SeqStep_OnBasePos_Start															: UINT :=  20; 
-	C_SeqStep_OnBasePos_WaitOpMode												: UINT :=  30;
-	C_SeqStep_OnBasePos_Done															: UINT :=  40; 
+	C_SeqStep_OnBasePos_Start															: UINT :=  1; 
+	C_SeqStep_OnBasePos_WaitOpMode												: UINT :=  2;
+	C_SeqStep_OnBasePos_Done															: UINT :=  3; 
 	
 	// --------------------------Auto Sequence------------------
-	C_SeqStep_Auto_Start																	: UINT :=  100;
+	C_SeqStep_Auto_Start																	: UINT :=  10;
 	C_SeqStep_Auto_Wait_Carrier_At_Stopper								: UINT :=  110;
 	C_SeqStep_Auto_Read_Destination_Once									: UINT :=  120;
 	C_SeqStep_Auto_Ask_RouteManager_For_A_Route						: UINT :=  130;
@@ -309,7 +309,7 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[SUPER^.mHome(I_bExecute);]]></ST>
       </Implementation>
     </Method>
     <Method Name="mRelease" Id="{12251720-22ac-41a7-b04d-07588ae5005c}" FolderPath="02 Methodes\">
