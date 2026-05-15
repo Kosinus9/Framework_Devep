@@ -114,14 +114,14 @@ IF I_itfC12 <>0 THEN itfC12 := I_itfC12;END_IF
 VAR_INPUT
 	I_eSource      : E_Convoyer;
 	I_eDestination : E_Convoyer;
-	Ref_stRoute    : REFERENCE TO ST_Route;
+	I_refstRoute    : REFERENCE TO ST_Route;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 // Reset route.
-Ref_stRoute.eSource      := I_eSource;
-Ref_stRoute.eDestination := I_eDestination;
-Ref_stRoute.iuStepCount  := 0;
+I_refstRoute.eSource      := I_eSource;
+I_refstRoute.eDestination := I_eDestination;
+I_refstRoute.iuStepCount  := 0;
 
 //==================================================
 // R3 -> 3
@@ -130,13 +130,13 @@ Ref_stRoute.iuStepCount  := 0;
 IF (I_eSource = E_Convoyer.Convoyer_3)
 	AND (I_eDestination = E_Convoyer.Convoyer_3) 
 		THEN
-    	Ref_stRoute.iuStepCount := 2;
+    	I_refstRoute.iuStepCount := 2;
 			
-    	Ref_stRoute.astSteps[1].eConvoyer    := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[1].eLTUPosition := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[1].eConvoyer    := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[1].eLTUPosition := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[2].eConvoyer    := E_Convoyer.Convoyer_6;
-    	Ref_stRoute.astSteps[2].eLTUPosition := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[2].eConvoyer    := E_Convoyer.Convoyer_6;
+    	I_refstRoute.astSteps[2].eLTUPosition := E_LTUPosition.LTU_TOP;
     	
     	mBuildRoute := TRUE;
     	RETURN;
@@ -149,16 +149,16 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_3)
    AND (I_eDestination = E_Convoyer.Convoyer_6) 
 	 	THEN
-    	Ref_stRoute.iuStepCount := 3;
+    	I_refstRoute.iuStepCount := 3;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_6;
-    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_6;
+    	I_refstRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_6;
-    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_6;
+    	I_refstRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
     	mBuildRoute := TRUE;
     RETURN;
@@ -170,25 +170,25 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_3)
    AND (I_eDestination = E_Convoyer.Convoyer_9) 
 	 	THEN
-    	Ref_stRoute.iuStepCount := 6;
+    	I_refstRoute.iuStepCount := 6;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_6;
-    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_6;
+    	I_refstRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_6;
-    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_6;
+    	I_refstRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_9;
-    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_9;
+    	I_refstRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_9;
-    	Ref_stRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_9;
+    	I_refstRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
     	mBuildRoute := TRUE;
 			RETURN;
@@ -202,10 +202,10 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_3)
    AND (I_eDestination = E_Convoyer.Convoyer_12) 
 	 THEN
-   	Ref_stRoute.iuStepCount := 1;
+   	I_refstRoute.iuStepCount := 1;
 		
-   	Ref_stRoute.astSteps[1].eConvoyer 		:= E_Convoyer.Convoyer_3;
-   	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+   	I_refstRoute.astSteps[1].eConvoyer 		:= E_Convoyer.Convoyer_3;
+   	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
    	
    	mBuildRoute := TRUE;
    	RETURN;
@@ -218,13 +218,13 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_6)
    AND (I_eDestination = E_Convoyer.Convoyer_6) 
    	THEN
-    Ref_stRoute.iuStepCount := 2;
+    I_refstRoute.iuStepCount := 2;
 
-    Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
-    Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
+    I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
 
-    Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_9;
-    Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    I_refstRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_9;
+    I_refstRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
 
     mBuildRoute := TRUE;
     RETURN;
@@ -238,10 +238,10 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_6)
    AND (I_eDestination = E_Convoyer.Convoyer_3) 
    	THEN
-    Ref_stRoute.iuStepCount := 1;
+    I_refstRoute.iuStepCount := 1;
 
-    Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
-    Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
+    I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
 
     mBuildRoute := TRUE;
     RETURN;
@@ -254,19 +254,19 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_6)
    AND (I_eDestination = E_Convoyer.Convoyer_9) 
    	THEN
-    	Ref_stRoute.iuStepCount := 4;
+    	I_refstRoute.iuStepCount := 4;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_9;
-    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_9;
+    	I_refstRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_9;
-    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_9;
+    	I_refstRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
     	mBuildRoute := TRUE;
     	RETURN;
@@ -279,25 +279,25 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_6)
    AND (I_eDestination = E_Convoyer.Convoyer_12) 
    	THEN
-    	Ref_stRoute.iuStepCount := 6;
+    	I_refstRoute.iuStepCount := 6;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_6;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_9;
-    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_9;
+    	I_refstRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_9;
-    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_9;
+    	I_refstRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
     	mBuildRoute := TRUE;
     	RETURN;
@@ -310,13 +310,13 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_9)
    AND (I_eDestination = E_Convoyer.Convoyer_9) 
    	THEN
-    	Ref_stRoute.iuStepCount := 2;
+    	I_refstRoute.iuStepCount := 2;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
     	mBuildRoute := TRUE;
     	RETURN;
@@ -329,25 +329,25 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_9)
    AND (I_eDestination = E_Convoyer.Convoyer_3) 
    	THEN
-    	Ref_stRoute.iuStepCount := 6;
+    	I_refstRoute.iuStepCount := 6;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_6;
-    	Ref_stRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_6;
+    	I_refstRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_TOP;
 
     	mBuildRoute := TRUE;
    	  RETURN;
@@ -361,10 +361,10 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_9)
    AND (I_eDestination = E_Convoyer.Convoyer_6) 
 	 	THEN
-    	Ref_stRoute.iuStepCount := 1;
+    	I_refstRoute.iuStepCount := 1;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
     	mBuildRoute := TRUE;
     	RETURN;
@@ -378,19 +378,19 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_9)
    AND (I_eDestination = E_Convoyer.Convoyer_12) 
 	 	THEN
-    	Ref_stRoute.iuStepCount := 4;
+    	I_refstRoute.iuStepCount := 4;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_9;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
     	mBuildRoute := TRUE;
     	RETURN;
@@ -403,13 +403,13 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_12)
    AND (I_eDestination = E_Convoyer.Convoyer_12) 
    	THEN
-    	Ref_stRoute.iuStepCount := 2;
+    	I_refstRoute.iuStepCount := 2;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
     	mBuildRoute := TRUE;
     	RETURN;
@@ -422,19 +422,19 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_12)
    AND (I_eDestination = E_Convoyer.Convoyer_3) 
    	THEN
-    	Ref_stRoute.iuStepCount := 4;
+    	I_refstRoute.iuStepCount := 4;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_6;
-    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_6;
+    	I_refstRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
     	mBuildRoute := TRUE;
     	RETURN;
@@ -447,25 +447,25 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_12)
    AND (I_eDestination = E_Convoyer.Convoyer_6) 
    	THEN
-    	Ref_stRoute.iuStepCount := 6;
+    	I_refstRoute.iuStepCount := 6;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[2].eConvoyer     := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[2].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_3;
-    	Ref_stRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[3].eConvoyer     := E_Convoyer.Convoyer_3;
+    	I_refstRoute.astSteps[3].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_6;
-    	Ref_stRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[4].eConvoyer     := E_Convoyer.Convoyer_6;
+    	I_refstRoute.astSteps[4].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
-    	Ref_stRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_6;
-    	Ref_stRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[5].eConvoyer     := E_Convoyer.Convoyer_6;
+    	I_refstRoute.astSteps[5].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
-    	Ref_stRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_9;
-    	Ref_stRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
+    	I_refstRoute.astSteps[6].eConvoyer     := E_Convoyer.Convoyer_9;
+    	I_refstRoute.astSteps[6].eLTUPosition  := E_LTUPosition.LTU_BOTTOM;
     	
     	mBuildRoute := TRUE;
     	RETURN;
@@ -479,10 +479,10 @@ END_IF
 IF (I_eSource = E_Convoyer.Convoyer_12)
    AND (I_eDestination = E_Convoyer.Convoyer_9) 
    	THEN
-    	Ref_stRoute.iuStepCount := 1;
+    	I_refstRoute.iuStepCount := 1;
     	
-    	Ref_stRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
-    	Ref_stRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
+    	I_refstRoute.astSteps[1].eConvoyer     := E_Convoyer.Convoyer_12;
+    	I_refstRoute.astSteps[1].eLTUPosition  := E_LTUPosition.LTU_TOP;
     	
     	mBuildRoute := TRUE;
     	RETURN;

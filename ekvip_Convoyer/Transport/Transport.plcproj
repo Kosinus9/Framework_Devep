@@ -22,6 +22,9 @@
     <Compile Include="001DUTs\ENUM\E_CmdState.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="001DUTs\ENUM\E_ErrorLevel.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="001DUTs\ENUM\E_Mode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -57,6 +60,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="001DUTs\ITF\ITF_Owner.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="001DUTs\STRUCT\ST_ErrorInfo.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="001DUTs\STRUCT\ST_MaschineHMI.TcDUT">

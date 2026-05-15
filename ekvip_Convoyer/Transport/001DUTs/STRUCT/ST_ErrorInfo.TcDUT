@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_ErrorInfo" Id="{b7851f5d-3842-4c27-8505-17eb85f6485c}">
+    <Declaration><![CDATA[
+TYPE ST_ErrorInfo :
+STRUCT
+	bActive       : BOOL;
+	uiErrorID     : UINT;
+	eLevel        : E_ErrorLevel;
+	
+	sOwner        : STRING(80);
+	sMessage      : STRING(255);
+	sFullMessage  : STRING(255);
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

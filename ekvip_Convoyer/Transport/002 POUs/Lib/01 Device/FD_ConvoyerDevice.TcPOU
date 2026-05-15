@@ -40,7 +40,7 @@ VAR CONSTANT
 	// --------------------------Base------------------
 	C_SeqStep_OnBasePos_Start															: UINT :=  1; 
 	C_SeqStep_OnBasePos_WaitOpMode												: UINT :=  2;
-	C_SeqStep_OnBasePos_Done															: UINT :=  3; 
+	C_SeqStep_OnBasePos_Done															: UINT :=  30; 
 	
 	// --------------------------Auto Sequence------------------
 	C_SeqStep_Auto_Start																	: UINT :=  10;
@@ -187,10 +187,10 @@ CASE SequenceID OF
       // Inject carrier into granted route.				
 		IF mCmdExec_TranspOut(bTranspOutRequest ) = E_CmdState.Succeeded 
 			THEN
-      	bRouteRequest := FALSE;
-      	bRouteGranted := FALSE;
+      	bRouteRequest     := FALSE;
+      	bRouteGranted     := FALSE;
       	bTranspOutRequest := FALSE;
-      	SequenceID := C_SeqStep_Auto_End;
+      	SequenceID        := C_SeqStep_Auto_End;
      END_IF
 									
   C_SeqStep_Error: 
@@ -213,17 +213,16 @@ END_VAR
 CASE SequenceID OF
   //******************************************************* Idle 
   C_SeqStep_Idle: 
-  	SequenceID       :=  C_SeqStep_Start;
-  
+  	;
   //****************************************************** Start
-  C_SeqStep_Start:
+  C_SeqStep_OnBasePos_Start:
 	// Home position for LTU is MIDDLE.
 		fbMotorConvoyer.mStopMotor(TRUE);
 		IF E_CmdState.Succeeded  = fbStopperCarrieConvoyer.mCallBase(TRUE)
 			THEN
-			Homed := TRUE;
-  	  Ready := TRUE;
-  	  SequenceID := C_SeqStep_OnBasePos_Done;
+				Homed := TRUE;
+  	  	Ready := TRUE;
+  	  	SequenceID := C_SeqStep_OnBasePos_Done;
 		END_IF
 		
   C_SeqStep_Error: 
@@ -232,7 +231,9 @@ CASE SequenceID OF
   //**********************Done
  	C_SeqStep_OnBasePos_Done:
   	mCmdExec_BasePos := mDone();
-END_CASE]]></ST>
+END_CASE
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="mCmdExec_Service" Id="{d322bdec-4501-4078-818a-8eafd3a95f6f}" FolderPath="02 Methodes\100 CmdExecute\">

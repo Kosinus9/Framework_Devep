@@ -12,7 +12,12 @@ VAR
 	bInit          										: BOOL;
 	bBusy          										: BOOL;
 	bDone          										: BOOL;
+	
+	stError 													: ST_ErrorInfo;
 	bError         										: BOOL;
+	eErrorLevel												: E_ErrorLevel;
+	uiErrorID													: UINT;
+	sErrorOwner												: STRING;
 	sErrorMessage  										: STRING;
 END_VAR
 ]]></Declaration>
@@ -35,7 +40,9 @@ END_IF
 mEnable();
 ]]></ST>
     </Implementation>
-    <Folder Name="01 Properties" Id="{5790059e-d17a-4094-b83c-c51da0ad590a}" />
+    <Folder Name="01 Properties" Id="{5790059e-d17a-4094-b83c-c51da0ad590a}">
+      <Folder Name="010 Error" Id="{cc57b40f-bc69-496a-a242-392119a3fbc4}" />
+    </Folder>
     <Folder Name="02 Methods" Id="{1ddf855c-855f-4cab-bb1d-0e8290d5e41b}" />
     <Property Name="Busy" Id="{4e93ede4-2583-440e-82cd-3ebd5d3c6673}" FolderPath="01 Properties\">
       <Declaration><![CDATA[PROPERTY Busy : bool]]></Declaration>
@@ -94,7 +101,7 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Property Name="Error" Id="{4924a280-0be1-4edb-9696-4146f3ffac1c}" FolderPath="01 Properties\">
+    <Property Name="Error" Id="{4924a280-0be1-4edb-9696-4146f3ffac1c}" FolderPath="01 Properties\010 Error\">
       <Declaration><![CDATA[PROPERTY Error : bool]]></Declaration>
       <Get Name="Get" Id="{6a5cde9d-1866-45f7-8066-0fb80f0c8369}">
         <Declaration><![CDATA[VAR
@@ -110,6 +117,82 @@ END_VAR
 ]]></Declaration>
         <Implementation>
           <ST><![CDATA[bError := Error;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ErrorID" Id="{5928cca3-c1f8-42ed-b513-0a877661f596}" FolderPath="01 Properties\010 Error\">
+      <Declaration><![CDATA[PROPERTY ErrorID : UINT]]></Declaration>
+      <Get Name="Get" Id="{500dbc69-e34f-4975-8b6b-dc83623e8ef6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ErrorID := uiErrorID;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{976fe0bd-91e9-442d-9f19-4d0f09047057}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[uiErrorID := ErrorID;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ErrorLevel" Id="{f195f3e6-0351-4f68-86a3-e3dc5bd86f05}" FolderPath="01 Properties\010 Error\">
+      <Declaration><![CDATA[PROPERTY ErrorLevel : E_ErrorLevel]]></Declaration>
+      <Get Name="Get" Id="{558024d4-a573-40c3-9376-34d41cbb8e1e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ErrorLevel := eErrorLevel;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{4a824867-8169-4e2d-9b58-fc82152c0962}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[eErrorLevel := ErrorLevel;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ErrorMessage" Id="{26b7aab4-54a0-4fbb-8ce3-4cb26fcfb03c}" FolderPath="01 Properties\010 Error\">
+      <Declaration><![CDATA[PROPERTY ErrorMessage : STRING]]></Declaration>
+      <Get Name="Get" Id="{32609d22-1bfd-44b5-92ff-a201869fe3f3}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ErrorMessage := sErrorMessage;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{f838be33-6957-42b7-a15f-8473a4b7b8f0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[sErrorMessage := ErrorMessage;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="ErrorOwner" Id="{2249a407-6057-4bd3-ad2b-8191f68d8bde}" FolderPath="01 Properties\010 Error\">
+      <Declaration><![CDATA[PROPERTY ErrorOwner : STRING]]></Declaration>
+      <Get Name="Get" Id="{4e52ee2f-8b6a-49ee-b5ff-e0983ef4ebd9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ErrorOwner := sErrorOwner;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{feb04ec4-85da-4029-86f9-32c819f20771}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[sErrorOwner := ErrorOwner;]]></ST>
         </Implementation>
       </Set>
     </Property>
@@ -171,6 +254,21 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
+    <Method Name="mClearError" Id="{c87b6c47-8da3-4b17-8289-16b94d7267e4}" FolderPath="02 Methods\">
+      <Declaration><![CDATA[METHOD mClearError : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+bError       		:= FALSE;
+eErrorLevel  		:= E_ErrorLevel.NONE;
+sErrorMessage   := '';
+sErrorOwner  		:= '';
+
+mClearError  		:= TRUE;]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="mEnable" Id="{5ac26998-73d7-403c-92b8-3bfaf4bc5e70}" FolderPath="02 Methods\">
       <Declaration><![CDATA[METHOD mEnable : BOOL
 VAR_INPUT
@@ -189,6 +287,37 @@ IF bError THEN
 END_IF
 
 mEnable := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="mError" Id="{ee1ebbbd-87be-4bbf-887f-72641b7ae4ae}" FolderPath="02 Methods\">
+      <Declaration><![CDATA[METHOD mError : BOOL
+VAR_INPUT
+	I_sMessage   : STRING;
+	I_eLevel		 : E_ErrorLevel;
+	I_uiError		 : UINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+stError.bActive				:= TRUE;
+stError.eLevel				:= I_eLevel;
+stError.uiErrorID			:= I_eLevel; 
+
+stError.sOwner    		:= Name;
+stError.sMessage			:= I_sMessage;
+
+// Build full error message
+stError.sFullMessage  := Concat(Name,':');
+stError.sFullMessage  := Concat(stError.sFullMessage, I_sMessage);
+
+// Error nur bei high oder critical Fehlern setzen
+IF (I_eLevel = E_ErrorLevel.High)OR 
+   (I_eLevel = E_ErrorLevel.Critical) 
+	  	THEN
+    		Error := TRUE;
+END_IF
+
+mError := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mInit" Id="{85ac23e9-5592-4108-b8d8-74958e7f3617}" FolderPath="02 Methods\">

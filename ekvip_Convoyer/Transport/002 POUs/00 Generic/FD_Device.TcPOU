@@ -19,7 +19,8 @@ VAR
 	eMode															: E_Mode;
 	uiSequenceID          						: UINT;
 	uiNextStep      									: UINT;
-	                									
+	
+	bConfigurationBasePos 						: BOOL;               									
 	bHomed          									: BOOL;
 	bReady          									: BOOL;
 	                									
@@ -33,12 +34,13 @@ END_Var
 
 VAR CONSTANT
  //***********************************************************  CONSTANT  C_SeqStep
- C_SeqStep_Idle                   	: UINT :=   0;                    
- C_SeqStep_Start                  	: UINT :=   1;                      									              
- C_SeqStep_Error                		: UINT :=   2;  									
- C_SeqStep_Abort                		: UINT :=   3;  									 
- C_SeqStep_Undefined            		: UINT :=   4;  							
- C_SeqStep_Done                 		: UINT :=   5;
+ C_SeqStep_Idle                   	: UINT :=	0;                    
+ C_SeqStep_Start                  	: UINT :=	1; 
+ C_SeqStep_Running                  : UINT :=	2;			              
+ C_SeqStep_Error                		: UINT :=	3;  									
+ C_SeqStep_Abort                		: UINT :=	4;  									 
+ C_SeqStep_Undefined            		: UINT :=	5;  							
+ C_SeqStep_Done                 		: UINT :=	6;
 	
 END_VAR
 
@@ -59,9 +61,29 @@ IF bSequenceBusy THEN mSequence(TRUE); END_IF;
     </Implementation>
     <Folder Name="01 Properties" Id="{2ade4f6f-4d16-4ebd-be39-d23d9d34597f}" />
     <Folder Name="02 Methodes" Id="{34903398-ece8-40e6-8ccd-c04371e5f652}">
-      <Folder Name="_SetChild" Id="{1eae8e4b-4066-46b8-876f-e8b83ce863d5}" />
-      <Folder Name="OpMode" Id="{d1c9d0a0-c08d-4381-9e61-4553d39a7da0}" />
+      <Folder Name="100 OpMode" Id="{d1c9d0a0-c08d-4381-9e61-4553d39a7da0}" />
+      <Folder Name="200 SetChild" Id="{1eae8e4b-4066-46b8-876f-e8b83ce863d5}" />
+      <Folder Name="300 Fx" Id="{02af2fe5-2a06-4574-8039-d09f0f4315db}" />
     </Folder>
+    <Property Name="ConfigurationBasePos" Id="{a6324c2b-68d7-4a8d-a86e-333ba869d031}" FolderPath="01 Properties\">
+      <Declaration><![CDATA[PROPERTY ConfigurationBasePos : BOOL ]]></Declaration>
+      <Get Name="Get" Id="{606e18ad-0d0a-44ed-a24a-2591e02b2fcd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ConfigurationBasePos := bConfigurationBasePos;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{aac92632-556d-41d4-b3f3-9cc6a88edaa4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bConfigurationBasePos := ConfigurationBasePos;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
     <Method Name="FB_Init" Id="{7fd52798-a9d4-47c6-81da-6550d3521908}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
@@ -93,7 +115,9 @@ bSequenceDone 					:= FALSE;
 bReady 									:= FALSE;
 bHomed									:= FALSE;
 bAbort 									:= FALSE;
-bHold 									:= FALSE;]]></ST>
+bHold 									:= FALSE;
+
+]]></ST>
       </Implementation>
     </Method>
     <Property Name="Homed" Id="{f8978509-4b98-4bbf-bb6e-7234335367a3}" FolderPath="01 Properties\">
@@ -115,7 +139,7 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Method Name="mAbort" Id="{37a9e74e-74b2-46c6-b456-57916c5147b4}" FolderPath="02 Methodes\">
+    <Method Name="mAbort" Id="{37a9e74e-74b2-46c6-b456-57916c5147b4}" FolderPath="02 Methodes\300 Fx\">
       <Declaration><![CDATA[METHOD mAbort : E_CmdState
 VAR_INPUT
 	I_bExecute : BOOL;
@@ -139,7 +163,7 @@ mStop(TRUE);
 mAbort := E_CmdState.Busy;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mAutomatic" Id="{1893a5c2-c84c-454f-8d17-e1b9361eb323}" FolderPath="02 Methodes\OpMode\">
+    <Method Name="mAutomatic" Id="{1893a5c2-c84c-454f-8d17-e1b9361eb323}" FolderPath="02 Methodes\100 OpMode\">
       <Declaration><![CDATA[METHOD mAutomatic: E_CmdState
 VAR_INPUT
 	I_bExecute : BOOL;
@@ -173,10 +197,12 @@ Mode := E_Mode.Auto;
 bSequenceBusy 	:= TRUE;
 bSequenceDone 	:= FALSE;
 SequenceID     	:= C_SeqStep_Start;
-mAutomatic 			:= E_CmdState.Busy;]]></ST>
+mAutomatic 			:= E_CmdState.Busy;
+
+]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mDone" Id="{de0d20d5-1293-42e2-9278-5a9f25f8ea1d}" FolderPath="02 Methodes\">
+    <Method Name="mDone" Id="{de0d20d5-1293-42e2-9278-5a9f25f8ea1d}" FolderPath="02 Methodes\300 Fx\">
       <Declaration><![CDATA[METHOD mDone : E_CmdState
 VAR_INPUT
 END_VAR]]></Declaration>
@@ -197,7 +223,7 @@ bSequenceDone := TRUE;
 SequenceID := C_SeqStep_Idle;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHold" Id="{f28f09b1-dbdb-4357-9970-1dd737918a37}" FolderPath="02 Methodes\">
+    <Method Name="mHold" Id="{f28f09b1-dbdb-4357-9970-1dd737918a37}" FolderPath="02 Methodes\300 Fx\">
       <Declaration><![CDATA[METHOD mHold : E_CmdState
 VAR_INPUT
 	I_bExecute : BOOL;
@@ -216,7 +242,7 @@ bSequenceBusy := FALSE;
 mHold := E_CmdState.Hold;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHome" Id="{d161db35-b843-4f4b-9979-193f62066daf}" FolderPath="02 Methodes\OpMode\">
+    <Method Name="mHome" Id="{d161db35-b843-4f4b-9979-193f62066daf}" FolderPath="02 Methodes\100 OpMode\">
       <Declaration><![CDATA[METHOD mHome : E_CmdState
 VAR_INPUT
 	I_bExecute : BOOL;
@@ -243,14 +269,31 @@ IF Error
     mHome := E_CmdState.Error;
     RETURN;
 END_IF
-// Device already running another sequence.
+// Device already running another sequence
 IF SequenceBusy 
 	THEN
     mHome := E_CmdState.Busy;
     RETURN;
 END_IF
 
-// Start local homing sequence.
+// No base position required
+// Device is considered homed immediately
+IF ConfigurationBasePos 
+	THEN
+    Mode := E_Mode.Homing;
+
+    Homed := TRUE;
+    Ready := TRUE;
+
+    SequenceBusy := FALSE;
+    SequenceDone := TRUE;
+    SequenceID := C_SeqStep_Idle;
+
+    mHome := E_CmdState.Succeeded;
+    RETURN;
+END_IF
+
+// Start local homing sequence
 Mode := E_Mode.Homing;
 
 SequenceBusy := TRUE;
@@ -283,8 +326,8 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Method Name="mRegisterChild" Id="{a500345d-fc2f-4016-bc40-685c8cf16433}" FolderPath="02 Methodes\_SetChild\">
-      <Declaration><![CDATA[METHOD mRegistrChild : BOOL
+    <Method Name="mRegisterChild" Id="{a500345d-fc2f-4016-bc40-685c8cf16433}" FolderPath="02 Methodes\200 SetChild\">
+      <Declaration><![CDATA[METHOD mRegisterChild : BOOL			 
 VAR_INPUT
 	I_itfChild        : ITF_Device;
 END_VAR
@@ -294,7 +337,6 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-
 IF __QUERYINTERFACE (I_itfChild, L_Itf_ChildDevice)
 	THEN 
 		IF uiChildsCount < GVL_Core.C_MaxChild
@@ -305,7 +347,7 @@ IF __QUERYINTERFACE (I_itfChild, L_Itf_ChildDevice)
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mRelease" Id="{e5842ae1-3411-4eb3-97f0-f3398dbccc11}" FolderPath="02 Methodes\">
+    <Method Name="mRelease" Id="{e5842ae1-3411-4eb3-97f0-f3398dbccc11}" FolderPath="02 Methodes\300 Fx\">
       <Declaration><![CDATA[METHOD mRelease : E_CmdState
 VAR_INPUT
 	I_bExecute : BOOL;
@@ -325,7 +367,7 @@ bAbort   			:= FALSE;
 mRelease 			:= E_CmdState.Busy;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mReset" Id="{65c3f427-09f3-4c2e-9a66-023cec950cf8}" FolderPath="02 Methodes\">
+    <Method Name="mReset" Id="{65c3f427-09f3-4c2e-9a66-023cec950cf8}" FolderPath="02 Methodes\300 Fx\">
       <Declaration><![CDATA[METHOD mReset : BOOL
 VAR_INPUT
 
@@ -377,10 +419,12 @@ END_IF
 bSequenceBusy := TRUE;
 bSequenceDone := FALSE;
 
-mSequence := E_CmdState.Busy;]]></ST>
+mSequence := E_CmdState.Busy;
+
+]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mService" Id="{59a6f5d6-c772-4191-9bcd-24619a63d134}" FolderPath="02 Methodes\OpMode\">
+    <Method Name="mService" Id="{59a6f5d6-c772-4191-9bcd-24619a63d134}" FolderPath="02 Methodes\100 OpMode\">
       <Declaration><![CDATA[METHOD mService : E_CmdState
 VAR_INPUT
 	I_bExecute : BOOL;
@@ -400,7 +444,7 @@ bSequenceDone := FALSE;
 mService := E_CmdState.Busy;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mSetChildOpMode" Id="{dc18dc8c-5754-40d9-9782-aaae2d87f285}" FolderPath="02 Methodes\_SetChild\">
+    <Method Name="mSetChildOpMode" Id="{dc18dc8c-5754-40d9-9782-aaae2d87f285}" FolderPath="02 Methodes\200 SetChild\">
       <Declaration><![CDATA[METHOD mSetChildOpMode : BOOL
 VAR_INPUT
 	I_eSetChilds  : E_SetChild;
@@ -427,7 +471,7 @@ FOR L_uiIndex := 1 TO uiChildsCount DO
 END_FOR]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mStop" Id="{7e87bb71-0efa-4d7e-ad01-108cb981aa4c}" FolderPath="02 Methodes\">
+    <Method Name="mStop" Id="{7e87bb71-0efa-4d7e-ad01-108cb981aa4c}" FolderPath="02 Methodes\300 Fx\">
       <Declaration><![CDATA[METHOD mStop : E_CmdState
 VAR_INPUT
 	I_bExecute : BOOL;

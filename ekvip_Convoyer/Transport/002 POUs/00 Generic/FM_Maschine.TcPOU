@@ -14,7 +14,7 @@ VAR
 	bAnyChildBusy   					: BOOL;
 	bAnyChildError  					: BOOL;
 	// Internal command state
-	eLastChildCmdState 				: E_CmdState;
+	//eLastChildCmdState 				: E_CmdState;
 	
 	// Hmi Variable
 	stHMI 										: ST_MaschineHMI;
@@ -90,7 +90,7 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHome" Id="{95927eb3-0055-4f5c-b3ae-60a81380b498}">
+    <Method Name="mHome" Id="{95927eb3-0055-4f5c-b3ae-60a81380b498}" FolderPath="02 Methodes\020 OpMode\">
       <Declaration><![CDATA[METHOD mHome : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -114,7 +114,7 @@ IF bAnyChildError
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mReset" Id="{5ff340bf-d875-48ce-8ee0-ba78a52617fe}" FolderPath="02 Methodes\">
+    <Method Name="mReset" Id="{5ff340bf-d875-48ce-8ee0-ba78a52617fe}" FolderPath="02 Methodes\040 Fx\">
       <Declaration><![CDATA[METHOD mReset : BOOL
 VAR_INPUT
 END_VAR
@@ -189,59 +189,61 @@ IF bAnyChildError THEN
 END_IF
 
 CASE SequenceID OF
-    C_SeqStep_Start:
-        CASE Mode OF
-        	E_Mode.Homing:
-        	    eCmd 	:= mSetChildMode(E_Mode.Homing);
-        	E_Mode.Auto:
-        	    eCmd 	:= mSetChildMode(E_Mode.Auto);
-        	E_Mode.Service:
-        	    eCmd 	:= mSetChildMode(E_Mode.Service);
-        END_CASE
-    	SequenceID := 10;
-      mSequence := E_CmdState.Busy;
-
-    10:
-        // Wait until all child devices finish their requested command
-        mUpdateChildsState();
-
-        IF bAnyChildError THEN
-            SequenceID := C_SeqStep_Error;
-
-        ELSIF NOT bAnyChildBusy THEN
-            SequenceID := C_SeqStep_Done;
-        END_IF
-        mSequence := E_CmdState.Busy;
-				
-    C_SeqStep_Done:
-    	bSequenceBusy := FALSE;
-    	bSequenceDone := TRUE;
-    	
-    	IF Mode = E_Mode.Homing 
-				THEN
-    	    bHomed := TRUE;
-    	END_IF
-    	
-    	bReady := TRUE;
-    	SequenceID := C_SeqStep_Idle;
-    	
-    	mSequence := E_CmdState.Succeeded;
-    	
-    C_SeqStep_Error:
-    	bError := TRUE;
-    	bSequenceBusy := FALSE;
-    	bSequenceDone := FALSE;
-    	
-    	mSequence := E_CmdState.Error;
-    	
-    ELSE
-        SequenceID := C_SeqStep_Error;
-        mSequence := E_CmdState.Error;
-
-END_CASE]]></ST>
+	C_SeqStep_Idle:
+		;
+	C_SeqStep_Start:
+	    CASE Mode OF
+	    	E_Mode.Homing:
+	    	    eCmd 	:= mSetChildMode(E_Mode.Homing);
+	    	E_Mode.Auto:
+	    	    eCmd 	:= mSetChildMode(E_Mode.Auto);
+	    	E_Mode.Service:
+	    	    eCmd 	:= mSetChildMode(E_Mode.Service);
+	    END_CASE
+		SequenceID  := C_SeqStep_Running;
+	  mSequence 	:= E_CmdState.Busy;
+	 
+	C_SeqStep_Running:
+	    // Wait until all child devices finish their requested command
+	    mUpdateChildsState();
+	 
+	    IF bAnyChildError THEN
+	        SequenceID := C_SeqStep_Error;
+	 
+	    ELSIF NOT bAnyChildBusy THEN
+	        SequenceID := C_SeqStep_Done;
+	    END_IF
+	    mSequence := E_CmdState.Busy;
+		
+	C_SeqStep_Done:
+		bSequenceBusy := FALSE;
+		bSequenceDone := TRUE;
+		
+		IF Mode = E_Mode.Homing 
+	THEN
+		    bHomed := TRUE;
+		END_IF
+		
+		bReady := TRUE;
+		SequenceID := C_SeqStep_Idle;
+		
+		mSequence := E_CmdState.Succeeded;
+		
+	C_SeqStep_Error:
+		bError 				:= TRUE;
+		bSequenceBusy := FALSE;
+		bSequenceDone := FALSE;
+		
+		mSequence := E_CmdState.Error;
+		
+	ELSE
+		SequenceID := C_SeqStep_Error;
+		mSequence := E_CmdState.Error;
+END_CASE
+]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mService" Id="{66726885-1ab2-4006-b066-6876c2baf1bc}" FolderPath="02 Methodes\">
+    <Method Name="mService" Id="{66726885-1ab2-4006-b066-6876c2baf1bc}" FolderPath="02 Methodes\020 OpMode\">
       <Declaration><![CDATA[METHOD mService : E_CmdState
 VAR_INPUT
 	I_bExecute : BOOL;
@@ -291,7 +293,7 @@ FOR uiIndex := 1 TO uiChildsCount DO
   		eCmd 			    := aitfChilds[uiIndex].mAbort(TRUE);
   END_CASE
 
-    // If one child is busy, global command is still busy
+  // If one child is busy, global command is still busy
 	IF eCmd = E_CmdState.Busy 
 		THEN
 	    mSetChildMode  := E_CmdState.Busy;
@@ -304,8 +306,6 @@ FOR uiIndex := 1 TO uiChildsCount DO
 	    RETURN;
 	END_IF
 END_FOR
-
-
 ]]></ST>
       </Implementation>
     </Method>

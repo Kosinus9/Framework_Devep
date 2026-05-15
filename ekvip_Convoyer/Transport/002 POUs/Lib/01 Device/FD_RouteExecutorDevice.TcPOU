@@ -198,7 +198,7 @@ CASE SequenceID OF
     		SequenceID := C_SeqStep_Error;
     	END_CASE
 
-    	mSequence := E_CmdState.Busy;
+    	mCmdExec_Auto := E_CmdState.Busy;
     	RETURN;
 	
 	C_SeqStep_Auto_Release_Current_Job: // 30
@@ -214,10 +214,10 @@ CASE SequenceID OF
      	      // Release failed.
      	      SequenceID := C_SeqStep_Error;  	
      	END_CASE
-     	mSequence := E_CmdState.Busy;
+     	mCmdExec_Auto := E_CmdState.Busy;
      	RETURN;	
  	C_SeqStep_Auto_End:
-  	SequenceID 				 := C_SeqStep_Auto_Start;
+  	SequenceID 			:= C_SeqStep_Auto_Start;
 		
 END_CASE
 

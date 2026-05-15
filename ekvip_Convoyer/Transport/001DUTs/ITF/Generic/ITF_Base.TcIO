@@ -3,7 +3,9 @@
   <Itf Name="ITF_Base" Id="{b8e790ab-88dc-4e8a-9453-8571cfddc0b1}">
     <Declaration><![CDATA[INTERFACE ITF_Base EXTENDS __System.IQueryInterface 
 ]]></Declaration>
-    <Folder Name="01 Properties" Id="{8cfcbf18-ccab-4e11-ae93-302bdc03a096}" />
+    <Folder Name="01 Properties" Id="{8cfcbf18-ccab-4e11-ae93-302bdc03a096}">
+      <Folder Name="010 Error" Id="{a78ccd4f-52d8-4b54-93cc-95ccf21a8219}" />
+    </Folder>
     <Folder Name="02 Methods" Id="{58c78d7a-3189-4f61-aee0-b0b338a6654b}" />
     <Property Name="Busy" Id="{62e63f49-6de4-44af-a604-ded26ddf34bf}" FolderPath="01 Properties\">
       <Declaration><![CDATA[PROPERTY Busy : BOOL]]></Declaration>
@@ -41,6 +43,42 @@
         <Declaration><![CDATA[]]></Declaration>
       </Set>
     </Property>
+    <Property Name="ErrorID" Id="{3c885193-8fbd-4b44-bf73-81ba08e80d53}" FolderPath="01 Properties\010 Error\">
+      <Declaration><![CDATA[PROPERTY ErrorID : UINT]]></Declaration>
+      <Get Name="Get" Id="{22a7ef10-921f-4849-8d77-6bb7e75680df}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{8b2c7313-b918-4123-b3e0-8236ef720228}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="ErrorLevel" Id="{851c99a9-8c7a-4bac-94ac-364e10a363b9}" FolderPath="01 Properties\010 Error\">
+      <Declaration><![CDATA[PROPERTY ErrorLevel : E_ErrorLevel]]></Declaration>
+      <Get Name="Get" Id="{57f75db8-a19f-44b5-8d02-d4fc3b54effb}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{d721bb73-c95a-426b-8538-837cdf9656b1}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="ErrorMessage" Id="{d758939e-80c6-4a4e-844b-488b1154fd70}" FolderPath="01 Properties\010 Error\">
+      <Declaration><![CDATA[PROPERTY ErrorMessage : STRING]]></Declaration>
+      <Get Name="Get" Id="{d347e905-aa82-458c-88b6-72488f0758cb}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{3ebb4141-9cd1-48bc-9fde-14bd36abcde8}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="ErrorOwner" Id="{c4931aae-b448-42af-9ed8-03c683c13813}" FolderPath="01 Properties\010 Error\">
+      <Declaration><![CDATA[PROPERTY ErrorOwner : STRING]]></Declaration>
+      <Get Name="Get" Id="{15c60186-dbd6-4f15-80f6-427ab8c56e6b}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{f3afcb0c-1942-4135-aa33-4a054b303c51}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
     <Property Name="ID" Id="{ad0a4043-e42e-4d20-9ce4-fe30fc8f1fbe}" FolderPath="01 Properties\">
       <Declaration><![CDATA[PROPERTY ID : UINT]]></Declaration>
       <Get Name="Get" Id="{1b90543e-090d-4a5d-9a8f-674d12843708}">
@@ -50,9 +88,24 @@
         <Declaration><![CDATA[]]></Declaration>
       </Set>
     </Property>
+    <Method Name="mClearError" Id="{0a7eb333-151e-426e-b262-cd2684e19ed8}" FolderPath="02 Methods\">
+      <Declaration><![CDATA[METHOD mClearError : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
     <Method Name="mEnable" Id="{6edf3d3e-219e-4c99-923f-3d20af9a8e15}" FolderPath="02 Methods\">
       <Declaration><![CDATA[METHOD mEnable : bool
 VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="mError" Id="{8704c5f7-6efa-476b-b70f-66a367fc6c11}">
+      <Declaration><![CDATA[METHOD mError : BOOL
+VAR_INPUT
+	I_sMessage   : STRING;
+	I_eLevel		 : E_ErrorLevel;
+	I_uiError		 : UINT;
 END_VAR
 ]]></Declaration>
     </Method>
