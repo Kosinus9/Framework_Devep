@@ -1,49 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
-  <POU Name="FB_Customer" Id="{310a2a13-9b1d-47d0-b233-7d764015e13b}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_Customer EXTENDS FM_Maschine
+  <POU Name="FM_Customer" Id="{310a2a13-9b1d-47d0-b233-7d764015e13b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FM_Customer EXTENDS FM_Maschine
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
 	
-	fbLUTDevice3											: FB_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice3,  // Name
+	fbLUTDevice3											: FD_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice3,  // Name
 																								   					GVL_Customer.C_ID_fbLutDevice3,		  // ID
 																								   					THIS^,															// ITF_Owner
 																								   					);
 																								   					
-	fbLUTDevice6											: FB_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice6,  // Name
+	fbLUTDevice6											: FD_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice6,  // Name
 																								   					GVL_Customer.C_ID_fbLutDevice6,		  // ID
 																								   					THIS^,															// ITF_Owner
 																								   					);
                     		  					               					
-	fbLUTDevice9											: FB_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice9,  // Name
+	fbLUTDevice9											: FD_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice9,  // Name
 																								   					GVL_Customer.C_ID_fbLutDevice9,		  // ID
 																								   					THIS^,															// ITF_Owner
 																								   					);
 																							          		
-	fbLUTDevice12			      					: FB_LUTDevice					(GVL_Customer.C_Name_fbLutDevice12,  // Name
+	fbLUTDevice12			      					: FD_LUTDevice					(GVL_Customer.C_Name_fbLutDevice12,  // Name
 																														GVL_Customer.C_ID_fbLutDevice12,		 // ID
 																														THIS^,															 // ITF_Owner
 																														);
 																														
-	fbConvoyerDevice3			  					: FB_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice3,  // Name
+	fbConvoyerDevice3			  					: FD_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice3,  // Name
 																						 				      	GVL_Customer.C_ID_ConvoyerDevice3,		 // ID
 																										    		THIS^,															  // ITF_Owner
 																										      	);
 																														
-	fbConvoyerDevice6			  					: FB_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice6,  // Name
+	fbConvoyerDevice6			  					: FD_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice6,  // Name
 																						 				      	GVL_Customer.C_ID_ConvoyerDevice6,		 // ID
 																										    		THIS^,															   // ITF_Owner
 																										      	);
                                                           	
-	fbConvoyerDevice9			  					: FB_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice9,  // Name
+	fbConvoyerDevice9			  					: FD_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice9,  // Name
 																						 				      	GVL_Customer.C_ID_ConvoyerDevice9,		 // ID
 																										    		THIS^,															   // ITF_Owner
 																										      	);
                                                           	
-	fbConvoyerDevice12			  			  : FB_ConvoyerDevice		  (GVL_Customer.C_Name_ConvoyerDevice12,  // Name
+	fbConvoyerDevice12			  			  : FD_ConvoyerDevice		  (GVL_Customer.C_Name_ConvoyerDevice12,  // Name
 																						 				        GVL_Customer.C_ID_ConvoyerDevice12,		  // ID
 																										    	  THIS^,															    // ITF_Owner
 																										        );																										
@@ -61,7 +61,7 @@ VAR
 																														fbConvoyerDevice12,                      // ITF_Convoyer
 																										      );
 																													
-	fbRouteExecutorDevice			  			: FB_RouteExecutorDevice		  (GVL_Customer.C_Name_RouteManagerDevice,   // Name
+	fbRouteExecutorDevice			  			: FD_RouteExecutorDevice		  (GVL_Customer.C_Name_RouteManagerDevice,   // Name
 																						 				        				GVL_Customer.C_ID_RouteManagerDevice,		 // ID
 																										    	  				THIS^,															     // ITF_Owner
 																																		fbLUTDevice3,   												 //ITF_LTUDevice

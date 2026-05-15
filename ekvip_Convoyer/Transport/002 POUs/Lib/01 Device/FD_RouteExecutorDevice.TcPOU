@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
-  <POU Name="FB_RouteExecutorDevice" Id="{a029717b-dfa2-4581-b4e8-7347f75dc7f5}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_RouteExecutorDevice EXTENDS FD_Device 
+  <POU Name="FD_RouteExecutorDevice" Id="{a029717b-dfa2-4581-b4e8-7347f75dc7f5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FD_RouteExecutorDevice EXTENDS FD_Device 
 VAR_INPUT
 END_VAR
 
@@ -135,7 +135,7 @@ END_VAR
 VAR_INPUT
 END_VAR
 VAR
-	L_eCmdState 					: E_CmdState;
+	L_eCmdState 			 : E_CmdState;
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -145,50 +145,84 @@ CASE SequenceID OF
   //============================ Start
 	C_SeqStep_Auto_Start:
 		// Initialize the route executor state.
-  	bJobActive    := FALSE;
-  	uiCurrentStep := 0;
-  	pstCurrentJob := 0;
-  	SequenceID       :=  C_SeqStep_Auto_Execute_GetNext_Route_Job;
+  	bJobActive       := FALSE;
+  	uiCurrentStep    := 0;
+  	pstCurrentJob 	 := 0;
+  	SequenceID       := C_SeqStep_Auto_Execute_GetNext_Route_Job;
 
-	C_SeqStep_Auto_Execute_GetNext_Route_Job:
-  	// If no job is active, ask RouteManager for one.
+	C_SeqStep_Auto_Execute_GetNext_Route_Job: // 10
+  	// If no job is active, ask RouteManager for one
   	IF NOT bJobActive 
 		THEN
-  		L_eCmdState := mGetNextJob();
+  		L_eCmdState      := mGetNextJob();
   		CASE L_eCmdState OF
   		  	E_CmdState.Succeeded:
-  		    	// A job was received. Start executing route steps.
+  		    	// A job was received // Start executing route steps
   		     	SequenceID := C_SeqStep_Auto_Execute_Current_Route_Step;
   		    E_CmdState.Idle:
-  		    	// No job available. Stay waiting.
-  		  		SequenceID := C_SeqStep_Auto_Start;
+  		    	// No job available // Stay waiting // End Auto Sequency
+  		  		SequenceID := C_SeqStep_Auto_End;
   		  ELSE
   		    // Route provider error or not ready
   		  	SequenceID 	 := C_SeqStep_Error;
   			END_CASE
   		ELSE
-  		  // A job is already active.
+  		  // A job is already active
   			SequenceID   	 := C_SeqStep_Auto_Execute_Current_Route_Step;
   		END_IF
 			mCmdExec_Auto    := E_CmdState.Busy;
  
-	C_SeqStep_Auto_Execute_Current_Route_Step:	
-		SequenceID := C_SeqStep_Auto_Release_Current_Job;
-	
-	
-	
-	C_SeqStep_Auto_Release_Current_Job:
-	
-		SequenceID := C_SeqStep_Auto_End;	
+	C_SeqStep_Auto_Execute_Current_Route_Step: // 20
+  	L_eCmdState := mExecuteCurrentStep();
+    	CASE L_eCmdState OF
+    	 E_CmdState.Succeeded:
+    	   // If all route steps are done, release the job.
+    	   IF pstCurrentJob <> 0 
+				 	 THEN
+    	     	 IF uiCurrentStep > pstCurrentJob^.stRoute.iuStepCount 
+						   THEN
+    	     	     SequenceID := C_SeqStep_Auto_Release_Current_Job;
+    	     	 ELSE
+    	     	   // Continue with next step.
+    	     	   SequenceID := C_SeqStep_Auto_Execute_Current_Route_Step;
+    	     	 END_IF
+    	   ELSE
+    	   	SequenceID := C_SeqStep_Error;
+    	   END_IF
+    	 E_CmdState.Busy:
+    	   // Current step is still running
+    	   SequenceID := C_SeqStep_Auto_Execute_Current_Route_Step;
+    	 ELSE
+    		// Any other state is considered an execution error
+    		IF pstCurrentJob <> 0 THEN pstCurrentJob^.bError := TRUE; END_IF
+    		SequenceID := C_SeqStep_Error;
+    	END_CASE
 
+    	mSequence := E_CmdState.Busy;
+    	RETURN;
 	
-  C_SeqStep_Error:  
-  	;
-		
-		
+	C_SeqStep_Auto_Release_Current_Job: // 30
+		L_eCmdState := mRealeaseCurrentJob();
+     	CASE L_eCmdState OF
+     	    E_CmdState.Succeeded:
+     	    	// Job released ==> Go back and wait for next job
+     	    	SequenceID := C_SeqStep_Auto_End;
+     	    E_CmdState.Busy:
+     	   	  // Release still running
+     	   	  SequenceID := C_SeqStep_Auto_Release_Current_Job;  	  
+     	    ELSE
+     	      // Release failed.
+     	      SequenceID := C_SeqStep_Error;  	
+     	END_CASE
+     	mSequence := E_CmdState.Busy;
+     	RETURN;	
  	C_SeqStep_Auto_End:
-  	SequenceID := C_SeqStep_Auto_Start;
-END_CASE]]></ST>
+  	SequenceID 				 := C_SeqStep_Auto_Start;
+		
+END_CASE
+
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="mCmdExec_BasePos" Id="{93528f47-f079-4de5-8592-0df7bfc75303}" FolderPath="02 Methodes\100 CmdExecute\">
@@ -279,32 +313,30 @@ END_IF
 
 // Execute requested LTU position
 //==================================================
-CASE L_stStep.eLTUPosition 
-	OF
-    E_LTUPosition.LTU_TOP:    L_eCmdState := L_itfLTU.mCmdExec_MoveTop(TRUE);
-    E_LTUPosition.LTU_BOTTOM: L_eCmdState := L_itfLTU.mCmdExec_MoveBottom(TRUE);
-    E_LTUPosition.LTU_MIDDLE: L_eCmdState := L_itfLTU.mCmdExec_MoveMiddle(TRUE);
-  ELSE
-    mExecuteCurrentStep := E_CmdState.Error;
-    RETURN;
+CASE L_stStep.eLTUPosition OF
+  E_LTUPosition.LTU_TOP:    L_eCmdState := L_itfLTU.mCmdExec_MoveTop(TRUE);
+  E_LTUPosition.LTU_BOTTOM: L_eCmdState := L_itfLTU.mCmdExec_MoveBottom(TRUE);
+  E_LTUPosition.LTU_MIDDLE: L_eCmdState := L_itfLTU.mCmdExec_MoveMiddle(TRUE);
+ELSE
+  mExecuteCurrentStep := E_CmdState.Error;
+  RETURN;
 END_CASE
 
-CASE L_eCmdState 
-	OF
-    E_CmdState.Succeeded:
-    	// Current step completed, move to next step.
-    	uiCurrentStep := uiCurrentStep + 1;
-      mExecuteCurrentStep := E_CmdState.Succeeded;
-      RETURN;
-			
-    E_CmdState.Busy:
-    // Step still running.
-    	mExecuteCurrentStep := E_CmdState.Busy;
-    	RETURN;
-    ELSE
-    // Any other state is considered not ready/error.
-    	mExecuteCurrentStep := L_eCmdState;
-    	RETURN;
+CASE L_eCmdState OF
+	E_CmdState.Succeeded:
+		// Current step completed, move to next step.
+		uiCurrentStep := uiCurrentStep + 1;
+	  mExecuteCurrentStep := E_CmdState.Succeeded;
+	  RETURN;
+		
+	E_CmdState.Busy:
+	// Step still running.
+		mExecuteCurrentStep := E_CmdState.Busy;
+		RETURN;
+	ELSE
+	// Any other state is considered not ready/error.
+		mExecuteCurrentStep := L_eCmdState;
+		RETURN;
 END_CASE
 
 
@@ -529,15 +561,14 @@ SUPER^.mRelease(I_bExecute);]]></ST>
     <Method Name="mSequence" Id="{f40f09ba-b814-4a11-a73f-f4ac5b8d4cc1}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mSequence : E_CmdState
 VAR_INPUT
-	I_bExecute				: BOOL;
+	I_bExecute		 : BOOL;
 END_VAR
 
 VAR_INST
-	L_eCmdState 		 : E_CmdState; // To Generic checks from parent state 
+	L_eCmdState 	 : E_CmdState; // To Generic checks from parent state 
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[mSequence := SUPER^.mSequence(I_bExecute);	
-
+        <ST><![CDATA[
 // Generic checks from parent
 L_eCmdState := SUPER^.mSequence(I_bExecute := I_bExecute);
 

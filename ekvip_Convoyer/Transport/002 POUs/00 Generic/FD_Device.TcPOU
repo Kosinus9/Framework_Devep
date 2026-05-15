@@ -284,7 +284,7 @@ END_VAR
       </Set>
     </Property>
     <Method Name="mRegisterChild" Id="{a500345d-fc2f-4016-bc40-685c8cf16433}" FolderPath="02 Methodes\_SetChild\">
-      <Declaration><![CDATA[METHOD mRegisterChild : BOOL
+      <Declaration><![CDATA[METHOD mRegistrChild : BOOL
 VAR_INPUT
 	I_itfChild        : ITF_Device;
 END_VAR
@@ -359,7 +359,7 @@ IF bError
     RETURN;
 END_IF
 
-// Allows for a clean stop of a sequence.
+// Allows for a clean stop of a sequence
 IF bAbort 
 	THEN
     SequenceID := C_SeqStep_Abort;

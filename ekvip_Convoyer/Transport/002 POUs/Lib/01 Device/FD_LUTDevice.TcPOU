@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
-  <POU Name="FB_LUTDevice" Id="{1d37f6f4-ced3-4fc7-b8fb-537fe5b0ee0b}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_LUTDevice EXTENDS FD_Device IMPLEMENTS ITF_LTU
+  <POU Name="FD_LUTDevice" Id="{1d37f6f4-ced3-4fc7-b8fb-537fe5b0ee0b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FD_LUTDevice EXTENDS FD_Device IMPLEMENTS ITF_LTU
 VAR_INPUT
 END_VAR
 

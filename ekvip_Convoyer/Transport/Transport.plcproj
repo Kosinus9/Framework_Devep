@@ -83,13 +83,13 @@
     <Compile Include="002 POUs\Lib\01 Device\00 Template\FB_Template.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\FB_LUTDevice.TcPOU">
+    <Compile Include="002 POUs\Lib\01 Device\FD_LUTDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\FB_ConvoyerDevice.TcPOU">
+    <Compile Include="002 POUs\Lib\01 Device\FD_ConvoyerDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\FB_RouteExecutorDevice.TcPOU">
+    <Compile Include="002 POUs\Lib\01 Device\FD_RouteExecutorDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="002 POUs\Lib\02 SimpleDevice\00 Template\FB_TemplateSimpleDevice.TcPOU">
@@ -126,7 +126,7 @@
     <Compile Include="1000 Maschine xxx\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="1000 Maschine xxx\_Customer\FB_Customer.TcPOU">
+    <Compile Include="1000 Maschine xxx\_Customer\FM_Customer.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="1000 Maschine xxx\_Customer\VISUs\Visu_Customer.TcVIS">
