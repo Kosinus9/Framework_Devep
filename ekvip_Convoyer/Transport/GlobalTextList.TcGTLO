@@ -6,8 +6,18 @@
         <o xml:space="preserve" t="GlobalTextListObject">
           <l n="TextList" t="ArrayList" cet="TextListRow">
             <o>
+              <v n="TextID">"279"</v>
+              <v n="TextDefault">"12"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"584"</v>
               <v n="TextDefault">"Auto"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"173"</v>
+              <v n="TextDefault">"Automatic"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -21,8 +31,38 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"790"</v>
+              <v n="TextDefault">"C3"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"669"</v>
+              <v n="TextDefault">"C6"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"844"</v>
               <v n="TextDefault">"Clear Error"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"626"</v>
+              <v n="TextDefault">"Convoyer_12"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"213"</v>
+              <v n="TextDefault">"Convoyer_3"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"419"</v>
+              <v n="TextDefault">"Convoyer_6"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"374"</v>
+              <v n="TextDefault">"Convoyer_9"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -31,8 +71,73 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"728"</v>
+              <v n="TextDefault">"Gruppenfeld"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"1008"</v>
               <v n="TextDefault">"HOLD"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"917"</v>
+              <v n="TextDefault">"Homed"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"551"</v>
+              <v n="TextDefault">"Homing"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"218"</v>
+              <v n="TextDefault">"Lampe"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"649"</v>
+              <v n="TextDefault">"LTU6"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"478"</v>
+              <v n="TextDefault">"Ltu_12"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"324"</v>
+              <v n="TextDefault">"LTU_12"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"891"</v>
+              <v n="TextDefault">"Ltu_3"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"699"</v>
+              <v n="TextDefault">"LTU_3"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"330"</v>
+              <v n="TextDefault">"Ltu_6"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"225"</v>
+              <v n="TextDefault">"LTU_6"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"558"</v>
+              <v n="TextDefault">"Ltu_9"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"195"</v>
+              <v n="TextDefault">"LTU_9"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -51,8 +156,33 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"903"</v>
+              <v n="TextDefault">"S12"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"136"</v>
+              <v n="TextDefault">"S3"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"59"</v>
+              <v n="TextDefault">"S6"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"525"</v>
+              <v n="TextDefault">"S9"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"585"</v>
               <v n="TextDefault">"Semi-Auto"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"238"</v>
+              <v n="TextDefault">"Servic"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
