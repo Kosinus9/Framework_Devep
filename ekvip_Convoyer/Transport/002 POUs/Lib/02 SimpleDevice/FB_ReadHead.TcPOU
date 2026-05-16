@@ -7,6 +7,7 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	//eGetSource									: E_Convoyer;
 	eReadDestination						: E_Convoyer;
 	bExecute										: BOOL;
 	fbDrand											: DRAND;

@@ -120,9 +120,11 @@ VAR_INPUT
 	I_Name                : STRING;         //  Name
 	I_ID                  : UINT;           // ID
   I_itfOwner					  : ITF_Owner;      // owner 
+	I_eConvoyerID					: E_Convoyer;			// Source ID
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[  ]]></ST>
+        <ST><![CDATA[  
+	eSource := I_eConvoyerID; ]]></ST>
       </Implementation>
     </Method>
     <Method Name="mAutomatic" Id="{0e38ef4b-50a5-4c6b-a712-d14a65a1cbe0}" FolderPath="02 Methodes\400 Fx\">
@@ -165,6 +167,7 @@ CASE SequenceID OF
 	
 	IF fbStopperCarrieConvoyer.CarriePresent 
 		THEN
+			//eSource		 := fbReadHead.GetSource; // Get Souce if carrie present 
       SequenceID := C_SeqStep_Auto_Read_Destination_Once;
   END_IF
 	

@@ -40,16 +40,16 @@ END_VAR
 VAR CONSTANT
 	// --------------------------Base------------------
 	C_SeqStep_OnBasePos_Start															: UINT :=  1; 
-	C_SeqStep_OnBasePos_Error															: UINT :=  30;
-	C_SeqStep_OnBasePos_Done															: UINT :=  100; 
+	C_SeqStep_OnBasePos_Error															: UINT :=  20;
+	C_SeqStep_OnBasePos_Done															: UINT :=  20; 
 
 	// --------------------------Auto Sequence------------------
 	C_SeqStep_Auto_Start																	: UINT :=  1;
-	C_SeqStep_Auto_Execute_GetNext_Route_Job							: UINT :=  10;
-	C_SeqStep_Auto_Execute_Current_Route_Step							: UINT :=  20;
-	C_SeqStep_Auto_Release_Current_Job										: UINT :=  30;
-	C_SeqStep_Auto_Error																	: UINT :=  40;
-	C_SeqStep_Auto_End																		: UINT :=  50;
+	C_SeqStep_Auto_Execute_GetNext_Route_Job							: UINT :=  50;
+	C_SeqStep_Auto_Execute_Current_Route_Step							: UINT :=  60;
+	C_SeqStep_Auto_Release_Current_Job										: UINT :=  70;
+	C_SeqStep_Auto_Error																	: UINT :=  80;
+	C_SeqStep_Auto_End																		: UINT :=  90;
 	
 END_VAR
 ]]></Declaration>

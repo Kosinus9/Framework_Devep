@@ -9,7 +9,7 @@ A step represents:
 *)
 TYPE ST_RouteStep :
 	STRUCT
-		eStepType      : E_RouteStepType;   // an action
+		//eStepType      : E_RouteStepType;   // an action
     eConvoyer      : E_Convoyer;				// on a concoyer
     eLTUPosition   : E_LTUPosition;			// an LTU position
 	END_STRUCT
