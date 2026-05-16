@@ -55,7 +55,13 @@ VAR_INPUT
   I_itfOwner					  : ITF_Owner;      // owner 
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[
+	bConfigurationBasePos := FALSE;
+	bAnyChildBusy   			:= FALSE;
+	bAnyChildError  			:= FALSE;
+	bAllChildsReady 			:= TRUE;
+	bAllChildsHomed 			:= TRUE;
+	bAllChildsDone  			:= TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="mAutomatic" Id="{34b44ad0-f67d-44fe-a6ef-a7575f674d83}" FolderPath="02 Methodes\020 OpMode\">
@@ -63,11 +69,22 @@ END_VAR]]></Declaration>
 VAR_INPUT
 	I_bExecute	: BOOL;
 END_VAR
+
+VAR_INST
+	bYann  	: BOOL;
+	bYann2  	: BOOL;
+	
+END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[
+IF bYann 
+	THEN
+	bYann2 := true;
+END_IF
+bAllChildsHomed	:= TRUE;
 // Call mAutomatic in Base
-SUPER^.mAutomatic(I_bExecute);
+mAutomatic := SUPER^.mAutomatic(I_bExecute);
 
 // Machine can only go AUTO if all child devices are homed
 mUpdateChildsState();
@@ -101,7 +118,7 @@ END_VAR
 mHome := SUPER^.mHome(I_bExecute);
 
 // If generic checks failed -> exit
-IF mHome <> E_CmdState.Busy THEN RETURN; END_IF
+IF (mHome <> E_CmdState.Busy) AND NOT ConfigurationBasePos THEN RETURN; END_IF
 
 // Machine-specific preparation
 mUpdateChildsState();

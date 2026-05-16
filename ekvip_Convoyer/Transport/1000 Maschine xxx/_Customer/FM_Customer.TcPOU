@@ -8,74 +8,76 @@ VAR_OUTPUT
 END_VAR
 VAR
 	
-	fbLUTDevice3											: FD_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice3,  // Name
+	fdLUTDevice3											: FD_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice3,  // Name
 																								   					GVL_Customer.C_ID_fbLutDevice3,		  // ID
 																								   					THIS^,															// ITF_Owner
 																								   					);
 																								   					
-	fbLUTDevice6											: FD_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice6,  // Name
+	fdLUTDevice6											: FD_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice6,  // Name
 																								   					GVL_Customer.C_ID_fbLutDevice6,		  // ID
 																								   					THIS^,															// ITF_Owner
 																								   					);
                     		  					               					
-	fbLUTDevice9											: FD_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice9,  // Name
+	fdLUTDevice9											: FD_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice9,  // Name
 																								   					GVL_Customer.C_ID_fbLutDevice9,		  // ID
 																								   					THIS^,															// ITF_Owner
 																								   					);
 																							          		
-	fbLUTDevice12			      					: FD_LUTDevice					(GVL_Customer.C_Name_fbLutDevice12,  // Name
+	fdLUTDevice12			      					: FD_LUTDevice					(GVL_Customer.C_Name_fbLutDevice12,  // Name
 																														GVL_Customer.C_ID_fbLutDevice12,		 // ID
 																														THIS^,															 // ITF_Owner
 																														);
 																														
-	fbConvoyerDevice3			  					: FD_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice3,  // Name
+	fdConvoyerDevice3			  					: FD_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice3,  // Name
 																						 				      	GVL_Customer.C_ID_ConvoyerDevice3,		 // ID
 																										    		THIS^,															  // ITF_Owner
 																										      	);
 																														
-	fbConvoyerDevice6			  					: FD_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice6,  // Name
+	fdConvoyerDevice6			  					: FD_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice6,  // Name
 																						 				      	GVL_Customer.C_ID_ConvoyerDevice6,		 // ID
 																										    		THIS^,															   // ITF_Owner
 																										      	);
                                                           	
-	fbConvoyerDevice9			  					: FD_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice9,  // Name
+	fdConvoyerDevice9			  					: FD_ConvoyerDevice			(GVL_Customer.C_Name_ConvoyerDevice9,  // Name
 																						 				      	GVL_Customer.C_ID_ConvoyerDevice9,		 // ID
 																										    		THIS^,															   // ITF_Owner
 																										      	);
                                                           	
-	fbConvoyerDevice12			  			  : FD_ConvoyerDevice		  (GVL_Customer.C_Name_ConvoyerDevice12,  // Name
+	fdConvoyerDevice12			  			  : FD_ConvoyerDevice		  (GVL_Customer.C_Name_ConvoyerDevice12,  // Name
 																						 				        GVL_Customer.C_ID_ConvoyerDevice12,		  // ID
 																										    	  THIS^,															    // ITF_Owner
 																										        );																										
 			
-	fbRouteManager			  						: FB_RouteManager		  (GVL_Customer.C_Name_RouteManagerDevice,   // Name
+	fdRouteManager			  						: FD_RouteManagerDevice		  (GVL_Customer.C_Name_RouteManagerDevice,   // Name
 																						 				        GVL_Customer.C_ID_RouteManagerDevice,		 // ID
 																										    	  THIS^,															     // ITF_Owner
-																														fbLUTDevice3,   												 //ITF_LTUDevice
-																														fbLUTDevice6,	 													 //ITF_LTUDevice
-																														fbLUTDevice9,	 													 //ITF_LTUDevice
-																														fbLUTDevice12,	 												 //ITF_LTUDevice
-																														fbConvoyerDevice3,                       // ITF_Convoyer
-																														fbConvoyerDevice6,                       // ITF_Convoyer
-																														fbConvoyerDevice9,                       // ITF_Convoyer
-																														fbConvoyerDevice12,                      // ITF_Convoyer
+																														fdLUTDevice3,   												 //ITF_LTUDevice
+																														fdLUTDevice6,	 													 //ITF_LTUDevice
+																														fdLUTDevice9,	 													 //ITF_LTUDevice
+																														fdLUTDevice12,	 												 //ITF_LTUDevice
+																														fdConvoyerDevice3,                       // ITF_Convoyer
+																														fdConvoyerDevice6,                       // ITF_Convoyer
+																														fdConvoyerDevice9,                       // ITF_Convoyer
+																														fdConvoyerDevice12,                      // ITF_Convoyer
 																										      );
 																													
-	fbRouteExecutorDevice			  			: FD_RouteExecutorDevice		  (GVL_Customer.C_Name_RouteManagerDevice,   // Name
+	fdRouteExecutorDevice			  			: FD_RouteExecutorDevice		  (GVL_Customer.C_Name_RouteManagerDevice,   // Name
 																						 				        				GVL_Customer.C_ID_RouteManagerDevice,		 // ID
 																										    	  				THIS^,															     // ITF_Owner
-																																		fbLUTDevice3,   												 //ITF_LTUDevice
-																																		fbLUTDevice6,	 													 //ITF_LTUDevice
-																																		fbLUTDevice9,	 													 //ITF_LTUDevice
-																																		fbLUTDevice12,	 												 //ITF_LTUDevice
-																																		fbConvoyerDevice3,                       // ITF_Convoyer
-																																		fbConvoyerDevice6,                       // ITF_Convoyer
-																																		fbConvoyerDevice9,                       // ITF_Convoyer
-																																		fbConvoyerDevice12,                      // ITF_Convoyer
-																																		fbRouteManager,
+																																		fdLUTDevice3,   												 //ITF_LTUDevice
+																																		fdLUTDevice6,	 													 //ITF_LTUDevice
+																																		fdLUTDevice9,	 													 //ITF_LTUDevice
+																																		fdLUTDevice12,	 												 //ITF_LTUDevice
+																																		fdConvoyerDevice3,                       // ITF_Convoyer
+																																		fdConvoyerDevice6,                       // ITF_Convoyer
+																																		fdConvoyerDevice9,                       // ITF_Convoyer
+																																		fdConvoyerDevice12,                      // ITF_Convoyer
+																																		fdRouteManager,
 																										      				);																													
 																				
 END_VAR
+
+
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
@@ -87,18 +89,18 @@ IF NOT Enable THEN RETURN; END_IF
 mVisu();
 
 //Device instance
-fbLUTDevice3();
-fbLUTDevice6();
-fbLUTDevice9();
-fbLUTDevice12();
+fdLUTDevice3();
+fdLUTDevice6();
+fdLUTDevice9();
+fdLUTDevice12();
 
-fbConvoyerDevice3();
-fbConvoyerDevice6();
-fbConvoyerDevice9();
-fbConvoyerDevice12();
+fdConvoyerDevice3();
+fdConvoyerDevice6();
+fdConvoyerDevice9();
+fdConvoyerDevice12();
 
-fbRouteManager();
-fbRouteExecutorDevice();
+fdRouteManager();
+fdRouteExecutorDevice();
 
 ]]></ST>
     </Implementation>

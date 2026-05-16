@@ -66,8 +66,9 @@ IF NOT Enable THEN RETURN; END_IF
     <Folder Name="02 Methodes" Id="{717c44f6-c96e-41a8-89f5-06b22d0c9069}">
       <Folder Name="100 CmdExecute" Id="{c0ec372c-0671-4b3a-a8b5-4fce6e412148}" />
       <Folder Name="200 Cmd RoueExecutor" Id="{eacbc3a0-13e3-467d-bf05-4faf01046530}" />
+      <Folder Name="400 Fx" Id="{538410a5-a5ad-4989-b1aa-5c24e436fbc0}" />
     </Folder>
-    <Method Name="FB_Init" Id="{30bf4515-e308-418c-87d1-6b7687fa091c}" FolderPath="02 Methodes\">
+    <Method Name="FB_Init" Id="{30bf4515-e308-418c-87d1-6b7687fa091c}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
 //die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
@@ -120,14 +121,15 @@ IF I_itfRouteProvider <>0 THEN itfRouteProvider := I_itfRouteProvider;END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mAutomatic" Id="{a75fe4d4-7f2d-4070-80b3-f99e488c96ba}" FolderPath="02 Methodes\">
+    <Method Name="mAutomatic" Id="{a75fe4d4-7f2d-4070-80b3-f99e488c96ba}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mAutomatic : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[SUPER^.mAutomatic(I_bExecute);
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="mCmdExec_Auto" Id="{03cf2b91-4222-4afc-a087-16c1b093e471}" FolderPath="02 Methodes\100 CmdExecute\">
@@ -478,7 +480,7 @@ uiCurrentStep := 1;
 mGetNextJob   := E_CmdState.Succeeded;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHold" Id="{9826c73f-b5ab-4504-8c66-e7eeba15a691}" FolderPath="02 Methodes\">
+    <Method Name="mHold" Id="{9826c73f-b5ab-4504-8c66-e7eeba15a691}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mHold : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -490,7 +492,7 @@ SUPER^.mHold(I_bExecute);
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHome" Id="{34465ffa-d1f7-4e63-80a7-5ee016b31c7d}" FolderPath="02 Methodes\">
+    <Method Name="mHome" Id="{34465ffa-d1f7-4e63-80a7-5ee016b31c7d}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mHome : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -547,7 +549,7 @@ mRealeaseCurrentJob := L_eCmdState;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mRelease" Id="{53d477d2-f31b-49d2-807b-dd9cc171f4a0}" FolderPath="02 Methodes\">
+    <Method Name="mRelease" Id="{53d477d2-f31b-49d2-807b-dd9cc171f4a0}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mRelease : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -589,7 +591,7 @@ END_CASE
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mService" Id="{8fa21da5-945c-497d-8737-332ba65925b4}" FolderPath="02 Methodes\">
+    <Method Name="mService" Id="{8fa21da5-945c-497d-8737-332ba65925b4}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mService : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -600,7 +602,7 @@ END_VAR
 SUPER^.mService(I_bExecute);]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mStop" Id="{378f9ff1-8807-49ec-a1d9-53faa113472c}" FolderPath="02 Methodes\">
+    <Method Name="mStop" Id="{378f9ff1-8807-49ec-a1d9-53faa113472c}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mStop : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;

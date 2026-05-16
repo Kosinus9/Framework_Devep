@@ -117,6 +117,7 @@ bHomed									:= FALSE;
 bAbort 									:= FALSE;
 bHold 									:= FALSE;
 
+bConfigurationBasePos   := TRUE; // provisorisch.
 ]]></ST>
       </Implementation>
     </Method>

@@ -67,6 +67,7 @@ fbReadHead();
     <Folder Name="01 Properties" Id="{cd138be3-3b0b-4a38-a306-c41018d06bbb}" />
     <Folder Name="02 Methodes" Id="{6037a7d3-2441-4a02-b758-7b67f5b9751c}">
       <Folder Name="100 CmdExecute" Id="{915cb2b9-e0a9-4914-87d5-0baeeaed19ff}" />
+      <Folder Name="400 Fx" Id="{777dcdf1-ad3f-4720-8084-0c004ef66f79}" />
     </Folder>
     <Property Name="CarrierWaiting" Id="{05c90862-a01c-4d41-bb8b-9f422f1fc899}" FolderPath="01 Properties\">
       <Declaration><![CDATA[PROPERTY CarrierWaiting : BOOL]]></Declaration>
@@ -106,7 +107,7 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Method Name="FB_Init" Id="{7868e964-b97f-4b46-9f24-6f16557dff08}" FolderPath="02 Methodes\">
+    <Method Name="FB_Init" Id="{7868e964-b97f-4b46-9f24-6f16557dff08}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[//FB_Init ist immer implizit verfügbar und wird primär für die Initialisierung verwendet.
 //Der Rückgabewert wird nicht ausgewertet. Für gezielte Einflussnahme können Sie
 //die Methoden explizit deklarieren und darin mit dem Standard-Initialisierungscode 
@@ -124,14 +125,16 @@ END_VAR]]></Declaration>
         <ST><![CDATA[  ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mAutomatic" Id="{ff0404a1-be89-4e37-9072-7e03fecc86a6}" FolderPath="02 Methodes\">
+    <Method Name="mAutomatic" Id="{0e38ef4b-50a5-4c6b-a712-d14a65a1cbe0}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mAutomatic : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[
+SUPER^.mAutomatic(TRUE);
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="mCmdExec_Auto" Id="{973859fe-6ada-4c64-963f-bf319c88cc9e}" FolderPath="02 Methodes\100 CmdExecute\">
@@ -167,7 +170,7 @@ CASE SequenceID OF
 	
 	C_SeqStep_Auto_Read_Destination_Once:
 	// Read destination one.
-  	IF fbReadHead.mRead() = E_CmdState.Succeeded 
+  	IF fbReadHead.mRead(TRUE) = E_CmdState.Succeeded 
 			THEN
   	    eDestination 		:= fbReadHead.ReadDestination;
   	    SequenceID 			:= C_SeqStep_Auto_Ask_RouteManager_For_A_Route;
@@ -293,7 +296,7 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHold" Id="{46387c63-22e9-4e63-911a-a5aaa6ea0e64}" FolderPath="02 Methodes\">
+    <Method Name="mHold" Id="{46387c63-22e9-4e63-911a-a5aaa6ea0e64}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mHold : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -303,7 +306,7 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mHome" Id="{0b8d40f6-21bb-47c1-a405-da8066a9c8d8}" FolderPath="02 Methodes\">
+    <Method Name="mHome" Id="{0b8d40f6-21bb-47c1-a405-da8066a9c8d8}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mHome : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -313,7 +316,7 @@ END_VAR
         <ST><![CDATA[SUPER^.mHome(I_bExecute);]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mRelease" Id="{12251720-22ac-41a7-b04d-07588ae5005c}" FolderPath="02 Methodes\">
+    <Method Name="mRelease" Id="{12251720-22ac-41a7-b04d-07588ae5005c}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mRelease : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -355,7 +358,7 @@ CASE Mode OF
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mService" Id="{11d63726-4dd4-47d5-9688-e549348cfcc2}" FolderPath="02 Methodes\">
+    <Method Name="mService" Id="{11d63726-4dd4-47d5-9688-e549348cfcc2}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mService : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;
@@ -365,7 +368,7 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="mStop" Id="{cbc30238-9fbe-4bf6-a78e-b9b20bf3a4ae}" FolderPath="02 Methodes\">
+    <Method Name="mStop" Id="{cbc30238-9fbe-4bf6-a78e-b9b20bf3a4ae}" FolderPath="02 Methodes\400 Fx\">
       <Declaration><![CDATA[METHOD mStop : E_CmdState
 VAR_INPUT
 	I_bExecute	: BOOL;

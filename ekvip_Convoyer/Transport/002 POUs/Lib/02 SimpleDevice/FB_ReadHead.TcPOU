@@ -61,6 +61,7 @@ END_VAR]]></Declaration>
     <Method Name="mRead" Id="{f10879c1-6084-4c42-b497-6acc39e492c3}" FolderPath="02 Methodes\">
       <Declaration><![CDATA[METHOD mRead : E_CmdState
 VAR_INPUT
+	I_bExecute		: BOOL;
 END_VAR
 
 VAR
@@ -70,7 +71,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-IF NOT Execute 
+IF NOT I_bExecute 
 	THEN
     mRead := E_CmdState.Idle;
     RETURN;
