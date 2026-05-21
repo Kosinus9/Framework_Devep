@@ -3,13 +3,15 @@
   <POU Name="FB_PneuCyl_Stopper" Id="{a7b52489-8306-4768-bce5-7bb6030c1e74}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_PneuCyl_Stopper EXTENDS FB_Base
 VAR_INPUT
+		bCarriePresent1										: BOOL;
 END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
 	//================================= Variable
 	bCarriePresent										: BOOL;
-	
+	bHmiSimCarrie 										: BOOL;
+
 	
 	//================================= Instance
 	fbStopperOut											: FB_Output					(GVL_Customer.C_Name_StopperOut,
@@ -26,7 +28,7 @@ END_VAR
 SUPER^();  
 IF NOT Enable THEN RETURN; END_IF;
 // Check Carrie available
-bCarriePresent := fbStopperOccupied.bBoolValue;
+bCarriePresent := fbStopperOccupied.bBoolValue OR bHmiSimCarrie ;
 ]]></ST>
     </Implementation>
     <Folder Name="01 Properties" Id="{c888f04d-257a-4261-96a3-2bc2ced9cf8a}" />

@@ -165,11 +165,11 @@ CASE SequenceID OF
 		
 	C_SeqStep_Auto_Wait_Carrier_At_Stopper :
 	
-	IF fbStopperCarrieConvoyer.CarriePresent 
-		THEN
+		IF fbStopperCarrieConvoyer.CarriePresent 
+			THEN
 			//eSource		 := fbReadHead.GetSource; // Get Souce if carrie present 
-      SequenceID := C_SeqStep_Auto_Read_Destination_Once;
-  END_IF
+      	SequenceID := C_SeqStep_Auto_Read_Destination_Once;
+  	END_IF
 	
 	C_SeqStep_Auto_Read_Destination_Once:
 	// Read destination one.

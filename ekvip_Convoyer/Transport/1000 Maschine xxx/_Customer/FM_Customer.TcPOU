@@ -7,6 +7,10 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	// ===============================
+	stHMI 														: ST_MaschineHMI;
+	
+	// =============================== Instance
 	
 	fdLUTDevice3											: FD_LUTDevice 					(GVL_Customer.C_Name_fbLutDevice3,  // Name
 																								   					GVL_Customer.C_ID_fbLutDevice3,		  // ID
@@ -133,7 +137,8 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[super^.mVisu();
+
 // Machine status -->HMI
 //==================================================
 
@@ -168,12 +173,9 @@ END_IF
 
 //------------------------------
 // SERVICE
-IF stHMI.bCmdService THEN
-
-    stHMI.eCmdState 				:= mService(
-        I_bExecute 					:= TRUE
-    );
-
+IF stHMI.bCmdService 
+	THEN
+    stHMI.eCmdState 				:= mService( TRUE);
     stHMI.bCmdService 			:= FALSE;
 END_IF
 
@@ -203,9 +205,6 @@ IF stHMI.bCmdReset
 END_IF
 //=========================================================
 mVisu := TRUE;
-
-
-
 
 ]]></ST>
       </Implementation>

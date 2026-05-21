@@ -6,7 +6,7 @@ VAR_GLOBAL CONSTANT
 	//======================================================= GENARAL 
 	
 	
-	
+	bText    : BOOL :=FALSE ;
 	
 	//======================================================= Name Device 
 	C_Name_fbLutDevice3                : STRING := 'fbLutDevice3';

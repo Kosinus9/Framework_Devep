@@ -17,7 +17,6 @@ VAR
 	//eLastChildCmdState 				: E_CmdState;
 	
 	// Hmi Variable
-	stHMI 										: ST_MaschineHMI;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -25,7 +24,6 @@ END_VAR
 SUPER^();  
 IF NOT Enable THEN RETURN; END_IF;
 
-mVisu();
 // Update global child status every PLC cycle
 mUpdateChildsState();
 
@@ -237,7 +235,7 @@ CASE SequenceID OF
 		bSequenceDone := TRUE;
 		
 		IF Mode = E_Mode.Homing 
-	THEN
+	  	THEN
 		    bHomed := TRUE;
 		END_IF
 		
@@ -408,66 +406,6 @@ FOR L_uiIndex := 1 TO uiChildsCount DO
 END_FOR
 
 mUpdateChildsState := TRUE;]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="mVisu" Id="{755d8c18-c470-42a3-9fc7-897d4f23f899}" FolderPath="02 Methodes\099 HMI\">
-      <Declaration><![CDATA[METHOD mVisu : BOOL
-VAR_INPUT
-END_VAR
-
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[
-// Status to HMI
-	stHMI.sName     					:= Name;
-	stHMI.uiID      					:= ID;
-	stHMI.bReady    					:= Ready;
-	stHMI.bHomed    					:= Homed;
-	stHMI.bBusy     					:= SequenceBusy;
-	stHMI.bDone     					:= SequenceDone;
-	stHMI.bError    					:= Error;
-	stHMI.eMode     					:= Mode;
-	stHMI.uiSequenceID    		:= SequenceID;
-	
-	// Commands from HMI
-	IF stHMI.bCmdReset 
-		THEN
-	    mReset();
-	    stHMI.bCmdReset := FALSE;
-	END_IF
-	
-	IF stHMI.bCmdHome 
-		THEN
-	    stHMI.eCmdState := mHome(TRUE);
-	    stHMI.bCmdHome := FALSE;
-	END_IF
-	
-	IF stHMI.bCmdAuto 
-		THEN
-	    stHMI.eCmdState := mAutomatic(TRUE);
-	    stHMI.bCmdAuto := FALSE;
-	END_IF
-	
-	IF stHMI.bCmdService 
-  	THEN
-	    stHMI.eCmdState := mService(TRUE);
-	    stHMI.bCmdService := FALSE;
-	END_IF
-	
-	IF stHMI.bCmdStop 
-		THEN
-    stHMI.eCmdState := mStop(TRUE);
-    stHMI.bCmdStop := FALSE;
-END_IF
-
-IF stHMI.bCmdAbort 
-	THEN
-    stHMI.eCmdState := mAbort(TRUE);
-    stHMI.bCmdAbort := FALSE;
-END_IF
-
-mVisu := TRUE;
-]]></ST>
       </Implementation>
     </Method>
   </POU>

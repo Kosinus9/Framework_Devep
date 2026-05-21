@@ -127,8 +127,8 @@ SUPER^.mAutomatic(TRUE);
     <Method Name="mBuildRoute" Id="{7200bf03-7fa0-4280-a8ff-c4a05727f4d4}" FolderPath="02 Methodes\200 CmdRouteManager\">
       <Declaration><![CDATA[METHOD PROTECTED mBuildRoute : BOOL
 VAR_INPUT
-	I_eSource      : E_Convoyer;
-	I_eDestination : E_Convoyer;
+	I_eSource       : E_Convoyer;
+	I_eDestination  : E_Convoyer;
 	I_refstRoute    : REFERENCE TO ST_Route;
 END_VAR]]></Declaration>
       <Implementation>

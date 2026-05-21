@@ -86,40 +86,40 @@
     <Compile Include="002 POUs\00 Generic\FM_Maschine.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\00 Template\FB_Template.TcPOU">
+    <Compile Include="002 POUs\01 Lib\01 Device\00 Template\FB_Template.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\FD_RouteManagerDevice.TcPOU">
+    <Compile Include="002 POUs\01 Lib\01 Device\FD_RouteManagerDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\FD_LUTDevice.TcPOU">
+    <Compile Include="002 POUs\01 Lib\01 Device\FD_LUTDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\FD_ConvoyerDevice.TcPOU">
+    <Compile Include="002 POUs\01 Lib\01 Device\FD_ConvoyerDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\01 Device\FD_RouteExecutorDevice.TcPOU">
+    <Compile Include="002 POUs\01 Lib\01 Device\FD_RouteExecutorDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\02 SimpleDevice\00 Template\FB_TemplateSimpleDevice.TcPOU">
+    <Compile Include="002 POUs\01 Lib\02 SimpleDevice\00 Template\FB_TemplateSimpleDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_ReadHead.TcPOU">
+    <Compile Include="002 POUs\01 Lib\02 SimpleDevice\FB_ReadHead.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_PneuCyl_Stopper.TcPOU">
+    <Compile Include="002 POUs\01 Lib\02 SimpleDevice\FB_PneuCyl_Stopper.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_SimpleMotor.TcPOU">
+    <Compile Include="002 POUs\01 Lib\02 SimpleDevice\FB_SimpleMotor.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\02 SimpleDevice\FB_PneuCyl_3Pos.TcPOU">
+    <Compile Include="002 POUs\01 Lib\02 SimpleDevice\FB_PneuCyl_3Pos.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\Digit I_O\Input\FB_Input.TcPOU">
+    <Compile Include="002 POUs\01 Lib\Digit I_O\Input\FB_Input.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="002 POUs\Lib\Digit I_O\Output\FB_Output.TcPOU">
+    <Compile Include="002 POUs\01 Lib\Digit I_O\Output\FB_Output.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="1000 Maschine xxx\01 DUTs\GVLs\GVL_Customer.TcGVL">
@@ -158,14 +158,14 @@
     <Folder Include="001DUTs\GVL_Base" />
     <Folder Include="001DUTs\STRUCT" />
     <Folder Include="002 POUs\00 Generic" />
-    <Folder Include="002 POUs\Lib" />
-    <Folder Include="002 POUs\Lib\01 Device" />
-    <Folder Include="002 POUs\Lib\01 Device\00 Template" />
-    <Folder Include="002 POUs\Lib\02 SimpleDevice" />
-    <Folder Include="002 POUs\Lib\02 SimpleDevice\00 Template" />
-    <Folder Include="002 POUs\Lib\Digit I_O\Input" />
-    <Folder Include="002 POUs\Lib\Digit I_O" />
-    <Folder Include="002 POUs\Lib\Digit I_O\Output" />
+    <Folder Include="002 POUs\01 Lib" />
+    <Folder Include="002 POUs\01 Lib\01 Device" />
+    <Folder Include="002 POUs\01 Lib\01 Device\00 Template" />
+    <Folder Include="002 POUs\01 Lib\02 SimpleDevice" />
+    <Folder Include="002 POUs\01 Lib\02 SimpleDevice\00 Template" />
+    <Folder Include="002 POUs\01 Lib\Digit I_O\Input" />
+    <Folder Include="002 POUs\01 Lib\Digit I_O" />
+    <Folder Include="002 POUs\01 Lib\Digit I_O\Output" />
     <Folder Include="1000 Maschine xxx\01 DUTs" />
     <Folder Include="1000 Maschine xxx\01 DUTs\GVLs" />
     <Folder Include="1000 Maschine xxx\01 DUTs\STRUCT" />
@@ -231,6 +231,10 @@
       <Namespace>Tc3_Module</Namespace>
       <SystemLibrary>true</SystemLibrary>
     </PlaceholderReference>
+    <PlaceholderReference Include="VisuDialogs">
+      <DefaultResolution>VisuDialogs, * (System)</DefaultResolution>
+      <Namespace>VisuDialogs</Namespace>
+    </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Transport.tmc">
@@ -240,8 +244,8 @@
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-  <Data>
-    <o xml:space="preserve" t="OptionKey">
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
@@ -322,14 +326,14 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-  </Data>
-  <TypeList>
-    <Type n="Boolean">System.Boolean</Type>
-    <Type n="Hashtable">System.Collections.Hashtable</Type>
-    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-    <Type n="String">System.String</Type>
-  </TypeList>
-</XmlArchive>
+        </Data>
+        <TypeList>
+          <Type n="Boolean">System.Boolean</Type>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>

@@ -149,7 +149,7 @@ CASE SequenceID OF
 		// Initialize the route executor state.
   	bJobActive       := FALSE;
   	uiCurrentStep    := 0;
-  	pstCurrentJob 	 := 0;
+  	//pstCurrentJob 	 := 0;
   	SequenceID       := C_SeqStep_Auto_Execute_GetNext_Route_Job;
 
 	C_SeqStep_Auto_Execute_GetNext_Route_Job: // 10
